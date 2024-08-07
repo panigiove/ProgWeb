@@ -1,4 +1,4 @@
-package web.example.progweb;
+package web.example.progweb.controller;
 
 import java.io.*;
 import javax.servlet.http.*;
