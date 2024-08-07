@@ -13,6 +13,7 @@
 <h1><%= "Hello World!" %></h1>
 <br/>
 <jsp:include page="WEB-INF/view/navbar.jsp"/>
+<jsp:include page="WEB-INF/view/mostSoldCard.jsp"/>
 <a href="hello-servlet">Hello Servlet</a>
 </body>
 </html>
