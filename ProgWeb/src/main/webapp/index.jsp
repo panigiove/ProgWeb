@@ -12,8 +12,8 @@
 
 <h1><%= "Hello World!" %></h1>
 <br/>
-<jsp:include page="WEB-INF/view/navbar.jsp"/>
-<jsp:include page="WEB-INF/view/mostSoldCard.jsp"/>
-<a href="hello-servlet">Hello Servlet</a>
+<jsp:include page="WEB-INF/view/mostSoldCard.jsp"/><br>
+<jsp:include page="WEB-INF/view/eventsNavbar.jsp"/><br>
+<jsp:include page="WEB-INF/view/footer.jsp"/>
 </body>
 </html>
