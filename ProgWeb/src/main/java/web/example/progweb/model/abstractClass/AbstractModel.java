@@ -2,11 +2,11 @@ package web.example.progweb.model.abstractClass;
 
 import java.sql.*;
 
-public abstract class AbstractDAO {
+public abstract class AbstractModel {
     protected Connection connection;
     protected Statement statement;
 
-    public AbstractDAO() throws SQLException, ClassNotFoundException {
+    public AbstractModel() throws SQLException, ClassNotFoundException {
         String url = "jdbc:derby://localhost:1527/ProgWebDB";
         String user = "App";
         String password = "App";
@@ -15,7 +15,7 @@ public abstract class AbstractDAO {
         statement = connection.createStatement();
     }
 
-    public AbstractDAO (Connection connection) throws SQLException {
+    public AbstractModel(Connection connection) throws SQLException {
         this.connection = connection;
         statement = connection.createStatement();
     }

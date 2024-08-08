@@ -15,7 +15,7 @@ CREATE TABLE UTENTI (
 */
 
 public class User {
-    private final String id;
+    private final int id;
     private final String name;
     private final String surname;
     private final String birthDate;
@@ -23,7 +23,7 @@ public class User {
     private final String phone;
     private final int nPurchases;
 
-    public User (String id, String name, String surname, String birthDate, String email, String phone, int nPurchases) {
+    public User (int id, String name, String surname, String birthDate, String email, String phone, int nPurchases) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -37,7 +37,7 @@ public class User {
         return name;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

@@ -14,36 +14,41 @@ CREATE TABLE PRENOTAZIONE_BIGLIETTI (
 );
  */
 
+import java.math.BigDecimal;
+
 public class Ticket {
-    private final String id_prenotazione;
-    private final String id_evento;
-    private final String id_utente;
-    private final String id_sconto;
+    private final int id_prenotazione;
+    private final int id_evento;
+    private final int id_utente;
+    private final int id_sconto;
     private final String tipologia;
     private final String data_acquisto;
+    private final BigDecimal price;
 
-    public Ticket( String id_prenotazione, String id_evento, String id_utente, String id_sconto, String tipologia, String data_acquisto) {
+
+    public Ticket(int id_prenotazione, int id_evento, int id_utente, int id_sconto, String tipologia, String data_acquisto, BigDecimal price) {
         this.id_prenotazione = id_prenotazione;
         this.id_evento = id_evento;
         this.id_utente = id_utente;
         this.id_sconto = id_sconto;
         this.tipologia = tipologia;
         this.data_acquisto = data_acquisto;
+        this.price = price;
     }
 
-    public String getId_prenotazione() {
+    public int getId_prenotazione() {
         return id_prenotazione;
     }
 
-    public String getId_evento() {
+    public int getId_evento() {
         return id_evento;
     }
 
-    public String getId_utente() {
+    public int getId_utente() {
         return id_utente;
     }
 
-    public String getId_sconto() {
+    public int getId_sconto() {
         return id_sconto;
     }
 
@@ -53,5 +58,9 @@ public class Ticket {
 
     public String getData_acquisto() {
         return data_acquisto;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
     }
 }

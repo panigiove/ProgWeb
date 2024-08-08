@@ -1,6 +1,6 @@
 package web.example.progweb.model;
 
-import web.example.progweb.model.abstractClass.AbstractDAO;
+import web.example.progweb.model.abstractClass.AbstractModel;
 import web.example.progweb.model.entity.Discount;
 
 import java.sql.PreparedStatement;
@@ -19,8 +19,8 @@ CREATE TABLE SCONTI_EVENTO (
 );
  */
 
-public class DiscountDAO extends AbstractDAO {
-    public DiscountDAO() throws SQLException, ClassNotFoundException {
+public class DiscountModel extends AbstractModel {
+    public DiscountModel() throws SQLException, ClassNotFoundException {
         super();
     }
 

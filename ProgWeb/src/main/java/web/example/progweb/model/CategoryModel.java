@@ -1,6 +1,6 @@
 package web.example.progweb.model;
 
-import web.example.progweb.model.abstractClass.AbstractDAO;
+import web.example.progweb.model.abstractClass.AbstractModel;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,8 +13,8 @@ CREATE TABLE CATEGORIA (
 );
  */
 
-public class CategoryDAO extends AbstractDAO {
-    public CategoryDAO() throws SQLException, ClassNotFoundException {
+public class CategoryModel extends AbstractModel {
+    public CategoryModel() throws SQLException, ClassNotFoundException {
         super();
     }
 

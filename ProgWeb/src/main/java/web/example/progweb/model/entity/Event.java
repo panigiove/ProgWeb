@@ -20,22 +20,24 @@ CREATE TABLE EVENTI (
 );
  */
 
+import java.math.BigDecimal;
+
 public class Event {
-    private final String id;
-    private final String idCategory;
-    private final String idLocation;
+    private final int id;
+    private final int idCategory;
+    private final int idLocation;
     private final String name;
     private final String start;
     private final String end;
-    private final String totalSeats;
-    private final String availableSeats;
-    private final String totalStanding;
-    private final String availableStanding;
-    private final String seatPrice;
-    private final String standingPrice;
+    private final int totalSeats;
+    private final int availableSeats;
+    private final int totalStanding;
+    private final int availableStanding;
+    private final BigDecimal seatPrice;
+    private final BigDecimal standingPrice;
     private final int nClick;
 
-    public Event (String id, String idCategory, String idLocation, String name, String start, String end, String totalSeats, String availableSeats, String totalStanding, String availableStanding, String seatPrice, String standingPrice, int nClick) {
+    public Event (int id, int idCategory, int idLocation, String name, String start, String end, int totalSeats, int availableSeats, int totalStanding, int availableStanding, BigDecimal seatPrice, BigDecimal standingPrice, int nClick) {
         this.id = id;
         this.idCategory = idCategory;
         this.idLocation = idLocation;
@@ -51,11 +53,11 @@ public class Event {
         this.nClick = nClick;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public String getIdCategory() {
+    public int getIdCategory() {
         return idCategory;
     }
 
@@ -63,7 +65,7 @@ public class Event {
         return nClick;
     }
 
-    public String getIdLocation() {
+    public int getIdLocation() {
         return idLocation;
     }
 
@@ -79,27 +81,27 @@ public class Event {
         return end;
     }
 
-    public String getTotalSeats() {
+    public int getTotalSeats() {
         return totalSeats;
     }
 
-    public String getAvailableSeats() {
+    public int getAvailableSeats() {
         return availableSeats;
     }
 
-    public String getTotalStanding() {
+    public int getTotalStanding() {
         return totalStanding;
     }
 
-    public String getAvailableStanding() {
+    public int getAvailableStanding() {
         return availableStanding;
     }
 
-    public String getSeatPrice() {
+    public BigDecimal getSeatPrice() {
         return seatPrice;
     }
 
-    public String getStandingPrice() {
+    public BigDecimal getStandingPrice() {
         return standingPrice;
     }
 

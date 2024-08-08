@@ -1,6 +1,6 @@
 package web.example.progweb.model;
 
-import web.example.progweb.model.abstractClass.AbstractDAO;
+import web.example.progweb.model.abstractClass.AbstractModel;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,8 +13,8 @@ CREATE TABLE LOCALITA (
 );
  */
 
-public class LocationDAO extends AbstractDAO {
-    public LocationDAO() throws SQLException, ClassNotFoundException {
+public class LocationModel extends AbstractModel {
+    public LocationModel() throws SQLException, ClassNotFoundException {
         super();
     }
 
