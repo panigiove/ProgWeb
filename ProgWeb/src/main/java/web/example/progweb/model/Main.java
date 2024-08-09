@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        try {
+        //try {
             // test to User Service
 //            UserService userService = new UserService();
 //            System.out.println("Checking username...");
@@ -40,11 +40,11 @@ public class Main {
 //            System.out.println("Users ordered by purchases: " + usersOrderedByPurchases);
 
 
-        } catch (SQLException e) {
+        /*} catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
-        }
+        }*/
 
     }
 }

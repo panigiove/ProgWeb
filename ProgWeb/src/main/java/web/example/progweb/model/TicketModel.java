@@ -62,7 +62,7 @@ public class TicketModel extends AbstractModel {
         return price.multiply(new BigDecimal(nTicket));
     }
 
-    public List<Ticket> getTickets() throws SQLException {
+    /*public List<Ticket> getTickets() throws SQLException {
         List<Ticket> tickets = new ArrayList<>();
         String query = "SELECT * FROM PRENOTAZIONE_BIGLIETTI";
         ResultSet resultSet = unsafeExecuteQuery(query);
@@ -78,5 +78,5 @@ public class TicketModel extends AbstractModel {
             tickets.add(ticket);
         }
         return tickets;
-    }
+    }*/
 }

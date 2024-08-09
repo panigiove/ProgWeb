@@ -7,10 +7,12 @@
 
   </script>
   <title>JSP - Hello World</title>
+
 </head>
 <body>
 
 <h1><%= "Hello World!" %></h1>
+
 <br/>
 <jsp:include page="WEB-INF/view/mostSoldCard.jsp"/><br>
 <jsp:include page="WEB-INF/view/eventsNavbar.jsp"/><br>

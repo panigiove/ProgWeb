@@ -94,11 +94,17 @@
             <input type="password" id="confirm_password" name="confirm_password" required>
         </div>
         <div class="form-group">
-            <input type="submit" value="Sign Up">
+            <button type="button" onclick="sendForm()">Invia</button>
             <input type="reset" value="Reset">
         </div>
     </form>
 </div>
+
+<script>
+    function sendForm() {
+        
+    }
+</script>
 
 <!--<script>
     const form = document.getElementById('signupForm');

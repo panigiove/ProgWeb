@@ -70,7 +70,9 @@
             <input type="submit" value="Login">
         </div>
         <div class="signip-redirect">
-
+            <jsp:text>
+                Non hai un account? <a href="signUp.jsp">Iscriviti!</a>
+            </jsp:text>
         </div>
     </form>
 </div>
