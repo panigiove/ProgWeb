@@ -31,7 +31,7 @@ CREATE TABLE EVENTI (
 );
  */
 
-public class EventService extends AbstractModel {
+public class EventModel extends AbstractModel {
     private final PreparedStatement getEventByCategoryPreparedStatement;
     private final PreparedStatement getEventByIdPreparedStatement;
     private final PreparedStatement insertEventPreparedStatement;
@@ -41,7 +41,7 @@ public class EventService extends AbstractModel {
     private final PreparedStatement decrementInPiediPreparedStatement;
     private final PreparedStatement checkAvailabilityPreparedStatement;
 
-    public EventService() throws SQLException, ClassNotFoundException {
+    public EventModel() throws SQLException, ClassNotFoundException {
         super();
         getEventByCategoryPreparedStatement = connection.prepareStatement("SELECT * FROM EVENTI WHERE id_categoria = ?");
         getEventByIdPreparedStatement = connection.prepareStatement("SELECT * FROM EVENTI WHERE id_evento = ?");

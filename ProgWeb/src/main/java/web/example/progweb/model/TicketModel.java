@@ -24,13 +24,13 @@ CREATE TABLE PRENOTAZIONE_BIGLIETTI (
 );
  */
 
-public class TicketService extends AbstractModel {
+public class TicketModel extends AbstractModel {
     private final PreparedStatement createTicketPreparedStatement;
-    private EventService eventService;
+    private EventModel eventModel;
 
-    public TicketService() throws SQLException, ClassNotFoundException {
+    public TicketModel() throws SQLException, ClassNotFoundException {
         super();
-        eventService = new EventService();
+        eventModel = new EventModel();
         createTicketPreparedStatement = connection.prepareStatement("INSERT INTO PRENOTAZIONE_BIGLIETTI (id_evento, id_utente, id_sconto, tipologia, data_acquisto) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)");
     }
 
@@ -38,7 +38,7 @@ public class TicketService extends AbstractModel {
     typology: false -> poltrona, true -> in piedi
      */
     public boolean buyTicket(int nTicket, int id_event, int id_user, int id_discount, boolean typology) throws SQLException {
-        if (eventService.decrementAvailability(id_event, typology, nTicket)){
+        if (eventModel.decrementAvailability(id_event, typology, nTicket)){
             createTicketPreparedStatement.setInt(1, id_event);
             createTicketPreparedStatement.setInt(2, id_user);
             createTicketPreparedStatement.setInt(3, id_discount);

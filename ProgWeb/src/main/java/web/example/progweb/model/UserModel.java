@@ -23,7 +23,7 @@ CREATE TABLE UTENTI (
 );
 */
 
-public class UserService extends AbstractModel {
+public class UserModel extends AbstractModel {
     private final PreparedStatement checkUserPreparedStatement;
     private final PreparedStatement checkUsernamePreparedStatement;
     private final PreparedStatement insertUserPreparedStatement;
@@ -32,7 +32,7 @@ public class UserService extends AbstractModel {
     private final PreparedStatement getUserIdPreparedStatement;
     private final PreparedStatement incrementPurchasesPreparedStatement;
 
-    public UserService() throws SQLException, ClassNotFoundException {
+    public UserModel() throws SQLException, ClassNotFoundException {
         super();
         checkUserPreparedStatement = connection.prepareStatement("SELECT * FROM UTENTI WHERE username = ? AND password = ?");
         checkUsernamePreparedStatement = connection.prepareStatement("SELECT * FROM UTENTI WHERE username = ?");
