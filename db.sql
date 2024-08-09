@@ -57,11 +57,13 @@ CREATE TABLE PRENOTAZIONE_BIGLIETTI (
     id_evento INT NOT NULL,
     id_utente INT NOT NULL,
     id_sconto INT,
+    quantita INT DEFAULT 1,
     tipologia VARCHAR(10) CHECK (tipologia IN ('poltrona', 'in piedi')) NOT NULL,
     data_acquisto TIMESTAMP NOT NULL,
-    FOREIGN KEY (id_evento) REFERENCES EVENTI(id_evento),
-    FOREIGN KEY (id_utente) REFERENCES UTENTI(id_utente),
-    FOREIGN KEY (id_sconto) REFERENCES SCONTI_EVENTO(id_sconto)
+    prezzo DECIMAL (10, 2) NOT NULL,
+    FOREIGN KEY (id_evento) REFERENCES EVENTI(id_evento) ON DELETE CASCADE,
+    FOREIGN KEY (id_utente) REFERENCES UTENTI(id_utente) ON DELETE CASCADE,
+    FOREIGN KEY (id_sconto) REFERENCES SCONTI_EVENTO(id_sconto) ON DELETE CASCADE
 );
 
 CREATE TABLE AMMINISTRATORI (
@@ -214,32 +216,42 @@ INSERT INTO UTENTI (
 );
 
 
+-- Per il Concerto di Rock, prezzo per poltrona è 30.00
 INSERT INTO PRENOTAZIONE_BIGLIETTI (
     id_evento,
     id_utente,
     id_sconto,
+    quantita,
     tipologia,
-    data_acquisto
+    data_acquisto,
+    prezzo
 ) VALUES (
     1, -- id_evento (Concerto di Rock)
     1, -- id_utente (Mario Rossi)
     1, -- id_sconto (10% sconto)
+    2, -- quantita
     'poltrona',
-    '2024-08-01 10:30:00'
+    '2024-08-01 10:30:00',
+    30.00 * 2 * (1 - 0.10) -- Prezzo dopo sconto (10% su 30.00 per 2 poltrone)
 );
 
+-- Per lo Spettacolo Teatrale, prezzo per in piedi è 10.00
 INSERT INTO PRENOTAZIONE_BIGLIETTI (
     id_evento,
     id_utente,
     id_sconto,
+    quantita,
     tipologia,
-    data_acquisto
+    data_acquisto,
+    prezzo
 ) VALUES (
     2, -- id_evento (Spettacolo Teatrale)
     2, -- id_utente (Giulia Bianchi)
     2, -- id_sconto (15% sconto)
+    1, -- quantita
     'in piedi',
-    '2024-08-02 11:00:00'
+    '2024-08-02 11:00:00',
+    10.00 * (1 - 0.15) -- Prezzo dopo sconto (15% su 10.00)
 );
 
 INSERT INTO AMMINISTRATORI (
