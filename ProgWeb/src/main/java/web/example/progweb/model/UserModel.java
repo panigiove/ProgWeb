@@ -31,19 +31,23 @@ public class UserModel extends AbstractModel {
     private final PreparedStatement getUserPreparedStatement;
     private final PreparedStatement getUserIdPreparedStatement;
     private final PreparedStatement incrementPurchasesPreparedStatement;
+    private final PreparedStatement getPurchasePreparedStatement;
+    private final PreparedStatement checkIdPreparedStatement;
 
     public UserModel() throws SQLException, ClassNotFoundException {
         super();
         checkUserPreparedStatement = connection.prepareStatement("SELECT * FROM UTENTI WHERE username = ? AND password = ?");
         checkUsernamePreparedStatement = connection.prepareStatement("SELECT * FROM UTENTI WHERE username = ?");
-        insertUserPreparedStatement = connection.prepareStatement("INSERT INTO UTENTI (nome, cognome, data_nascita, email, telefono, username, password) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        insertUserPreparedStatement = connection.prepareStatement("INSERT INTO UTENTI (nome, cognome, data_nascita, email, telefono, username, password) VALUES (?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
         deleteUserPreparedStatement = connection.prepareStatement("DELETE FROM UTENTI WHERE username = ?");
         getUserPreparedStatement = connection.prepareStatement("SELECT * FROM UTENTI WHERE id_utente = ?");
         getUserIdPreparedStatement = connection.prepareStatement("SELECT id_utente FROM UTENTI WHERE username = ?");
         incrementPurchasesPreparedStatement = connection.prepareStatement("UPDATE UTENTI SET n_acquisti = n_acquisti + 1 WHERE id_utente = ?");
+        getPurchasePreparedStatement = connection.prepareStatement("SELECT n_acquisti FROM UTENTI WHERE id_utente = ?");
+        checkIdPreparedStatement = connection.prepareStatement("SELECT * FROM UTENTI WHERE id_utente = ?");
     }
 
-    public void insertUser(String username, String password, String name, String surname, String birthDate, String email, String phone) throws SQLException {
+    public User insertUser(String username, String password, String name, String surname, String birthDate, String email, String phone) throws SQLException {
         insertUserPreparedStatement.setString(1, name);
         insertUserPreparedStatement.setString(2, surname);
         insertUserPreparedStatement.setString(3, formatDate(birthDate));
@@ -51,7 +55,15 @@ public class UserModel extends AbstractModel {
         insertUserPreparedStatement.setString(5, phone);
         insertUserPreparedStatement.setString(6, username);
         insertUserPreparedStatement.setString(7, password);
-        insertUserPreparedStatement.executeUpdate();
+        int affectedRows =  insertUserPreparedStatement.executeUpdate();
+        if (affectedRows > 0) {
+            try (ResultSet generatedKeys = insertUserPreparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return getUser(generatedKeys.getInt(1));
+                }
+            }
+        }
+        return null;
     }
 
     public void deleteUser(String username) throws SQLException {
@@ -69,6 +81,12 @@ public class UserModel extends AbstractModel {
     public boolean checkUsername (String username) throws SQLException {
         checkUsernamePreparedStatement.setString(1, username);
         ResultSet resultSet = checkUsernamePreparedStatement.executeQuery();
+        return resultSet.next();
+    }
+
+    public boolean checkId (int id) throws SQLException {
+        checkIdPreparedStatement.setInt(1, id);
+        ResultSet resultSet = checkIdPreparedStatement.executeQuery();
         return resultSet.next();
     }
 
@@ -129,4 +147,10 @@ public class UserModel extends AbstractModel {
         return users;
     }
 
+    public int getPurchases(int id) throws SQLException {
+        getPurchasePreparedStatement.setInt(1, id);
+        ResultSet resultSet = getPurchasePreparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getInt("n_acquisti");
+    }
 }

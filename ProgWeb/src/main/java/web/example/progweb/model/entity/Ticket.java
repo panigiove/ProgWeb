@@ -6,61 +6,83 @@ CREATE TABLE PRENOTAZIONE_BIGLIETTI (
     id_evento INT NOT NULL,
     id_utente INT NOT NULL,
     id_sconto INT,
+    quantita INT DEFAULT 1,
     tipologia VARCHAR(10) CHECK (tipologia IN ('poltrona', 'in piedi')) NOT NULL,
     data_acquisto TIMESTAMP NOT NULL,
-    FOREIGN KEY (id_evento) REFERENCES EVENTI(id_evento),
-    FOREIGN KEY (id_utente) REFERENCES UTENTI(id_utente),
-    FOREIGN KEY (id_sconto) REFERENCES SCONTI_EVENTO(id_sconto)
+    prezzo DECIMAL (10, 2) NOT NULL,
+    FOREIGN KEY (id_evento) REFERENCES EVENTI(id_evento) ON DELETE CASCADE,
+    FOREIGN KEY (id_utente) REFERENCES UTENTI(id_utente) ON DELETE CASCADE,
+    FOREIGN KEY (id_sconto) REFERENCES SCONTI_EVENTO(id_sconto) ON DELETE CASCADE
 );
  */
 
 import java.math.BigDecimal;
 
 public class Ticket {
-    private final int id_prenotazione;
-    private final int id_evento;
-    private final int id_utente;
-    private final int id_sconto;
+    private final int idPrenotazione;
+    private final int idEvento;
+    private final int idUtente;
+    private final int idSconto;
+    private final int quantita;
     private final String tipologia;
-    private final String data_acquisto;
+    private final String dataAcquisto;
     private final BigDecimal price;
 
 
-    public Ticket(int id_prenotazione, int id_evento, int id_utente, int id_sconto, String tipologia, String data_acquisto, BigDecimal price) {
-        this.id_prenotazione = id_prenotazione;
-        this.id_evento = id_evento;
-        this.id_utente = id_utente;
-        this.id_sconto = id_sconto;
+    public Ticket(int id_prenotazione, int id_evento, int id_utente, int id_sconto,int quantita, String tipologia, String data_acquisto, BigDecimal price) {
+        this.idPrenotazione = id_prenotazione;
+        this.idEvento = id_evento;
+        this.idUtente = id_utente;
+        this.idSconto = id_sconto;
+        this.quantita = quantita;
         this.tipologia = tipologia;
-        this.data_acquisto = data_acquisto;
+        this.dataAcquisto = data_acquisto;
         this.price = price;
     }
 
-    public int getId_prenotazione() {
-        return id_prenotazione;
+    public int idPrenotazione() {
+        return idPrenotazione;
     }
 
-    public int getId_evento() {
-        return id_evento;
+    public int idEvento() {
+        return idEvento;
     }
 
-    public int getId_utente() {
-        return id_utente;
+    public int idUtente() {
+        return idUtente;
     }
 
-    public int getId_sconto() {
-        return id_sconto;
+    public int idSconto() {
+        return idSconto;
     }
 
-    public String getTipologia() {
+    public int getQuantita() {
+        return quantita;
+    }
+
+    public String getTipology() {
         return tipologia;
     }
 
-    public String getData_acquisto() {
-        return data_acquisto;
+    public String data_acquisto() {
+        return dataAcquisto;
     }
 
     public BigDecimal getPrice() {
         return price;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "idPrenotazione=" + idPrenotazione +
+                ", idEvento=" + idEvento +
+                ", idUtente=" + idUtente +
+                ", idSconto=" + idSconto +
+                ", quantita=" + quantita +
+                ", tipologia='" + tipologia + '\'' +
+                ", dataAcquisto='" + dataAcquisto + '\'' +
+                ", price=" + price +
+                '}';
     }
 }

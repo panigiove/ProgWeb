@@ -11,31 +11,31 @@ CREATE TABLE SCONTI_EVENTO (
  */
 
 public class Discount {
-    private String id_sconto;
-    private String id_evento;
-    private String data_scadenza;
-    private double sconto;
+    private int id_discount;
+    private int id_event;
+    private String expiration_date;
+    private double discount;
 
-    public Discount(String id_sconto, String id_evento, String data_scadenza, double sconto) {
-        this.id_sconto = id_sconto;
-        this.id_evento = id_evento;
-        this.data_scadenza = data_scadenza;
-        this.sconto = sconto;
+    public Discount(int id_discount, int id_event, String expiration_date, double discount) {
+        this.id_discount = id_discount;
+        this.id_event = id_event;
+        this.expiration_date = expiration_date;
+        this.discount = discount;
     }
 
-    public String getId_sconto() {
-        return id_sconto;
+    public int getId_discount() {
+        return id_discount;
     }
 
-    public String getId_evento() {
-        return id_evento;
+    public int getId_event() {
+        return id_event;
     }
 
-    public String getData_scadenza() {
-        return data_scadenza;
+    public String getExpiration_date() {
+        return expiration_date;
     }
 
-    public double getSconto() {
-        return sconto;
+    public double getDiscount() {
+        return discount;
     }
 }
