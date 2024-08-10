@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         try {
 //            // test to User Model
 //            UserModel userService = new UserModel();
@@ -65,6 +65,6 @@ public class Main {
         } catch(ClassNotFoundException e){
             throw new RuntimeException(e);
         }
-    }
+    }*/
 }
 

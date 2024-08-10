@@ -44,6 +44,8 @@ public class TicketModel extends AbstractModel {
     private final PreparedStatement getDiscountPreparedStatement;
     private final PreparedStatement deleteTicketPreparedStatement;
     private final PreparedStatement deleteDiscountPreparedStatement;
+    private final PreparedStatement getValidDiscountPreparedStatement;
+    private final PreparedStatement getValidDiscountIdPreparedStatement;
     private EventModel eventModel;
     private UserModel userModel;
 
@@ -58,6 +60,8 @@ public class TicketModel extends AbstractModel {
         getDiscountPreparedStatement = connection.prepareStatement("SELECT * FROM SCONTI_EVENTO WHERE id_sconto = ?");
         deleteTicketPreparedStatement = connection.prepareStatement("DELETE FROM PRENOTAZIONE_BIGLIETTI WHERE id_prenotazione = ?");
         deleteDiscountPreparedStatement = connection.prepareStatement("DELETE FROM SCONTI_EVENTO WHERE id_sconto = ?");
+        getValidDiscountPreparedStatement = connection.prepareStatement("SELECT * FROM SCONTI_EVENTO WHERE id_evento = ? AND data_scadenza >= CURRENT_DATE");
+        getValidDiscountIdPreparedStatement = connection.prepareStatement("SELECT id_sconto FROM SCONTI_EVENTO WHERE id_evento = ? AND data_scadenza >= CURRENT_DATE");
     }
 
     /*
@@ -65,7 +69,7 @@ public class TicketModel extends AbstractModel {
      */
     public Ticket buyTicket(int nTicket, int id_event, int id_user, boolean typology) throws SQLException {
         if (userModel.checkId(id_user) && eventModel.checkId(id_event) && nTicket > 0 && eventModel.decrementAvailability(id_event, typology, nTicket)) {
-            int id_discount = eventModel.getDiscountId(id_event);
+            int id_discount = getValidDiscountId(id_event);
             createTicketPreparedStatement.setInt(1, id_event);
             createTicketPreparedStatement.setInt(2, id_user);
             if (id_discount != 0) {
@@ -144,6 +148,42 @@ public class TicketModel extends AbstractModel {
         return null;
     }
 
+    public BigDecimal getValidDiscount(int idEvent) throws SQLException {
+        getValidDiscountPreparedStatement.setInt(1, idEvent);
+        ResultSet resultSet = getValidDiscountPreparedStatement.executeQuery();
+        if (resultSet.next()) {
+            return resultSet.getBigDecimal("sconto");
+        }
+        return new BigDecimal(0);
+    }
+
+    public int getValidDiscountId(int idEvent) throws SQLException {
+        getValidDiscountIdPreparedStatement.setInt(1, idEvent);
+        ResultSet resultSet = getValidDiscountIdPreparedStatement.executeQuery();
+        if (resultSet.next()) {
+            return resultSet.getInt("id_sconto");
+        }
+        return 0;
+    }
+
+    public List<Discount> getDiscounts () throws SQLException {
+        String query = "SELECT * FROM SCONTI_EVENTO";
+        ResultSet resultSet = unsafeExecuteQuery(query);
+        List<Discount> discounts = new ArrayList<>();
+        while (resultSet.next()) {
+            Discount discount = new Discount(
+                    resultSet.getInt("id_sconto"),
+                    resultSet.getInt("id_evento"),
+                    resultSet.getString("data_scadenza"),
+                    resultSet.getBigDecimal("sconto")
+            );
+            discounts.add(discount);
+        }
+        return discounts;
+    }
+
+
+
     public Discount createDiscount(int id_event, String expiration_date, double discount) throws SQLException {
         createDiscountPreparedStatement.setInt(1, id_event);
         createDiscountPreparedStatement.setString(2, expiration_date);
@@ -180,7 +220,7 @@ public class TicketModel extends AbstractModel {
         BigDecimal price = new BigDecimal(0);
         if ((userModel.getPurchases(id_user) + 1)  % 5 != 0){
             price = eventModel.getPrice(id_event, typology).multiply(new BigDecimal(nTicket));
-            BigDecimal discount = eventModel.getDiscount(id_event).divide(new BigDecimal(100));
+            BigDecimal discount = getValidDiscount(id_event).divide(new BigDecimal(100));
             price = price.subtract(price.multiply(discount));
         }
         return price;

@@ -94,44 +94,41 @@
             <input type="password" id="confirm_password" name="confirm_password" required>
         </div>
         <div class="form-group">
-            <button type="button" onclick="sendForm()">Invia</button>
-            <input type="reset" value="Reset">
+            <button type="submit">Invia</button>
+            <button type="reset" value="Reset">Reset</button>
         </div>
     </form>
 </div>
 
 <script>
-    function sendForm() {
+    // JavaScript per inviare i dati tramite fetch
+    document.getElementById('signupForm').addEventListener('submit', function(event) {
+        event.preventDefault();
 
-    }
-</script>
+        let password = document.getElementById('password').value;
+        let confirmPassword = document.getElementById('confirm_password').value;
 
-<!--<script>
-    const form = document.getElementById('signupForm');
-    const password = document.getElementById('password');
-    const confirmPassword = document.getElementById('confirm_password');
-
-    form.addEventListener('submit', function(event) {
-        // Validazione della password
-        const groupID = '123'; // Sostituisci con l'ID del tuo gruppo
-        const requiredPassword = 'utente!' + groupID;
-        const passwordValue = password.value;
-
-        if (passwordValue !== confirmPassword.value) {
-            alert('Le password non coincidono');
-            event.preventDefault();
+        if (password !== confirmPassword) {
+            alert("Le password non coincidono. Riprova.");
             return;
         }
 
-        const passwordRegex = new RegExp(`^utente!${groupID}$`);
+        let formData = new FormData(this);
 
-        if (!passwordRegex.test(passwordValue) || passwordValue.length < 9) {
-            alert('La password deve essere lunga 9 caratteri, contenere "utente!" e l\'ID del gruppo, uno speciale e due cifre.');
-            event.preventDefault();
-            return;
-        }
+        fetch('http://localhost:8080/ProgWeb_war_exploded/SignupServlet', {
+            method: 'POST',
+            body: new URLSearchParams(formData)
+        })
+            .then(response => response.text())
+            .then(data => {
+                console.log('Risposta dal server:', data);
+                window.location.href="goodLogin.jsp";
+            })
+            .catch(error => {
+                console.error('Errore:', error);
+            });
     });
-</script>-->
+</script>
 
 </body>
 </html>

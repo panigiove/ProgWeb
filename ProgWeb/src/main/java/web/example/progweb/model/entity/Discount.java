@@ -10,13 +10,15 @@ CREATE TABLE SCONTI_EVENTO (
 );
  */
 
+import java.math.BigDecimal;
+
 public class Discount {
     private int id_discount;
     private int id_event;
     private String expiration_date;
-    private double discount;
+    private BigDecimal discount;
 
-    public Discount(int id_discount, int id_event, String expiration_date, double discount) {
+    public Discount(int id_discount, int id_event, String expiration_date, BigDecimal discount) {
         this.id_discount = id_discount;
         this.id_event = id_event;
         this.expiration_date = expiration_date;
@@ -35,7 +37,7 @@ public class Discount {
         return expiration_date;
     }
 
-    public double getDiscount() {
+    public BigDecimal getDiscount() {
         return discount;
     }
 }

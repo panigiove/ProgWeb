@@ -54,8 +54,6 @@ public class SignupServlet extends HttpServlet {
                 String phone = request.getParameter("telefono");
 
                 newUser.insertUser(username, password, name, surname, birthDate, email, phone);
-                response.sendRedirect("goodlogin.jsp");
-
             }
         } catch (SQLException e) {
             System.err.println("Non è stato possibile accedere al database!"+ e.getMessage());

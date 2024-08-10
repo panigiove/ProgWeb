@@ -57,7 +57,7 @@
 
 <div class="container">
     <h2>Login</h2>
-    <form action="LoginServlet" method="POST">
+    <form id="loginForm">
         <div class="form-group">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
@@ -67,7 +67,7 @@
             <input type="password" id="password" name="password" required>
         </div>
         <div class="form-group">
-            <input type="submit" value="Login">
+            <button type="submit" value="Login">Login</button>
         </div>
         <div class="signip-redirect">
             <jsp:text>
@@ -76,6 +76,26 @@
         </div>
     </form>
 </div>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        let formData = new FormData(this);
+
+        fetch('http://localhost:8080/ProgWeb_war_exploded/LoginServlet', {
+            method: 'POST',
+            body: new URLSearchParams(formData)
+        })
+            .then(response => response.text())
+            .then(data => {
+                console.log('Risposta dal server:', data);
+            })
+            .catch(error => {
+                console.error('Errore:', error);
+            });
+    });
+</script>
 
 </body>
 </html>

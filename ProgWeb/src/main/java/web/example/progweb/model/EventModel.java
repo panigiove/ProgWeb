@@ -42,8 +42,6 @@ public class EventModel extends AbstractModel {
     private final PreparedStatement decrementPoltronePreparedStatement;
     private final PreparedStatement decrementInPiediPreparedStatement;
     private final PreparedStatement checkAvailabilityPreparedStatement;
-    private final PreparedStatement getDiscountPreparedStatement;
-    private final PreparedStatement getDiscountIdPreparedStatement;
     private final PreparedStatement checkIdPreparedStatement;
     private final PreparedStatement deleteCategoryPreparedStatement;
     private final PreparedStatement deleteLocationPreparedStatement;
@@ -60,8 +58,6 @@ public class EventModel extends AbstractModel {
         incrementClickPreparedStatement = connection.prepareStatement("UPDATE EVENTI SET n_click = n_click + 1 WHERE id_evento = ?");
         decrementPoltronePreparedStatement = connection.prepareStatement("UPDATE EVENTI SET disponibilita_poltrona = disponibilita_poltrona - ? WHERE id_evento = ?");
         decrementInPiediPreparedStatement = connection.prepareStatement("UPDATE EVENTI SET disponibilita_in_piedi = disponibilita_in_piedi - ? WHERE id_evento = ?");
-        getDiscountPreparedStatement = connection.prepareStatement("SELECT * FROM SCONTI_EVENTO WHERE id_evento = ? AND data_scadenza >= CURRENT_DATE");
-        getDiscountIdPreparedStatement = connection.prepareStatement("SELECT id_sconto FROM SCONTI_EVENTO WHERE id_evento = ? AND data_scadenza >= CURRENT_DATE");
         checkIdPreparedStatement = connection.prepareStatement("SELECT * FROM EVENTI WHERE id_evento = ?");
         deleteCategoryPreparedStatement = connection.prepareStatement("DELETE FROM CATEGORIA WHERE id_categoria = ?");
         deleteLocationPreparedStatement = connection.prepareStatement("DELETE FROM LOCALITA WHERE id_localita = ?");
@@ -265,23 +261,7 @@ public class EventModel extends AbstractModel {
         return false;
     }
 
-    public BigDecimal getDiscount(int idEvent) throws SQLException {
-        getDiscountPreparedStatement.setInt(1, idEvent);
-        ResultSet resultSet = getDiscountPreparedStatement.executeQuery();
-        if (resultSet.next()) {
-            return resultSet.getBigDecimal("sconto");
-        }
-        return new BigDecimal(0);
-    }
 
-    public int getDiscountId(int idEvent) throws SQLException {
-        getDiscountIdPreparedStatement.setInt(1, idEvent);
-        ResultSet resultSet = getDiscountIdPreparedStatement.executeQuery();
-        if (resultSet.next()) {
-            return resultSet.getInt("id_sconto");
-        }
-        return 0;
-    }
 
     public List<Category> getAllCategory() throws SQLException {
         String query = "SELECT * FROM CATEGORIA";
