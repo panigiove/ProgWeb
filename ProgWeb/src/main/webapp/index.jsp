@@ -75,8 +75,20 @@
 
 <h1><%= "Hello World!" %>
 </h1>
-<a href="signUp.jsp">Sign Up</a>
-<a href="logIn.jsp">Login</a>
+<%
+  String username = (String) session.getAttribute("username");
+  if(username==null){
+%>
+    <a href="signUp.jsp">Sign Up</a>
+    <a href="logIn.jsp">Login</a>
+<%
+  }
+  else{
+%>
+    <a href="Personal_Page">Area Personale</a>
+<%
+  }
+%>
 <div class="container text-center mt-5">
   <div class="card mx-auto" style="width: 50%;">
     <div class="card-body">

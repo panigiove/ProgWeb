@@ -143,7 +143,7 @@ public class TicketModel extends AbstractModel {
             int id_event = rs.getInt("id_evento");
             String expiration_date = rs.getString("data_scadenza");
             double discount = rs.getDouble("sconto");
-            return new Discount(id_discount, id_event, expiration_date, discount);
+            //return new Discount(id_discount, id_event, expiration_date, discount);
         }
         return null;
     }

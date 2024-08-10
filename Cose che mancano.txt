@@ -1,0 +1,46 @@
+home page)
+	nome e logo
+	lista di eventi, navbar interattiva
+	tre eventi più cliccati interattivi
+	barra dei cookies più la loro implementazione, con alternativa se vengono rifiutati
+	in caso di log di utente normale)
+		link alla pagina profilo in cui sono riportati di dati personali, inclusi il 		numero di acquisti e un bottone per la cancellazione del servizio di 			ticketing
+	in caso di log dell'amministratore:
+		link per visualizzare gli utenti e gestore eventi
+		
+
+signup page)
+	controlli sulla data, numero di telefono e password
+	messaggio addizionale di errore
+
+login page)
+	messaggio di errore se fallisce l'autenticazione
+
+l'intera pagina di eventi
+
+pagina per gestire gli errori di autenticazione
+
+pagina di acquisto dei biglietti
+
+pagina di conferma ordine (ricordarsi degli sconti e del biglietto gratuito)
+
+pagina privata di conferma pagamento
+
+pagina visualizza utenti)
+	visualizzare tutti gli utenti
+	checkbox per ordinare gli utenti in ordine decrescente in base al numero di 	acquisti effettuati
+
+pagina gestione eventi)
+	visualizzare tutti gli eventi
+	check box per ordinare gli eventi in ordine decrescente in base al numero di click 	ricevuti
+	accanto agli eventi c'è un pulsante Elimina che elimina gli eventi
+	bottone crea eventi
+
+pagina di creazione eventi)
+	permette di creare eventi
+	ha un diagramma a torta che mostra la percentuale di click per categoria di eventi
+	
+
+
+
+

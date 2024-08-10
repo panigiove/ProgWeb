@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -70,9 +71,7 @@
             <button type="submit" value="Login">Login</button>
         </div>
         <div class="signip-redirect">
-            <jsp:text>
-                Non hai un account? <a href="signUp.jsp">Iscriviti!</a>
-            </jsp:text>
+            Non hai un account? <a href="signUp.jsp">Iscriviti!</a>
         </div>
     </form>
 </div>
