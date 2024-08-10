@@ -78,7 +78,6 @@
 <a href="signUp.jsp">Sign Up</a>
 <a href="logIn.jsp">Login</a>
 <div class="container text-center mt-5">
-  <h1 class="mb-4" style="font-size: 1.5rem;">Discount Here!</h1>
   <div class="card mx-auto" style="width: 50%;">
     <div class="card-body">
       <h5 id="discountTitle" class="card-title"></h5>
