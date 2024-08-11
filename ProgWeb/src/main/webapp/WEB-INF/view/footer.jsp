@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <main class="container mt-5">
     <h2 class="text-center">Informazioni Aziendali</h2>
+    <div style="height: 50px"> </div>
     <div class="row info-container">
         <div class="col-md-3 d-flex justify-content-center">
             <div class="info-item">

@@ -41,8 +41,14 @@ public class LoginServlet extends AbstractController {
 
         try{
             if(userModel.checkUser(username, password)){
-                HttpSession session = request.getSession();
-                session.setAttribute("username", username);
+                if(username.equals("admin")){
+                    HttpSession session = request.getSession();
+                    session.setAttribute("admin", username);
+                }
+                else{
+                    HttpSession session = request.getSession();
+                    session.setAttribute("username", username);
+                }
                 response.sendRedirect("index.jsp");
 
             }

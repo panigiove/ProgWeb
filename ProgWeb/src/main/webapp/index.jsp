@@ -83,9 +83,18 @@
     <a href="logIn.jsp">Login</a>
 <%
   }
+  else if(!username.equals("admin")){
+%>
+    <a href="WEB-INF/view/personal_page.jsp">Area Personale</a>
+    <div id="button_logout">
+      <button type="submit" name="logout">Logout</button>
+    </div>
+<%
+  }
   else{
 %>
-    <a href="Personal_Page">Area Personale</a>
+    <a href="/WEB-INF/view/userManager.jsp">Visualizzazione Utenti</a>
+    <a href="/WEB-INF/view/eventManager.jsp">Gestione Eventi</a>
 <%
   }
 %>
@@ -105,5 +114,20 @@
 <jsp:include page="WEB-INF/view/mostSoldCard.jsp"/><br>
 <jsp:include page="WEB-INF/view/eventsNavbar.jsp"/><br>
 <jsp:include page="WEB-INF/view/footer.jsp"/>
+
+<script>
+  document.getElementById("button_logout").addEventListener("click", function (event) {
+      fetch('/ProgWeb_war_exploded/LogoutServlet', { method: 'GET' })
+          .then(response => {
+              if (response.redirected) {
+                  window.location.href = "/index.jsp";
+              }
+          })
+          .catch(error => console.error('Errore durante il logout:', error));
+
+  })
+</script>
+
+<div style="height: 150px"> </div>
 </body>
 </html>
