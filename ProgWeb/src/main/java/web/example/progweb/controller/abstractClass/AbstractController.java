@@ -30,6 +30,11 @@ public abstract class AbstractController extends HttpServlet {
     public void destroy() {
         // Cleanup code, if needed
         super.destroy();
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -44,18 +49,29 @@ public abstract class AbstractController extends HttpServlet {
         // This can be overridden in subclasses
     }
 
-    protected void sendErrorMessage(HttpServletRequest request, HttpServletResponse response, String message, int errorCode) throws IOException {
+    protected void sendErrorMessage(HttpServletRequest request, HttpServletResponse response, String message, int errorCode, String errorString) throws IOException {
         response.setContentType("text/plain");
         response.setStatus(errorCode);
+        try (PrintWriter out = response.getWriter()){
+            out.println(errorString+ ": "+message);
+        }
+    }
+
+    protected void sendErrorPage(HttpServletRequest request, HttpServletResponse response, String message, int errorCode, String errorString) throws ServletException, IOException {
+        request.setAttribute("message", message);
+        request.setAttribute("errorCode", errorCode);
+        request.setAttribute("errorString", errorString);
+        request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
+    }
+
+    protected void sendSuccessMessage(HttpServletRequest request, HttpServletResponse response, String message) throws IOException {
+        response.setContentType("text/plain");
+        response.setStatus(HttpServletResponse.SC_OK);
         try (PrintWriter out = response.getWriter()){
             out.println(message);
         }
     }
 
-    protected void sendErrorPage(HttpServletRequest request, HttpServletResponse response, String message, int errorCode) throws ServletException, IOException {
-        request.setAttribute("message", message);
-        request.setAttribute("errorCode", errorCode);
-        request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
-    }
+
 
 }

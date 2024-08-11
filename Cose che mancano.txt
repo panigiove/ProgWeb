@@ -7,11 +7,6 @@ home page)
 		link alla pagina profilo in cui sono riportati di dati personali, inclusi il 		numero di acquisti e un bottone per la cancellazione del servizio di 			ticketing
 	in caso di log dell'amministratore:
 		link per visualizzare gli utenti e gestore eventi
-		
-
-signup page)
-	controlli sulla data, numero di telefono e password
-	messaggio addizionale di errore
 
 login page)
 	messaggio di errore se fallisce l'autenticazione
@@ -31,10 +26,7 @@ pagina visualizza utenti)
 	checkbox per ordinare gli utenti in ordine decrescente in base al numero di 	acquisti effettuati
 
 pagina gestione eventi)
-	visualizzare tutti gli eventi
-	check box per ordinare gli eventi in ordine decrescente in base al numero di click 	ricevuti
 	accanto agli eventi c'è un pulsante Elimina che elimina gli eventi
-	bottone crea eventi
 
 pagina di creazione eventi)
 	permette di creare eventi

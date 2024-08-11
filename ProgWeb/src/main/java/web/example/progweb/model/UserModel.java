@@ -1,6 +1,5 @@
 package web.example.progweb.model;
 
-import sun.rmi.server.UnicastServerRef;
 import web.example.progweb.model.abstractClass.AbstractModel;
 import web.example.progweb.model.entity.User;
 

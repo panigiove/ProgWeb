@@ -39,7 +39,7 @@ public class SignupServlet extends AbstractController {
         response.setContentType("text/plain");
         try{
             if(userModel.checkUsername(username)){
-                sendErrorMessage(request, response, "Il nome utente esiste già!", 500);
+                sendErrorMessage(request, response, "Il nome utente esiste già!", 409 , "Conflict");
             }
             else{
                 String password = request.getParameter("password");

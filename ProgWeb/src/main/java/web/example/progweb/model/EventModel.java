@@ -54,12 +54,12 @@ public class EventModel extends AbstractModel {
         prepareStatement();
     }
 
-    public EventModel (Connection connection) throws SQLException, ClassNotFoundException{
+    public EventModel (Connection connection) throws SQLException{
         super(connection);
         prepareStatement();
     }
 
-    private void prepareStatement ()  throws SQLException, ClassNotFoundException {
+    private void prepareStatement ()  throws SQLException {
         getEventByCategoryPreparedStatement = connection.prepareStatement("SELECT * FROM EVENTI WHERE id_categoria = ?");
         getEventByIdPreparedStatement = connection.prepareStatement("SELECT * FROM EVENTI WHERE id_evento = ?");
         insertEventPreparedStatement = connection.prepareStatement("INSERT INTO EVENTI (id_categoria, id_localita, nome, inizio, fine, totale_poltrona, disponibilita_poltrona, totale_in_piedi, disponibilita_in_piedi, prezzi_poltrona, prezzi_in_piedi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
@@ -153,6 +153,31 @@ public class EventModel extends AbstractModel {
     public void deleteCategory (int id) throws SQLException {
         deleteCategoryPreparedStatement.setInt(1, id);
         deleteCategoryPreparedStatement.executeUpdate();
+    }
+
+    public List<Event> getEvents() throws SQLException {
+        String query = "SELECT * FROM EVENTI";
+        ResultSet resultSet = unsafeExecuteQuery(query);
+        List<Event> events = new ArrayList<>();
+        while (resultSet.next()){
+            Event event = new Event(
+                    resultSet.getInt("id_evento"),
+                    resultSet.getInt("id_categoria"),
+                    resultSet.getInt("id_localita"),
+                    resultSet.getString("nome"),
+                    resultSet.getString("inizio"),
+                    resultSet.getString("fine"),
+                    resultSet.getInt("totale_poltrona"),
+                    resultSet.getInt("disponibilita_poltrona"),
+                    resultSet.getInt("totale_in_piedi"),
+                    resultSet.getInt("disponibilita_in_piedi"),
+                    resultSet.getBigDecimal("prezzi_poltrona"),
+                    resultSet.getBigDecimal("prezzi_in_piedi"),
+                    resultSet.getInt("n_click")
+            );
+            events.add(event);
+        }
+        return events;
     }
 
     public BigDecimal getPrice (int id, boolean type) throws SQLException {

@@ -57,14 +57,14 @@ public class TicketModel extends AbstractModel {
         prepareStatements();
     }
 
-    public TicketModel(Connection connection) throws SQLException, ClassNotFoundException{
+    public TicketModel(Connection connection) throws SQLException{
         super(connection);
         eventModel = new EventModel(connection);
         userModel = new UserModel(connection);
         prepareStatements();
     }
 
-    private void prepareStatements() throws SQLException, ClassNotFoundException {
+    private void prepareStatements() throws SQLException {
         createTicketPreparedStatement = connection.prepareStatement("INSERT INTO PRENOTAZIONE_BIGLIETTI (id_evento, id_utente, id_sconto, quantita, tipologia, data_acquisto , prezzo) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         getTicketPreparedStatement = connection.prepareStatement("SELECT * FROM PRENOTAZIONE_BIGLIETTI WHERE id_prenotazione = ?");
         getAllUserTicketPreparedStatement = connection.prepareStatement("SELECT * FROM PRENOTAZIONE_BIGLIETTI WHERE id_utente = ?");
