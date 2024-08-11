@@ -71,7 +71,7 @@
         </div>
         <div class="form-group">
             <label for="data_nascita">Data di Nascita (GG/MM/AAAA):</label>
-            <input type="text" id="data_nascita" name="data_nascita" pattern="\d{2}/\d{2}/\d{4}" required>
+            <input type="text" id="data_nascita" name="data_nascita" required>
         </div>
         <div class="form-group">
             <label for="email">Indirizzo Email:</label>
@@ -79,14 +79,14 @@
         </div>
         <div class="form-group">
             <label for="telefono">Numero di Telefono (10 cifre):</label>
-            <input type="text" id="telefono" name="telefono" pattern="\d{10}" required>
+            <input type="text" id="telefono" name="telefono" required>
         </div>
         <div class="form-group">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
         </div>
         <div class="form-group">
-            <label for="password">Password:</label>
+            <label for="password">Password (almeno 9 caratteri, di cui uno speciale e due cifre):</label>
             <input type="password" id="password" name="password" required>
         </div>
         <div class="form-group">
@@ -105,8 +105,24 @@
     document.getElementById('signupForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
+        let date=document.getElementById('data_nascita').value;
+        let phone=document.getElementById('telefono').value;
         let password = document.getElementById('password').value;
         let confirmPassword = document.getElementById('confirm_password').value;
+
+        validateDate(date);
+
+        const phoneFormat = /^[0-9]{10}$/;
+        if(!phoneFormat.test(phone)){
+            alert("Il formato del numero di telefono non è valido, inserire un numero di telefono di 10 cifre");
+            return;
+        }
+
+        const passwordFormat = /^(?=.*\d)(?=.*[a-z])(?=.*[\W_]).{8,}$/;
+        if(!passwordFormat.test(password)){
+            alert("Il formato della password non è valido");
+            return;
+        }
 
         if (password !== confirmPassword) {
             alert("Le password non coincidono. Riprova.");
@@ -122,12 +138,51 @@
             .then(response => response.text())
             .then(data => {
                 console.log('Risposta dal server:', data);
-                window.location.href="goodLogin.jsp";
             })
             .catch(error => {
                 console.error('Errore:', error);
             });
     });
+
+    function validateDate(dateOfBirth){
+        const dob = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+        const match = dateOfBirth.match(dob);
+
+        if(!match){
+            alert("Il formato di data di nascita non è valido, usare: GG/MM/AAAA");
+            return;
+        }
+
+        const day = parseInt(match[1], 10);
+        const month = parseInt(match[2], 10) - 1;
+        const year = parseInt(match[3], 10);
+
+        const birthDate = new Date(year, month, day);
+
+        if (birthDate.getFullYear() !== year || birthDate.getMonth() !== month || birthDate.getDate() !== day) {
+            alert("La data di nascita non è valida, assicurati di inserire giorno, mese e anno giusti!");
+            return;
+        }
+
+        const today = new Date();
+
+        if (birthDate > today){
+            alert("La data non è valida, è futura!");
+            return;
+        }
+
+        let age = today.getFullYear() - year;
+        const m = today.getMonth() - month;
+
+        if (m < 0 || (m === 0 && today.getDate() < day)) {
+            age--;
+        }
+
+        if(age<18){
+            alert("Non puoi iscriverti al sito, non sei maggiorenne!");
+            return;
+        }
+    }
 </script>
 
 </body>

@@ -50,6 +50,7 @@ public class SignupServlet extends AbstractController {
                 String phone = request.getParameter("telefono");
 
                 userModel.insertUser(username, password, name, surname, birthDate, email, phone);
+                response.sendRedirect(request.getContextPath() + "WEB-INF/view/goodLogin.jsp");
             }
         } catch (SQLException e) {
             System.err.println("Non è stato possibile accedere al database!"+ e.getMessage());
