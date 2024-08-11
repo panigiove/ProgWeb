@@ -1,5 +1,6 @@
 package web.example.progweb.model.abstractClass;
 
+import javax.ws.rs.container.ConnectionCallback;
 import java.sql.*;
 
 public abstract class AbstractModel {
@@ -39,6 +40,14 @@ public abstract class AbstractModel {
         String[] dateParts = date.split(" ");
         String[] dateParts2 = dateParts[0].split("/");
         return dateParts2[2] + "-" + dateParts2[1] + "-" + dateParts2[0] + " " + dateParts[1];
+    }
+
+    public static Connection connectDB() throws SQLException, ClassNotFoundException {
+        String url = "jdbc:derby://localhost:1527/ProgWebDB";
+        String user = "App";
+        String password = "App";
+        Class.forName("org.apache.derby.jdbc.ClientDriver"); // Caricamento del driver
+        return DriverManager.getConnection(url, user, password); // Connessione al database
     }
 
 }

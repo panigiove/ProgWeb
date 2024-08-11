@@ -6,6 +6,7 @@ import web.example.progweb.model.entity.Ticket;
 import web.example.progweb.model.entity.User;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,15 +38,15 @@ CREATE TABLE SCONTI_EVENTO (
  */
 
 public class TicketModel extends AbstractModel {
-    private final PreparedStatement createTicketPreparedStatement;
-    private final PreparedStatement getTicketPreparedStatement;
-    private final PreparedStatement getAllUserTicketPreparedStatement;
-    private final PreparedStatement createDiscountPreparedStatement;
-    private final PreparedStatement getDiscountPreparedStatement;
-    private final PreparedStatement deleteTicketPreparedStatement;
-    private final PreparedStatement deleteDiscountPreparedStatement;
-    private final PreparedStatement getValidDiscountPreparedStatement;
-    private final PreparedStatement getValidDiscountIdPreparedStatement;
+    private PreparedStatement createTicketPreparedStatement;
+    private PreparedStatement getTicketPreparedStatement;
+    private PreparedStatement getAllUserTicketPreparedStatement;
+    private PreparedStatement createDiscountPreparedStatement;
+    private PreparedStatement getDiscountPreparedStatement;
+    private PreparedStatement deleteTicketPreparedStatement;
+    private PreparedStatement deleteDiscountPreparedStatement;
+    private PreparedStatement getValidDiscountPreparedStatement;
+    private PreparedStatement getValidDiscountIdPreparedStatement;
     private EventModel eventModel;
     private UserModel userModel;
 
@@ -53,6 +54,17 @@ public class TicketModel extends AbstractModel {
         super();
         eventModel = new EventModel();
         userModel = new UserModel();
+        prepareStatements();
+    }
+
+    public TicketModel(Connection connection) throws SQLException, ClassNotFoundException{
+        super(connection);
+        eventModel = new EventModel(connection);
+        userModel = new UserModel(connection);
+        prepareStatements();
+    }
+
+    private void prepareStatements() throws SQLException, ClassNotFoundException {
         createTicketPreparedStatement = connection.prepareStatement("INSERT INTO PRENOTAZIONE_BIGLIETTI (id_evento, id_utente, id_sconto, quantita, tipologia, data_acquisto , prezzo) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         getTicketPreparedStatement = connection.prepareStatement("SELECT * FROM PRENOTAZIONE_BIGLIETTI WHERE id_prenotazione = ?");
         getAllUserTicketPreparedStatement = connection.prepareStatement("SELECT * FROM PRENOTAZIONE_BIGLIETTI WHERE id_utente = ?");

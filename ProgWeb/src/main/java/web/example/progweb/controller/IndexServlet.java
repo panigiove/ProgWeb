@@ -1,11 +1,13 @@
 package web.example.progweb.controller;
 
+import web.example.progweb.controller.abstractClass.AbstractController;
+
 import java.io.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
 @WebServlet(name = "helloServlet", value = "/hello-servlet")
-public class IndexServlet extends HttpServlet {
+public class IndexServlet extends AbstractController {
     private String message;
 
     public void init() {

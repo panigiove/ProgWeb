@@ -7,6 +7,7 @@ import web.example.progweb.model.entity.Event;
 import web.example.progweb.model.entity.Location;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,22 +35,31 @@ CREATE TABLE EVENTI (
  */
 
 public class EventModel extends AbstractModel {
-    private final PreparedStatement getEventByCategoryPreparedStatement;
-    private final PreparedStatement getEventByIdPreparedStatement;
-    private final PreparedStatement insertEventPreparedStatement;
-    private final PreparedStatement deleteEventPreparedStatement;
-    private final PreparedStatement incrementClickPreparedStatement;
-    private final PreparedStatement decrementPoltronePreparedStatement;
-    private final PreparedStatement decrementInPiediPreparedStatement;
-    private final PreparedStatement checkAvailabilityPreparedStatement;
-    private final PreparedStatement checkIdPreparedStatement;
-    private final PreparedStatement deleteCategoryPreparedStatement;
-    private final PreparedStatement deleteLocationPreparedStatement;
-    private final PreparedStatement incrementPoltronePreparedStatement;
-    private final PreparedStatement incrementInPiediPreparedStatement;
+    private PreparedStatement getEventByCategoryPreparedStatement;
+    private PreparedStatement getEventByIdPreparedStatement;
+    private PreparedStatement insertEventPreparedStatement;
+    private PreparedStatement deleteEventPreparedStatement;
+    private PreparedStatement incrementClickPreparedStatement;
+    private PreparedStatement decrementPoltronePreparedStatement;
+    private PreparedStatement decrementInPiediPreparedStatement;
+    private PreparedStatement checkAvailabilityPreparedStatement;
+    private PreparedStatement checkIdPreparedStatement;
+    private PreparedStatement deleteCategoryPreparedStatement;
+    private PreparedStatement deleteLocationPreparedStatement;
+    private PreparedStatement incrementPoltronePreparedStatement;
+    private PreparedStatement incrementInPiediPreparedStatement;
 
     public EventModel() throws SQLException, ClassNotFoundException {
         super();
+        prepareStatement();
+    }
+
+    public EventModel (Connection connection) throws SQLException, ClassNotFoundException{
+        super(connection);
+        prepareStatement();
+    }
+
+    private void prepareStatement ()  throws SQLException, ClassNotFoundException {
         getEventByCategoryPreparedStatement = connection.prepareStatement("SELECT * FROM EVENTI WHERE id_categoria = ?");
         getEventByIdPreparedStatement = connection.prepareStatement("SELECT * FROM EVENTI WHERE id_evento = ?");
         insertEventPreparedStatement = connection.prepareStatement("INSERT INTO EVENTI (id_categoria, id_localita, nome, inizio, fine, totale_poltrona, disponibilita_poltrona, totale_in_piedi, disponibilita_in_piedi, prezzi_poltrona, prezzi_in_piedi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);

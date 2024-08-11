@@ -1,5 +1,6 @@
 package web.example.progweb.controller;
 
+import web.example.progweb.controller.abstractClass.AbstractController;
 import web.example.progweb.model.UserModel;
 
 import java.io.IOException;
@@ -12,23 +13,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @WebServlet(name="LoginServlet", value="/LoginServlet")
-public class LoginServlet extends HttpServlet {
+public class LoginServlet extends AbstractController {
 
-    private UserModel user;
+    private UserModel userModel;
 
     @Override
     public void init() throws ServletException {
         super.init();
-        try{
-            user = new UserModel();
+        try {
+            userModel = new UserModel(connection);
         } catch (SQLException e) {
-            // Log dell'errore e rilancio dell'eccezione
             System.err.println("Errore durante la connessione al database: " + e.getMessage());
             throw new ServletException("Impossibile stabilire la connessione al database", e);
-        } catch (ClassNotFoundException e) {
-            System.err.println("Errore durante la connessione al database: " + e.getMessage());
-            throw new ServletException("Impossibile stabilire la connessione al database, non presente il driver", e);
         }
+
     }
 
     @Override
@@ -42,7 +40,7 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         try{
-            if(user.checkUser(username, password)){
+            if(userModel.checkUser(username, password)){
                 HttpSession session = request.getSession();
                 session.setAttribute("username", username);
                 response.sendRedirect("index.jsp");

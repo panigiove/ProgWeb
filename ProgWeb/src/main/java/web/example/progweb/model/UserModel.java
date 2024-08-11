@@ -1,8 +1,10 @@
 package web.example.progweb.model;
 
+import sun.rmi.server.UnicastServerRef;
 import web.example.progweb.model.abstractClass.AbstractModel;
 import web.example.progweb.model.entity.User;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,18 +26,27 @@ CREATE TABLE UTENTI (
 */
 
 public class UserModel extends AbstractModel {
-    private final PreparedStatement checkUserPreparedStatement;
-    private final PreparedStatement checkUsernamePreparedStatement;
-    private final PreparedStatement insertUserPreparedStatement;
-    private final PreparedStatement deleteUserPreparedStatement;
-    private final PreparedStatement getUserPreparedStatement;
-    private final PreparedStatement getUserIdPreparedStatement;
-    private final PreparedStatement incrementPurchasesPreparedStatement;
-    private final PreparedStatement getPurchasePreparedStatement;
-    private final PreparedStatement checkIdPreparedStatement;
+    private PreparedStatement checkUserPreparedStatement;
+    private PreparedStatement checkUsernamePreparedStatement;
+    private PreparedStatement insertUserPreparedStatement;
+    private PreparedStatement deleteUserPreparedStatement;
+    private PreparedStatement getUserPreparedStatement;
+    private PreparedStatement getUserIdPreparedStatement;
+    private PreparedStatement incrementPurchasesPreparedStatement;
+    private PreparedStatement getPurchasePreparedStatement;
+    private PreparedStatement checkIdPreparedStatement;
 
     public UserModel() throws SQLException, ClassNotFoundException {
         super();
+        prepareStatements();
+    }
+
+    public UserModel(Connection connection) throws SQLException {
+        super(connection);
+        prepareStatements();
+    }
+
+    private void prepareStatements() throws SQLException {
         checkUserPreparedStatement = connection.prepareStatement("SELECT * FROM UTENTI WHERE username = ? AND password = ?");
         checkUsernamePreparedStatement = connection.prepareStatement("SELECT * FROM UTENTI WHERE username = ?");
         insertUserPreparedStatement = connection.prepareStatement("INSERT INTO UTENTI (nome, cognome, data_nascita, email, telefono, username, password) VALUES (?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
