@@ -131,7 +131,7 @@
 
         let formData = new FormData(this);
 
-        fetch('http://localhost:8080/ProgWeb_war_exploded/SignupServlet', {
+        fetch('http://localhost:8080/SignupServlet', {
             method: 'POST',
             body: new URLSearchParams(formData)
         })

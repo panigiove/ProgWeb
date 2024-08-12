@@ -114,7 +114,7 @@
 
 <script>
   document.getElementById("button_logout").addEventListener("click", function (event) {
-      fetch('/ProgWeb_war_exploded/LogoutServlet', { method: 'GET' })
+      fetch('/LogoutServlet', { method: 'GET' })
           .then(response => {
               if (response.redirected) {
                   window.location.href = "/index.jsp";

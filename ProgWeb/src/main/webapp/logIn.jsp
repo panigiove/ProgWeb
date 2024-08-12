@@ -82,7 +82,7 @@
 
         let formData = new FormData(this);
 
-        fetch('http://localhost:8080/ProgWeb_war_exploded/LoginServlet', {
+        fetch('http://localhost:8080/LoginServlet', {
             method: 'POST',
             body: new URLSearchParams(formData)
         })
