@@ -23,8 +23,7 @@
             <p class ="m-b2"><strong>Numero di posti in piedi </strong> <%=request.getParameter("numero_di_posti_piedi")%> </p>
             <p class="m-b5 custom-font-size" style="font-size: 1.5rem;"><strong>Prezzo totale</strong> <%=request.getParameter("totale")%> €</p>
 
-            <%
-                String messaggioSconto = "Nessuno sconto applicato.";
+            <% String messaggioSconto = "Nessuno sconto applicato.";
                 String scontoParam = request.getParameter("sconto");
                 double sconto = 0.0;
 
@@ -48,7 +47,7 @@
                 <input type="hidden" name="numero_di_posti_piedi" value="<%= request.getParameter("numero_di_posti_piedi") %>">
                 <input type="hidden" name="totale" value="<%= request.getParameter("totale") %>">
                 <input type="hidden" name="sconto" value="<%= request.getParameter("sconto") %>">
-                <button type="submit" class="btn btn-success btn-block mt-3">Conferma Ordine</button>
+                <button type="submit" class="btn btn-success btn-block mt-3">Conferma Acquisto</button>
             </form>
 
         </div>
