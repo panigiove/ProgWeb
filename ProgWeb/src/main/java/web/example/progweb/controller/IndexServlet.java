@@ -6,7 +6,7 @@ import java.io.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
-@WebServlet(name = "helloServlet", value = "/hello-servlet")
+@WebServlet(name = "IndexServlet", value = "/IndexServlet")
 public class IndexServlet extends AbstractController {
     private String message;
 

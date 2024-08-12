@@ -259,5 +259,5 @@ INSERT INTO AMMINISTRATORI (
     password
 ) VALUES (
     'admin',
-    '01nimda'
+    '01nimda!'
 );

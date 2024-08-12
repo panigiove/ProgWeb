@@ -8,18 +8,11 @@ home page)
 	in caso di log dell'amministratore:
 		link per visualizzare gli utenti e gestore eventi
 
-login page)
-	messaggio di errore se fallisce l'autenticazione
-
 l'intera pagina di eventi
 
 pagina per gestire gli errori di autenticazione
 
 pagina di acquisto dei biglietti
-
-pagina di conferma ordine (ricordarsi degli sconti e del biglietto gratuito)
-
-pagina privata di conferma pagamento
 
 pagina visualizza utenti)
 	visualizzare tutti gli utenti

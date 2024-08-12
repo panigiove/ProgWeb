@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 @WebServlet(name = "LogoutServlet", value = "/LogoutServlet")
-public class LogoutServlet extends HttpServlet {
+public class LogoutServlet extends AbstractController {
     private UserModel userModel;
 
     @Override

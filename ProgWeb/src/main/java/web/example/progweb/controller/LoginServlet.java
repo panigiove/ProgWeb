@@ -40,21 +40,17 @@ public class LoginServlet extends AbstractController {
         String password = request.getParameter("password");
 
         try{
-            if(userModel.checkUser(username, password)){
-                if(username.equals("admin")){
-                    HttpSession session = request.getSession();
-                    session.setAttribute("admin", username);
-                }
-                else{
+            if(request.getSession()==null) {
+                if(userModel.checkUser(username, password)){
                     HttpSession session = request.getSession();
                     session.setAttribute("username", username);
-                }
-                response.sendRedirect("index.jsp");
+                    response.sendRedirect("index.jsp");
 
-            }
-            else{
-                System.out.println("Non login");
-                response.sendRedirect("logIn.jsp");
+                }
+                else{
+                    sendErrorMessage(request, response, "Credenziali non corrette, riprova", 401, "Unauthorized");
+                    response.sendRedirect("logIn.jsp");
+                }
             }
         } catch (SQLException e) {
             System.err.println("Non è stato possibile accedere al database!"+ e.getMessage());
