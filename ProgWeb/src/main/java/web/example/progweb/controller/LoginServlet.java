@@ -36,25 +36,12 @@ public class LoginServlet extends AbstractController {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-
-        try{
-            if(request.getSession()==null) {
-                if(userModel.checkUser(username, password)){
-                    HttpSession session = request.getSession();
-                    session.setAttribute("username", username);
-                    response.sendRedirect("index.jsp");
-
-                }
-                else{
-                    sendErrorMessage(request, response, "Credenziali non corrette, riprova", 401, "Unauthorized");
-                    response.sendRedirect("logIn.jsp");
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("Non è stato possibile accedere al database!"+ e.getMessage());
-            throw new ServletException("Impossibile stabilire la connessione al database, non è presente il driver", e);
+        if(request.getSession()==null) {
+            sendErrorMessage(request, response, "Credenziali non corrette, riprova", 401, "Unauthorized");
+            response.sendRedirect("logIn.jsp");
+        }
+        else{
+            response.sendRedirect("index.jsp");
         }
     }
 }

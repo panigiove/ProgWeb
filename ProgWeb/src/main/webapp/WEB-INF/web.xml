@@ -15,7 +15,7 @@
     
     <filter-mapping>
         <filter-name>AutenticationFilter</filter-name>
-        <url-pattern>/logIn.jsp</url-pattern>
+        <url-pattern>/LoginServlet</url-pattern>
     </filter-mapping>
 
 </web-app>
