@@ -38,13 +38,9 @@ public class AuthenticationFilter implements Filter {
             String  username = req.getParameter("username");
             String  password = req.getParameter("password");
 
-            if(username.equals("admin") && password.equals("01nimda!")) {
+            if((username.equals("admin") && password.equals("01nimda!")) || userModel.checkUser(username, password)) {
                 HttpSession session = req.getSession();
-                session.setAttribute("admin", username);
-            }
-            else if(userModel.checkUser(username, password)){
-                HttpSession session = req.getSession();
-                session.setAttribute("username", username);
+                session.setAttribute("user", username);
             }
 
             chain.doFilter(request, response);

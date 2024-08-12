@@ -76,7 +76,7 @@
 <h1><%= "Hello World!" %>
 </h1>
 <%
-  String username = (String) session.getAttribute("username");
+  String username = (String) session.getAttribute("user");
   if(username==null){
 %>
     <a href="signUp.jsp">Sign Up</a>
@@ -95,6 +95,9 @@
 %>
     <a href="/WEB-INF/view/userManager.jsp">Visualizzazione Utenti</a>
     <a href="/WEB-INF/view/eventManager.jsp">Gestione Eventi</a>
+    <div id="button_logout">
+        <button type="submit" name="logout">Logout</button>
+    </div>
 <%
   }
 %>
