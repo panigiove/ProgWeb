@@ -89,6 +89,7 @@
             .then(response => response.text())
             .then(data => {
                 console.log('Risposta dal server:', data);
+                window.location.href="index.jsp"
             })
             .catch(error => {
                 console.error('Errore:', error);

@@ -40,6 +40,7 @@ public class SignupServlet extends AbstractController {
         try{
             if(userModel.checkUsername(username)){
                 sendErrorMessage(request, response, "Il nome utente esiste già!", 409 , "Conflict");
+                response.sendRedirect(request.getContextPath()+"signUp.jsp");
             }
             else{
                 String password = request.getParameter("password");
