@@ -93,8 +93,8 @@
   }
   else{
 %>
-    <a href="/WEB-INF/view/usersManager.jsp">Visualizzazione Utenti</a>
-    <a href="/WEB-INF/view/eventManager.jsp">Gestione Eventi</a>
+    <a href="${pageContext.request.contextPath}/admin/gestioneUtenti">Visualizzazione Utenti</a>
+    <a href="${pageContext.request.contextPath}/admin/gestioneEventi">Gestione Eventi</a>
     <div id="button_logout">
         <button type="submit" name="logout">Logout</button>
     </div>

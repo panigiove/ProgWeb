@@ -28,22 +28,26 @@ public class AdminServlet extends AbstractController {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            List<Event> events;
-            String sortByClicks = request.getParameter("sortByClicks");
-            if ("on".equals(sortByClicks)) {
-                events = eventModel.getEventsOrderedByClick();
-            }
-            else {
-                events = eventModel.getEvents();
-            }
-            request.setAttribute("events", events);
+            String path = request.getPathInfo();
+            if (path == null || "/".equals(path)) {
+                List<Event> events;
+                String sortByClicks = request.getParameter("sortByClicks");
+                if ("on".equals(sortByClicks)) {
+                    events = eventModel.getEventsOrderedByClick();
+                }
+                else {
+                    events = eventModel.getEvents();
+                }
+                request.setAttribute("events", events);
 
-            request.getRequestDispatcher("eventManager.jsp").forward(request, response);
+                request.getRequestDispatcher("eventManager.jsp").forward(request, response);
+            } else if ("/gestioneEventi".equals(path)) {
+                request.getRequestDispatcher("WEB-INF/view/eventManager.jsp").forward(request, response);
+            }
         } catch (SQLException e) {
             sendErrorPage(request, response,"Errore durante la ricerca di eventi", HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error");
 
         }
-        request.getRequestDispatcher("eventManager.jsp").forward(request, response);
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

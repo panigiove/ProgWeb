@@ -75,6 +75,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", nPurchases=" + nPurchases +
+                ", username='" + username + '\'' +
                 '}';
     }
 }
