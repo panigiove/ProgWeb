@@ -22,6 +22,7 @@ public class User {
     private final String email;
     private final String phone;
     private final int nPurchases;
+    //private final String username;
 
     public User (int id, String name, String surname, String birthDate, String email, String phone, int nPurchases) {
         this.id = id;
@@ -31,34 +32,37 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.nPurchases = nPurchases;
+        //this.username = username;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
+    //public String getUsername(){ return this.username; }
+
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public int getnPurchases() {
-        return nPurchases;
+        return this.nPurchases;
     }
 
     public String getBirthDate() {
-        return birthDate;
+        return this.birthDate;
     }
 
     public String getPhone() {
-        return phone;
+        return this.phone;
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public String getSurname() {
-        return surname;
+        return this.surname;
     }
 
     @Override

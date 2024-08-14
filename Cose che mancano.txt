@@ -1,16 +1,11 @@
 home page)
 	nome e logo
 	lista di eventi, navbar interattiva
-	tre eventi più cliccati interattivi
 	barra dei cookies più la loro implementazione, con alternativa se vengono rifiutati
 	in caso di log di utente normale)
 		link alla pagina profilo in cui sono riportati di dati personali, inclusi il 		numero di acquisti e un bottone per la cancellazione del servizio di 			ticketing
-	in caso di log dell'amministratore:
-		link per visualizzare gli utenti e gestore eventi
 
 l'intera pagina di eventi
-
-pagina per gestire gli errori di autenticazione
 
 pagina di acquisto dei biglietti
 

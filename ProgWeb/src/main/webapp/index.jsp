@@ -93,7 +93,7 @@
   }
   else{
 %>
-    <a href="/WEB-INF/view/userManager.jsp">Visualizzazione Utenti</a>
+    <a href="/WEB-INF/view/usersManager.jsp">Visualizzazione Utenti</a>
     <a href="/WEB-INF/view/eventManager.jsp">Gestione Eventi</a>
     <div id="button_logout">
         <button type="submit" name="logout">Logout</button>
@@ -111,7 +111,7 @@
 </div>
 
 <br/>
-<jsp:include page="WEB-INF/view/mostSoldCard.jsp"/><br>
+<jsp:include page="WEB-INF/view/mostClickedCard.jsp"/><br>
 <jsp:include page="WEB-INF/view/eventsNavbar.jsp"/><br>
 <jsp:include page="WEB-INF/view/footer.jsp"/>
 

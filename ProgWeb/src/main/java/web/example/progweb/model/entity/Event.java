@@ -54,55 +54,55 @@ public class Event {
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public int getIdCategory() {
-        return idCategory;
+        return this.idCategory;
     }
 
     public int getnClick() {
-        return nClick;
+        return this.nClick;
     }
 
     public int getIdLocation() {
-        return idLocation;
+        return this.idLocation;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public String getStart() {
-        return start;
+        return this.start;
     }
 
     public String getEnd() {
-        return end;
+        return this.end;
     }
 
     public int getTotalSeats() {
-        return totalSeats;
+        return this.totalSeats;
     }
 
     public int getAvailableSeats() {
-        return availableSeats;
+        return this.availableSeats;
     }
 
     public int getTotalStanding() {
-        return totalStanding;
+        return this.totalStanding;
     }
 
     public int getAvailableStanding() {
-        return availableStanding;
+        return this.availableStanding;
     }
 
     public BigDecimal getSeatPrice() {
-        return seatPrice;
+        return this.seatPrice;
     }
 
     public BigDecimal getStandingPrice() {
-        return standingPrice;
+        return this.standingPrice;
     }
 
     @Override
