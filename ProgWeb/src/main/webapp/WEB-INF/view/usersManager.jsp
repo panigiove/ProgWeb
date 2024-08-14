@@ -69,7 +69,7 @@
             <td><%= user.getEmail() %></td>
             <td><%= user.getPhone() %></td>
             <td><%= user.getnPurchases() %></td>
-            <td></td>
+            <td><%= user.getUsername() %></td>
         </tr>
         <% } %>
         </tbody>

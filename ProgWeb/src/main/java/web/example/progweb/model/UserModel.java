@@ -109,7 +109,7 @@ public class UserModel extends AbstractModel {
         getUserPreparedStatement.setInt(1, id);
         ResultSet resultSet = getUserPreparedStatement.executeQuery();
         resultSet.next();
-        return new User(resultSet.getInt("id_utente"), resultSet.getString("nome"), resultSet.getString("cognome"), resultSet.getString("data_nascita"), resultSet.getString("email"), resultSet.getString("telefono"), resultSet.getInt("n_acquisti"));
+        return new User(resultSet.getInt("id_utente"), resultSet.getString("nome"), resultSet.getString("cognome"), resultSet.getString("data_nascita"), resultSet.getString("email"), resultSet.getString("telefono"), resultSet.getInt("n_acquisti"), resultSet.getString("username"));
     }
 
     public int getUserId(String username) throws SQLException {
@@ -131,7 +131,8 @@ public class UserModel extends AbstractModel {
                     resultSet.getString("data_nascita"),
                     resultSet.getString("email"),
                     resultSet.getString("telefono"),
-                    resultSet.getInt("n_acquisti")
+                    resultSet.getInt("n_acquisti"),
+                    resultSet.getString("username")
             );
             users.add(user);
         }
@@ -150,7 +151,8 @@ public class UserModel extends AbstractModel {
                     resultSet.getString("data_nascita"),
                     resultSet.getString("email"),
                     resultSet.getString("telefono"),
-                    resultSet.getInt("n_acquisti")
+                    resultSet.getInt("n_acquisti"),
+                    resultSet.getString("username")
             );
             users.add(user);
         }

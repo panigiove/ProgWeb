@@ -22,9 +22,9 @@ public class User {
     private final String email;
     private final String phone;
     private final int nPurchases;
-    //private final String username;
+    private final String username;
 
-    public User (int id, String name, String surname, String birthDate, String email, String phone, int nPurchases) {
+    public User (int id, String name, String surname, String birthDate, String email, String phone, int nPurchases, String username) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -32,14 +32,14 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.nPurchases = nPurchases;
-        //this.username = username;
+        this.username = username;
     }
 
     public String getName() {
         return this.name;
     }
 
-    //public String getUsername(){ return this.username; }
+    public String getUsername(){ return this.username; }
 
     public int getId() {
         return this.id;
