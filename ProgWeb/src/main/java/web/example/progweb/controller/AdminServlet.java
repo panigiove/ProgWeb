@@ -2,7 +2,9 @@ package web.example.progweb.controller;
 
 import web.example.progweb.controller.abstractClass.AbstractController;
 import web.example.progweb.model.EventModel;
+import web.example.progweb.model.UserModel;
 import web.example.progweb.model.entity.Event;
+import web.example.progweb.model.entity.User;
 
 import java.io.*;
 import java.sql.SQLException;
@@ -15,11 +17,13 @@ import java.util.List;
 @WebServlet(name = "adminSevlet", value = "/admin/*")
 public class AdminServlet extends AbstractController {
     private EventModel eventModel;
+    private UserModel userModel;
     @Override
     public void init() throws ServletException {
         super.init();
         try {
-            eventModel = new EventModel(connection);
+            this.eventModel = new EventModel(connection);
+            this.userModel = new UserModel(connection);
         } catch (SQLException e) {
             System.err.println("Errore durante la connessione al database" + e.getMessage());
             throw new ServletException(e);
@@ -30,6 +34,8 @@ public class AdminServlet extends AbstractController {
         try {
             String path = request.getPathInfo();
             if (path == null || "/".equals(path)) {
+//                request.getRequestDispatcher("eventManager.jsp").forward(request, response);
+            } else if ("/gestioneEventi".equals(path)) {
                 List<Event> events;
                 String sortByClicks = request.getParameter("sortByClicks");
                 if ("on".equals(sortByClicks)) {
@@ -39,10 +45,19 @@ public class AdminServlet extends AbstractController {
                     events = eventModel.getEvents();
                 }
                 request.setAttribute("events", events);
-
-                request.getRequestDispatcher("eventManager.jsp").forward(request, response);
-            } else if ("/gestioneEventi".equals(path)) {
-                request.getRequestDispatcher("WEB-INF/view/eventManager.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/view/eventManager.jsp").forward(request, response);
+            }
+            else if("/visualizzazioneUtenti".equals(path)){
+                List<User> users;
+                String sortByPurchases = request.getParameter("sortByPurchases");
+                if("on".equals(sortByPurchases)){
+                    users = userModel.getUsersOrderedByPurchase();
+                }
+                else{
+                    users = userModel.getUsers();
+                }
+                request.setAttribute("users", users);
+                request.getRequestDispatcher("/WEB-INF/view/usersManager.jsp").forward(request, response);
             }
         } catch (SQLException e) {
             sendErrorPage(request, response,"Errore durante la ricerca di eventi", HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error");

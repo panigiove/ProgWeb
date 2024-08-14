@@ -36,12 +36,21 @@ public class LoginServlet extends AbstractController {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(request.getSession()==null) {
+        // Recupera i parametri di login
+        HttpSession session = request.getSession(false);
+
+        if (session != null) { //autenticato da Filtro
+            Boolean isAdmin = (Boolean)session.getAttribute("isAdmin");
+            if (isAdmin != null && isAdmin) {
+                response.sendRedirect("/WEB-INF/view/admin.jsp");
+            }else {
+                response.sendRedirect("index.jsp");
+            }
+        }else{
             sendErrorMessage(request, response, "Credenziali non corrette, riprova", 401, "Unauthorized");
             response.sendRedirect("logIn.jsp");
         }
-        else{
-            response.sendRedirect("index.jsp");
-        }
+
+
     }
 }

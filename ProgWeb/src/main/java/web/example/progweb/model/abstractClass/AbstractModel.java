@@ -50,4 +50,6 @@ public abstract class AbstractModel {
         return DriverManager.getConnection(url, user, password); // Connessione al database
     }
 
+
+
 }

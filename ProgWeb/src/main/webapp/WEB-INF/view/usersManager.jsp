@@ -6,10 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="web.example.progweb.model.entity.Event" %>
 <%@ page import="java.util.List" %>
 <%@ page import="web.example.progweb.model.entity.User" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Amministratore</title>
@@ -29,14 +27,14 @@
 </head>
 <body>
 <div class="container">
-    <h1 class="mb-4">Event Management</h1>
+    <h1 class="mb-4">User Visualizer</h1>
 
     <!-- Form for sorting events -->
-    <form method="get" action="admin" class="mb-4">
+    <form method="get" action="visualizzazioneUtenti" class="mb-4">
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="sortByClicks" name="sortByClicks" <%= request.getParameter("sortByClicks") != null ? "checked" : "" %> />
-            <label class="form-check-label" for="sortByClicks">
-                Sort by Clicks
+            <input class="form-check-input" type="checkbox" id="sortByPurchases" name="sortByPurchases" <%= request.getParameter("sortByPurchases") != null ? "checked" : "" %> />
+            <label class="form-check-label" for="sortByPurchases">
+                Sort by Purchases
             </label>
         </div>
         <button type="submit" class="btn btn-primary mt-2">Apply</button>

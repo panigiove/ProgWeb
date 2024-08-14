@@ -20,7 +20,7 @@ public class LogoutServlet extends AbstractController {
     public void init() throws ServletException {
         super.init();
         try {
-            userModel = new UserModel(connection);
+            this.userModel = new UserModel(connection);
         } catch (SQLException e) {
             System.err.println("Errore durante la connessione al database: " + e.getMessage());
             throw new ServletException("Impossibile stabilire la connessione al database", e);

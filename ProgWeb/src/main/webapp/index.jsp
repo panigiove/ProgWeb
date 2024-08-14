@@ -91,15 +91,6 @@
     </div>
 <%
   }
-  else{
-%>
-    <a href="${pageContext.request.contextPath}/admin/gestioneUtenti">Visualizzazione Utenti</a>
-    <a href="${pageContext.request.contextPath}/admin/gestioneEventi">Gestione Eventi</a>
-    <div id="button_logout">
-        <button type="submit" name="logout">Logout</button>
-    </div>
-<%
-  }
 %>
 <div style="height: 150px">
     <div class="container text-center mt-5">
@@ -119,7 +110,7 @@
 
 <script>
   document.getElementById("button_logout").addEventListener("click", function (event) {
-      fetch("./LogoutServlet', { method: 'GET' }")
+      fetch("${pageContext.request.contextPath}/LogoutServlet', { method: 'GET' }")
           .then(response => {
               if (response.redirected) {
                   window.location.href = "/index.jsp";

@@ -23,7 +23,7 @@
     <h1 class="mb-4">Event Management</h1>
 
     <!-- Form for sorting events -->
-    <form method="get" action="admin" class="mb-4">
+    <form method="get" action="gestioneEventi" class="mb-4">
         <div class="form-check">
             <input class="form-check-input" type="checkbox" id="sortByClicks" name="sortByClicks" <%= request.getParameter("sortByClicks") != null ? "checked" : "" %> />
             <label class="form-check-label" for="sortByClicks">

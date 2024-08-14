@@ -17,8 +17,14 @@
     <label for="nomeEvento">Nome Evento:</label>
     <input type="text" id="nomeEvento" name="nomeEvento" required><br><br>
 
-    <label for="dataEvento">Data Evento:</label>
-    <input type="date" id="dataEvento" name="dataEvento" required><br><br>
+    <label for="dataInizioEvento">Data Inizio Evento:</label>
+    <input type="datetime-local" id="dataInizioEvento" name="dataInizioEvento" required><br><br>
+
+    <label for="dataFineEvento">Data Inizio Evento:</label>
+    <input type="datetime-local" id="dataFineEvento" name="dataFineEvento" required><br><br>
+
+    <!--<label for="dataFineEvento">Data Inizio Evento:</label>
+    <input type="datetime-local" id="dataFineEvento" name="dataFineEvento" required><br><br>-->
 
     <label for="categoriaEvento">Categoria:</label>
     <select id="categoriaEvento" name="categoriaEvento" required>
@@ -27,6 +33,8 @@
         <option value="Sport">Sport</option>
         <option value="Altro">Altro</option>
     </select><br><br>
+
+
 
     <label for="descrizioneEvento">Descrizione:</label>
     <textarea id="descrizioneEvento" name="descrizioneEvento" rows="4" cols="50" required></textarea><br><br>
