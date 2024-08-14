@@ -101,13 +101,15 @@
 <%
   }
 %>
-<div class="container text-center mt-5">
-  <div class="card mx-auto" style="width: 50%;">
-    <div class="card-body">
-      <h5 id="discountTitle" class="card-title"></h5>
-      <p id="discountDescription" class="card-text"> </p>
+<div style="height: 150px">
+    <div class="container text-center mt-5">
+        <div class="card mx-auto" style="width: 50%;">
+            <div class="card-body">
+                <h5 id="discountTitle" class="card-title"></h5>
+                <p id="discountDescription" class="card-text"> </p>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <br/>
@@ -127,7 +129,5 @@
 
   })
 </script>
-
-<div style="height: 150px"> </div>
 </body>
 </html>
