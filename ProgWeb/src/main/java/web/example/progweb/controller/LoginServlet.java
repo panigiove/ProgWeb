@@ -42,16 +42,13 @@ public class LoginServlet extends AbstractController {
         if (session.getAttribute("username") != null) { //autenticato da Filtro
             Boolean isAdmin = (Boolean)session.getAttribute("isAdmin");
             if (isAdmin != null && isAdmin) {
-                response.sendRedirect(request.getContextPath()+"/WEB-INF/view/admin.jsp");
+                request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
             }else {
-                String copate = request.getContextPath();
-                response.sendRedirect(request.getContextPath()+"/index.jsp");
+                request.getRequestDispatcher("/index.jsp").forward(request, response);
             }
         }else{
             sendErrorMessage(request, response, "Credenziali non corrette, riprova", 401, "Unauthorized");
-            response.sendRedirect(request.getContextPath()+"/logIn.jsp");
+            request.getRequestDispatcher("/login.jsp").forward(request, response); 
         }
-
-
     }
 }
