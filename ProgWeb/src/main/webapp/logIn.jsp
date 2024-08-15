@@ -82,14 +82,13 @@
 
         let formData = new FormData(this);
 
-        fetch('./LoginServlet', {
+        fetch('${pageContext.request.contextPath}/LoginServlet', {
             method: 'POST',
             body: new URLSearchParams(formData)
         })
             .then(response => response.text())
             .then(data => {
                 console.log('Risposta dal server:', data);
-                window.location.href="index.jsp"
             })
             .catch(error => {
                 console.error('Errore:', error);

@@ -12,10 +12,12 @@ public class AdminModel extends AbstractModel {
 
     public AdminModel () throws SQLException, ClassNotFoundException {
         super();
+        prepareStatement();
     }
 
     public AdminModel(Connection connection)  throws SQLException{
         super(connection);
+        prepareStatement();
     }
 
     private void prepareStatement() throws SQLException{

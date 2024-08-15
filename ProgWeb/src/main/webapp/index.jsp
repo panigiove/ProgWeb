@@ -109,7 +109,7 @@
 <jsp:include page="WEB-INF/view/footer.jsp"/>
 
 <script>
-  document.getElementById("button_logout").addEventListener("click", function (event) {
+  document.getElementById("button_logout").addEventListener("submit", function (event) {
       fetch("${pageContext.request.contextPath}/LogoutServlet', { method: 'GET' }")
           .then(response => {
               if (response.redirected) {
