@@ -16,13 +16,12 @@
         .custom-input-group .custom-btn {
             width: 40px;
             font-weight: bold;
-            border-radius: 50%;
-            background-color: blue;
-            color: azure;
+            background-color: olivedrab;
+            color: black;
         }
 
         .custom-input-group .custom-btn:hover {
-            background-color: rebeccapurple;
+            background-color: darkolivegreen;
         }
 
         .custom-input-group .custom-input {
@@ -51,10 +50,10 @@
 
 <body>
 <div class="centered-container">
-    <div class="container">
+    <div class="container text-center">
         <h1 class="mb-4 text-center">Compra biglietti</h1>
         <div class="card mb-4" style="max-width: 500px;">
-            <div class="card-body">
+            <div class="card-body text-center">
                 <h2 class="card-title text-center">Evento: <%= request.getParameter("evento") %></h2>
                 <div class="mb-3">
                     <label for="seat-count" class="form-label"><strong>Posti in poltrona</strong></label>

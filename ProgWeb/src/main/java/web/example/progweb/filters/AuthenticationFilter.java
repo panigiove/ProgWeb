@@ -15,60 +15,16 @@ import java.sql.SQLException;
 import java.sql.Connection;
 
 public class AuthenticationFilter implements Filter {
-    private UserModel userModel;
-    private AdminModel adminModel;
-    private Connection connection;
-    public void init(FilterConfig config) throws ServletException {
-        try{
-            connection = AdminModel.connectDB();
-            userModel = new UserModel(connection);
-            adminModel = new AdminModel(connection);
-        }  catch (SQLException | ClassNotFoundException e) {
-            if(e instanceof SQLException){
-                System.err.println("Errore durante la connessione al database: " + e.getMessage());
-                throw new ServletException("Impossibile stabilire la connessione al database", e);
-            }
-            else{
-                System.err.println("Errore, classe non trovata "+e.getMessage());
-                throw new ServletException("Impossibile trovare la classe", e);
-            }
-        }
-    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        try{
-            HttpServletRequest req = (HttpServletRequest) request;
-
-            String  username = req.getParameter("username");
-            String  password = req.getParameter("password");
-            HttpSession session = req.getSession(true);
-
-            if (username != null && password != null ) {
-                if (adminModel.checkAdmin(username, password)) {
-                    session.setAttribute("username", username);
-                    session.setAttribute("isAdmin", true);
-                }else if (userModel.checkUser(username, password)){
-                    session.setAttribute("username", username);
-                    session.setAttribute("isAdmin", false);
-                }else {
-                    session.removeAttribute("username");
-                    session.removeAttribute("isAdmin");
-                }
-            }
-
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
+        HttpSession session = req.getSession(false);
+        if (session == null || (session.getAttribute("username") == null &&  session.getAttribute("admin") == null)){ // se non presente una sessione si richiede di effetturare il login
+            res.sendRedirect(req.getContextPath() + "/LoginServlet");
+        } else {
             chain.doFilter(request, response);
-        } catch (SQLException e){
-            System.err.println("Errore durante la connessione al database: " + e.getMessage());
-            throw new ServletException("Impossibile stabilire la connessione al database", e);
-        }
-    }
-
-    public void destroy() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            System.err.println("Errore durante la chiusura al database: " + e.getMessage());
         }
     }
 }

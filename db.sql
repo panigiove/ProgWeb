@@ -81,7 +81,8 @@ INSERT INTO LOCALITA (localita) VALUES ('Arco');
 INSERT INTO CATEGORIA (categoria) VALUES ('concerti');
 INSERT INTO CATEGORIA (categoria) VALUES ('spettacoli teatrali');
 INSERT INTO CATEGORIA (categoria) VALUES ('eventi sportivi');
-INSERT INTO CATEGORIA (categoria) VALUES ('visite guidate a mostre e musei');
+INSERT INTO CATEGORIA (categoria) VALUES ('visite guidate a mostre');
+INSERT INTO CATEGORIA (categoria) VALUES ('visite guidate a musei')
 
 INSERT INTO EVENTI (
     id_categoria,

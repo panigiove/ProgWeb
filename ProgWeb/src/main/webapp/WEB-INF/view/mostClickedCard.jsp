@@ -1,12 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="web.example.progweb.model.entity.Event" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.Iterator" %>
-<%@ page import="java.util.Collection" %>
-<%@ page import="java.util.ListIterator" %>
 <%@ page import="web.example.progweb.model.EventModel" %>
-<%@ page import="web.example.progweb.model.abstractClass.AbstractModel" %>
-<%@ page import="java.sql.SQLException" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: Giovanni
   Date: 07/08/2024
