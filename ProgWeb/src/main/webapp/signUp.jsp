@@ -82,6 +82,16 @@
             <input type="text" id="telefono" name="telefono" required>
         </div>
         <div class="form-group">
+            <%
+                String errorMessage = (String) request.getAttribute("errorMessage");
+                if(errorMessage != null) {
+            %>
+            <div style="color:red">
+                <strong><%= errorMessage %></strong>
+            </div>
+            <%
+                }
+            %>
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
         </div>

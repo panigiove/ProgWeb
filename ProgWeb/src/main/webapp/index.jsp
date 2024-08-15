@@ -76,7 +76,7 @@
 <h1><%= "Hello World!" %>
 </h1>
 <%
-  String username = (String) session.getAttribute("user");
+  String username = (String) session.getAttribute("username");
   if(username==null){
 %>
     <a href="signUp.jsp">Sign Up</a>

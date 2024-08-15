@@ -39,13 +39,13 @@ public class LoginServlet extends AbstractController {
         // Recupera i parametri di login
         HttpSession session = request.getSession(false);
 
-        if (session != null) { //autenticato da Filtro
+        if (session.getAttribute("username") != null) { //autenticato da Filtro
             Boolean isAdmin = (Boolean)session.getAttribute("isAdmin");
             if (isAdmin != null && isAdmin) {
                 response.sendRedirect(request.getContextPath()+"/WEB-INF/view/admin.jsp");
             }else {
                 String copate = request.getContextPath();
-                response.sendRedirect(request.getContextPath()+"index.jsp");
+                response.sendRedirect(request.getContextPath()+"/index.jsp");
             }
         }else{
             sendErrorMessage(request, response, "Credenziali non corrette, riprova", 401, "Unauthorized");

@@ -42,7 +42,7 @@ public class AuthenticationFilter implements Filter {
 
             String  username = req.getParameter("username");
             String  password = req.getParameter("password");
-            HttpSession session = req.getSession(true);
+            HttpSession session = req.getSession();
 
             if (username != null && password != null ) {
                 if (adminModel.checkAdmin(username, password)) {

@@ -3,6 +3,7 @@ package web.example.progweb.controller;
 import web.example.progweb.controller.abstractClass.AbstractController;
 import web.example.progweb.model.UserModel;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +41,8 @@ public class SignupServlet extends AbstractController {
         try{
             if(userModel.checkUsername(username)){
                 sendErrorMessage(request, response, "Il nome utente esiste già!", 409 , "Conflict");
-                response.sendRedirect(request.getContextPath()+"signUp.jsp");
+                request.setAttribute("errorMessage", "Il nome utente esiste già");
+                response.sendRedirect(request.getContextPath()+"/signUp.jsp");
             }
             else{
                 String password = request.getParameter("password");
@@ -50,6 +52,7 @@ public class SignupServlet extends AbstractController {
                 String birthDate = request.getParameter("data_nascita");
                 String phone = request.getParameter("telefono");
 
+                request.removeAttribute("errorMessage");
                 userModel.insertUser(username, password, name, surname, birthDate, email, phone);
                 response.sendRedirect(request.getContextPath() + "WEB-INF/view/goodLogin.jsp");
             }
