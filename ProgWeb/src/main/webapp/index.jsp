@@ -92,21 +92,25 @@
 <%
   }
 %>
-<div style="height: 150px">
-    <div class="container text-center mt-5">
-        <div class="card mx-auto" style="width: 50%;">
-            <div class="card-body">
-                <h5 id="discountTitle" class="card-title"></h5>
-                <p id="discountDescription" class="card-text"> </p>
-            </div>
+
+<div class="container text-center mt-5">
+    <div class="card mx-auto" style="width: 50%;">
+        <div class="card-body">
+            <h5 id="discountTitle" class="card-title"></h5>
+            <p id="discountDescription" class="card-text"> </p>
         </div>
     </div>
 </div>
+
 
 <br/>
 <jsp:include page="WEB-INF/view/mostClickedCard.jsp"/><br>
 <jsp:include page="WEB-INF/view/eventsNavbar.jsp"/><br>
 <jsp:include page="WEB-INF/view/footer.jsp"/>
+
+<div style="height: 150px">
+
+</div>
 
 <script>
   document.getElementById("button_logout").addEventListener("submit", function (event) {

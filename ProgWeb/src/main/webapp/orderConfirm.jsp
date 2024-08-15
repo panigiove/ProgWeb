@@ -18,7 +18,7 @@
         function inizioCountdown () {
             var countdownElement = document.getElementById('conto_alla_rovescia');
 
-            var interval = setInverval( function() {
+            var interval = setInterval( function() {
                 countdownElement.textContent = conto_alla_rovescia;
                 conto_alla_rovescia --;
 
@@ -37,8 +37,7 @@
     <h2 class="text-center">Ordine Confermato!</h2>
     <p class="text-center" > Grazie di averci scelti</p>
     <p class="text-center" mb-2> Ti auguriamo un buon evento </p>
-    <p class="text-center" mb20> Ritornei nella pagina principale tra <</p>
+    <p class="text-center" mb20> Ritornei nella pagina principale tra <span id="conto_alla_rovescia">5</span> secondi.</p>
 </div>
-
 </body>
 </html>

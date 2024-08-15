@@ -25,7 +25,7 @@
         }
 
         .custom-input-group .custom-input {
-            max-width: 60px;
+            max-width: 40px;
             margin: 0 5px;
             text-align: center;
         }
@@ -71,6 +71,14 @@
                         <button class="btn btn-outline-secondary btn-sm custom-btn" type="button" onclick="updateQuantity('standing', 1)">+</button>
                     </div>
                 </div>
+                <div class="mb-3">
+                    <label for="codice-sconto" class="form-label"><strong>Codice Sconto</strong></label>
+                    <div class="input-group sconto-input-group">
+                        <input type="text" id="codice-sconto" class="form-control" placeholder="Inserisci il codice sconto:">
+                        <button type="button" class="btn btn-secondary" onclick="verificaSconto()">Applica</button>
+                    </div>
+                </div>
+
                 <p class="mb-5 text-center" style="font-size: 1.5rem;"><strong>Prezzo Totale:</strong> <span id="total-price">0</span> €</p>
             </div>
         </div>
@@ -79,6 +87,7 @@
             <input type="hidden" name="evento" value="<%= request.getParameter("evento") %>">
             <input type="hidden" name="numero_di_posti_poltrona" id="hidden-seat-count" value="<%= request.getParameter("numero_di_posti_poltrona") != null ? request.getParameter("numero_di_posti_poltrona") : 0 %>">
             <input type="hidden" name="numero_di_posti_piedi" id="hidden-standing-count" value="<%= request.getParameter("numero_di_posti_piedi") != null ? request.getParameter("numero_di_posti_piedi") : 0 %>">
+            <input type="hidden" name="sconto" id="discount" value="0">
             <input type="hidden" name="totale" id="hidden-total-price" value="0">
             <button type="submit" class="btn btn-success btn-block mt-3">Acquista</button>
         </form>
@@ -102,13 +111,55 @@
     function updateTotalPrice() {
         var seatCount = parseInt(document.getElementById('seat-count').value);
         var standingCount = parseInt(document.getElementById('standing-count').value);
-        var seatPrice = 10;
+        var seatPrice = 10;  //va tolto in futuro e messo in database
         var standingPrice = 5;
 
         var totalPrice = (seatCount * seatPrice) + (standingCount * standingPrice);
         document.getElementById('total-price').innerText = totalPrice;
         document.getElementById('hidden-total-price').value = totalPrice;
     }
+
+    function verificaSconto() {
+        var codiceSconto = document.getElementById('codice-sconto').value;
+
+        if (codiceSconto) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "verificaSconto.jsp", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var risposta = JSON.parse(xhr.responseText);
+                    if (risposta.success) {
+                        // Aggiorna il prezzo totale
+                        var sconto = risposta.sconto;
+                        applicaSconto(sconto);
+                    } else {
+                        alert("Codice sconto non valido");
+                    }
+                }
+            };
+
+            xhr.send("codice_sconto=" + encodeURIComponent(codiceSconto));
+        } else {
+            alert("Inserisci un codice sconto.");
+        }
+    }
+
+    function applicaSconto(sconto) {
+        var totalPriceElement = document.getElementById('total-price');
+        var totalPrice = parseFloat(totalPriceElement.innerText);
+        var newTotalPrice = totalPrice - sconto;
+
+        if (newTotalPrice < 0) {
+            newTotalPrice = 0;
+        }
+
+        totalPriceElement.innerText = newTotalPrice.toFixed(2);
+        document.getElementById('hidden-total-price').value = newTotalPrice.toFixed(2);
+        document.getElementById('discount').value = sconto;
+    }
+
 
     updateTotalPrice();
 </script>

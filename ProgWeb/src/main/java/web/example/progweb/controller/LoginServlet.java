@@ -49,6 +49,7 @@ public class LoginServlet extends AbstractController {
                     if (adminModel.checkAdmin(username, password)) { // verifico se è un admin
                         session.setAttribute("username", username);
                         session.setAttribute("isAdmin", true);
+
                     } else if (userModel.checkUser(username, password)) { // verifico se è un utente
                         session.setAttribute("username", username);
                         session.setAttribute("isAdmin", false);

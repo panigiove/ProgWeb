@@ -1,19 +1,14 @@
 package web.example.progweb.filters;
 
-import web.example.progweb.controller.abstractClass.AbstractController;
-import web.example.progweb.model.AdminModel;
-import web.example.progweb.model.UserModel;
-import web.example.progweb.model.abstractClass.AbstractModel;
 
 import javax.servlet.*;
-import javax.servlet.http.HttpFilter;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.sql.Connection;
 
+@WebFilter(filterName = "AuthenticationFilter", urlPatterns = {"/admin/*", "/LogoutServlet"})
 public class AuthenticationFilter implements Filter {
 
     @Override
@@ -21,10 +16,21 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession(false);
-        if (session == null || (session.getAttribute("username") == null &&  session.getAttribute("admin") == null)){ // se non presente una sessione si richiede di effetturare il login
+
+        if (session == null || (session.getAttribute("username") == null &&  session.getAttribute("admin") == null)) {
             res.sendRedirect(req.getContextPath() + "/LoginServlet");
         } else {
             chain.doFilter(request, response);
         }
+    }
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        // Inizializzazione del filtro, se necessaria
+    }
+
+    @Override
+    public void destroy() {
+        // Pulizia delle risorse, se necessaria
     }
 }
