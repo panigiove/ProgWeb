@@ -58,7 +58,7 @@
 
 <div class="container">
     <h2>Login</h2>
-    <form id="loginForm">
+    <form id="loginForm" action="${pageContext.request.contextPath}/login" method="post">
         <div class="form-group">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
@@ -70,31 +70,11 @@
         <div class="form-group">
             <button type="submit" value="Login">Login</button>
         </div>
-        <div class="signip-redirect">
-            Non hai un account? <a href="signUp.jsp">Iscriviti!</a>
+        <div class="signup-redirect">
+            Non hai un account? <a href="${pageContext.request.contextPath}/signup">Iscriviti!</a>
         </div>
     </form>
 </div>
-
-<script>
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        let formData = new FormData(this);
-
-        fetch('${pageContext.request.contextPath}/LoginServlet', {
-            method: 'POST',
-            body: new URLSearchParams(formData)
-        })
-            .then(response => response.text())
-            .then(data => {
-                console.log('Risposta dal server:', data);
-            })
-            .catch(error => {
-                console.error('Errore:', error);
-            });
-    });
-</script>
 
 </body>
 </html>

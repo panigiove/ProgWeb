@@ -1,6 +1,8 @@
 <%@ page import="web.example.progweb.model.entity.Event" %>
 <%@ page import="java.util.List" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Amministratore</title>
@@ -25,7 +27,7 @@
     <!-- Form for sorting events -->
     <form method="get" action="gestioneEventi" class="mb-4">
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="sortByClicks" name="sortByClicks" <%= request.getParameter("sortByClicks") != null ? "checked" : "" %> />
+            <input class="form-check-input" type="checkbox" id="sortByClicks" name="sortByClicks" <c:if test="${param.sortByClicks != null}">checked</c:if> />
             <label class="form-check-label" for="sortByClicks">
                 Sort by Clicks
             </label>
@@ -33,8 +35,7 @@
         <button type="submit" class="btn btn-primary mt-2">Apply</button>
     </form>
 
-    <!-- Button to add new event -->
-    <a href="newEvent.jsp" class="btn btn-success mb-4">New Event</a>
+    <a href="${pageContext.request.contextPath}/admin/newEvent">New Event</a>
 
     <!-- Display events in a table -->
     <table class="table table-striped">
@@ -55,33 +56,55 @@
         </tr>
         </thead>
         <tbody>
-        <%
-            List<Event> events = (List<Event>) request.getAttribute("events");
-            for (Event event : events) {
-        %>
-        <tr>
-            <td><%= event.getId() %></td>
-            <td><%= event.getName() %></td>
-            <td><%= event.getStart() %></td>
-            <td><%= event.getEnd() %></td>
-            <td><%= event.getTotalSeats() %></td>
-            <td><%= event.getAvailableSeats() %></td>
-            <td><%= event.getTotalStanding() %></td>
-            <td><%= event.getAvailableStanding() %></td>
-            <td><%= event.getSeatPrice() %></td>
-            <td><%= event.getStandingPrice() %></td>
-            <td><%= event.getnClick() %></td>
-            <td>
-                <!-- VA RIFATTO CON UNO SCRIPT -->
-                <form method="post" action="deleteEvent" class="d-inline">
-                    <input type="hidden" name="eventId" value="<%= event.getId() %>" />
-                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                </form>
-            </td>
-        </tr>
-        <% } %>
+        <c:forEach var="event" items="${events}">
+            <tr id="event-row-${event.id}">
+                <td>${event.id}</td>
+                <td>${event.name}</td>
+                <td>${event.start}</td>
+                <td>${event.end}</td>
+                <td>${event.totalSeats}</td>
+                <td>${event.availableSeats}</td>
+                <td>${event.totalStanding}</td>
+                <td>${event.availableStanding}</td>
+                <td>${event.seatPrice}</td>
+                <td>${event.standingPrice}</td>
+                <td>${event.nClick}</td>
+                <td>
+                    <!-- Button for deleting events -->
+                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteEvent(${event.id})">Delete</button>
+                </td>
+            </tr>
+        </c:forEach>
         </tbody>
     </table>
 </div>
+
+<script>
+    function deleteEvent(eventId) {
+        if (confirm('Are you sure you want to delete this event?')) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'deleteEvent', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.success === 'success') {
+                            // Remove the row from the table
+                            const row = document.getElementById('event-row-' + eventId);
+                            row.parentNode.removeChild(row);
+                        } else {
+                            alert('Failed to delete event.');
+                        }
+                    } else {
+                        alert('Error: ' + xhr.status);
+                    }
+                }
+            };
+            xhr.send('eventId=' + encodeURIComponent(eventId));
+        }
+    }
+</script>
+
 </body>
 </html>

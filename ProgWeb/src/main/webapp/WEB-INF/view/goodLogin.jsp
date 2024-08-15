@@ -14,6 +14,6 @@
 </head>
 <body>
 <h1>Sign Up avvenuto con successo!</h1>
-<p>Puoi tornare alla <a href="../../logIn.jsp">Pagina di Login</a></p>
+<p>Puoi tornare alla <a href="${pageContext.request.contextPath}/login">Pagina di Login</a></p>
 </body>
 </html>

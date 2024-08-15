@@ -16,9 +16,8 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession(false);
-
-        if (session == null || (session.getAttribute("username") == null &&  session.getAttribute("admin") == null)) {
-            res.sendRedirect(req.getContextPath() + "/LoginServlet");
+        if (session == null || (session.getAttribute("username") == null  &&  session.getAttribute("admin") == null)) {
+            res.sendRedirect(req.getContextPath() + "/login");
         } else {
             chain.doFilter(request, response);
         }

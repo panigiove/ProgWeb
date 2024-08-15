@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet(name = "LogoutServlet", value = "/LogoutServlet")
+@WebServlet(name = "LogoutServlet", value = "/logout")
 public class LogoutServlet extends AbstractController {
     private UserModel userModel;
 
@@ -34,6 +34,6 @@ public class LogoutServlet extends AbstractController {
             session.invalidate();
         }
 
-        resp.sendRedirect(req.getContextPath() + "/index.jsp");
+        req.getRequestDispatcher("/index.jsp").forward(req, resp);
     }
 }

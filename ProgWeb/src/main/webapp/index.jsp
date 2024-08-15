@@ -79,15 +79,17 @@
   String username = (String) session.getAttribute("username");
   if(username==null){
 %>
-    <a href="signUp.jsp">Sign Up</a>
-    <a href="logIn.jsp">Login</a>
+
+    <a href="${pageContext.request.contextPath}/signup">Sign up</a>
+    <a href="${pageContext.request.contextPath}/login">Login</a>
+
 <%
   }
-  else if(!username.equals("admin")){
+  else {
 %>
     <a href="WEB-INF/view/personal_page.jsp">Area Personale</a>
     <div id="button_logout">
-      <button type="submit" name="logout">Logout</button>
+      <a href="${pageContext.request.contextPath}/logout">Logout</a>
     </div>
 <%
   }
@@ -111,18 +113,5 @@
 <div style="height: 150px">
 
 </div>
-
-<script>
-  document.getElementById("button_logout").addEventListener("submit", function (event) {
-      fetch("${pageContext.request.contextPath}/LogoutServlet', { method: 'GET' }")
-          .then(response => {
-              if (response.redirected) {
-                  window.location.href = "/index.jsp";
-              }
-          })
-          .catch(error => console.error('Errore durante il logout:', error));
-
-  })
-</script>
 </body>
 </html>

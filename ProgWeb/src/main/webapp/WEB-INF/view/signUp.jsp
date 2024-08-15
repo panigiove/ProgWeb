@@ -58,9 +58,69 @@
 </head>
 <body>
 
+<%--
+  Created by IntelliJ IDEA.
+  User: Giovanni
+  Date: 08/08/2024
+  Time: 10:18
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-group input[type="submit"],
+        .form-group input[type="reset"] {
+            width: auto;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 10px 20px;
+        }
+        .form-group input[type="reset"] {
+            background-color: #dc3545;
+        }
+        .form-group input[type="submit"]:hover,
+        .form-group input[type="reset"]:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
 <div class="container">
     <h2>Sign Up</h2>
-    <form id="signupForm">
+    <form id="signupForm" action="${pageContext.request.contextPath}/signup" method="post">
         <div class="form-group">
             <label for="nome">Nome:</label>
             <input type="text" id="nome" name="nome" required>
@@ -84,7 +144,7 @@
         <div class="form-group">
             <%
                 String errorMessage = (String) request.getAttribute("errorMessage");
-                if(errorMessage != null) {
+                if (errorMessage != null) {
             %>
             <div style="color:red">
                 <strong><%= errorMessage %></strong>
@@ -111,49 +171,6 @@
 </div>
 
 <script>
-    // JavaScript per inviare i dati tramite fetch
-    document.getElementById('signupForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        let date=document.getElementById('data_nascita').value;
-        let phone=document.getElementById('telefono').value;
-        let password = document.getElementById('password').value;
-        let confirmPassword = document.getElementById('confirm_password').value;
-
-        validateDate(date);
-
-        const phoneFormat = /^[0-9]{10}$/;
-        if(!phoneFormat.test(phone)){
-            alert("Il formato del numero di telefono non è valido, inserire un numero di telefono di 10 cifre");
-            return;
-        }
-
-        const passwordFormat = /^(?=.*\d)(?=.*[a-z])(?=.*[\W_]).{8,}$/;
-        if(!passwordFormat.test(password)){
-            alert("Il formato della password non è valido");
-            return;
-        }
-
-        if (password !== confirmPassword) {
-            alert("Le password non coincidono. Riprova.");
-            return;
-        }
-
-        let formData = new FormData(this);
-
-        fetch('./SignupServlet', {
-            method: 'POST',
-            body: new URLSearchParams(formData)
-        })
-            .then(response => response.text())
-            .then(data => {
-                console.log('Risposta dal server:', data);
-            })
-            .catch(error => {
-                console.error('Errore:', error);
-            });
-    });
-
     function validateDate(dateOfBirth){
         const dob = /^(\d{2})\/(\d{2})\/(\d{4})$/;
         const match = dateOfBirth.match(dob);

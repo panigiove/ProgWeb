@@ -61,7 +61,7 @@ public abstract class AbstractController extends HttpServlet {
         request.setAttribute("message", message);
         request.setAttribute("errorCode", errorCode);
         request.setAttribute("errorString", errorString);
-        request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/view/error.jsp").forward(request, response);
     }
 
     protected void sendSuccessMessage(HttpServletRequest request, HttpServletResponse response, String message) throws IOException {
@@ -72,6 +72,14 @@ public abstract class AbstractController extends HttpServlet {
         }
     }
 
+    protected void sendJsonMessage(HttpServletResponse response, String json) throws IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
 
-
+        // Write JSON response to the output stream
+        try (PrintWriter out = response.getWriter()) {
+            out.print(json);
+            out.flush();
+        }
+    }
 }

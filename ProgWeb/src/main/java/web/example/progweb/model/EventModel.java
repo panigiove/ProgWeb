@@ -296,8 +296,6 @@ public class EventModel extends AbstractModel {
         return false;
     }
 
-
-
     public List<Category> getAllCategory() throws SQLException {
         String query = "SELECT * FROM CATEGORIA";
         ResultSet resultSet = unsafeExecuteQuery(query);
@@ -305,7 +303,7 @@ public class EventModel extends AbstractModel {
         while (resultSet.next()) {
             Category category = new Category(
                     resultSet.getInt("id_categoria"),
-                    resultSet.getString("nome")
+                    resultSet.getString("categoria")
             );
             categories.add(category);
         }
@@ -319,7 +317,7 @@ public class EventModel extends AbstractModel {
         while (resultSet.next()) {
             Location location = new Location(
                     resultSet.getInt("id_localita"),
-                    resultSet.getString("nome")
+                    resultSet.getString("localita")
             );
             locations.add(location);
         }

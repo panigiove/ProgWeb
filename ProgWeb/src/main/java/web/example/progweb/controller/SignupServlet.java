@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet(name = "SignupServlet", value="/SignupServlet")
+@WebServlet(name = "SignupServlet", value="/signup")
 public class SignupServlet extends AbstractController {
     private UserModel userModel;
 
@@ -31,9 +31,9 @@ public class SignupServlet extends AbstractController {
         create_response(request, response);
     }
 
-    /*public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        create_response(request, response);
-    }*/
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/view/signUp.jsp").forward(request,response);
+    }
 
     public void create_response(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
@@ -42,7 +42,7 @@ public class SignupServlet extends AbstractController {
             if(userModel.checkUsername(username)){
                 sendErrorMessage(request, response, "Il nome utente esiste già!", 409 , "Conflict");
                 request.setAttribute("errorMessage", "Il nome utente esiste già");
-                response.sendRedirect(request.getContextPath()+"/signUp.jsp");
+                request.getRequestDispatcher("/WEB-INF/view/signUp.jsp").forward(request, response);
             }
             else{
                 String password = request.getParameter("password");
@@ -54,7 +54,7 @@ public class SignupServlet extends AbstractController {
 
                 request.removeAttribute("errorMessage");
                 userModel.insertUser(username, password, name, surname, birthDate, email, phone);
-                response.sendRedirect(request.getContextPath() + "WEB-INF/view/goodLogin.jsp");
+                request.getRequestDispatcher("/WEB-INF/view/goodLogin.jsp").forward(request, response);
             }
         } catch (SQLException e) {
             System.err.println("Non è stato possibile accedere al database!"+ e.getMessage());

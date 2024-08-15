@@ -23,7 +23,7 @@ CREATE TABLE EVENTI (
     prezzi_in_piedi DECIMAL(10, 2) NOT NULL,
     n_click INT DEFAULT 0,
     FOREIGN KEY (id_localita) REFERENCES LOCALITA(id_localita),
-    FOREIGN KEY (id_categoria) REFERENCES CATEGORIA(id_categoria)
+    FOREIGN KEY (id_categoria) REFERENCES CATEGORIA(id_categoria) 
 );
 
 CREATE TABLE SCONTI_EVENTO (
@@ -31,7 +31,7 @@ CREATE TABLE SCONTI_EVENTO (
     id_evento INT,
     data_scadenza DATE NOT NULL,
     sconto DECIMAL(5, 2) NOT NULL,
-    FOREIGN KEY (id_evento) REFERENCES EVENTI(id_evento)
+    FOREIGN KEY (id_evento) REFERENCES EVENTI(id_evento) ON DELETE CASCADE
 );
 
 CREATE TABLE STATISTICHE_CATEGORIA (
@@ -45,7 +45,7 @@ CREATE TABLE UTENTI (
     nome VARCHAR(255) NOT NULL,
     cognome VARCHAR(255) NOT NULL,
     data_nascita DATE NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
+    email VARCHAR(255) NOT NULL,
     telefono CHAR(10) NOT NULL,
     n_acquisti INT DEFAULT 0,
     username VARCHAR(255) UNIQUE NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE PRENOTAZIONE_BIGLIETTI (
     data_acquisto TIMESTAMP NOT NULL,
     prezzo DECIMAL (10, 2) NOT NULL,
     FOREIGN KEY (id_evento) REFERENCES EVENTI(id_evento) ON DELETE CASCADE,
-    FOREIGN KEY (id_utente) REFERENCES UTENTI(id_utente) ON DELETE CASCADE,
+    FOREIGN KEY (id_utente) REFERENCES UTENTI(id_utente),
     FOREIGN KEY (id_sconto) REFERENCES SCONTI_EVENTO(id_sconto) ON DELETE CASCADE
 );
 
@@ -82,7 +82,7 @@ INSERT INTO CATEGORIA (categoria) VALUES ('concerti');
 INSERT INTO CATEGORIA (categoria) VALUES ('spettacoli teatrali');
 INSERT INTO CATEGORIA (categoria) VALUES ('eventi sportivi');
 INSERT INTO CATEGORIA (categoria) VALUES ('visite guidate a mostre');
-INSERT INTO CATEGORIA (categoria) VALUES ('visite guidate a musei')
+INSERT INTO CATEGORIA (categoria) VALUES ('visite guidate a musei');
 
 INSERT INTO EVENTI (
     id_categoria,

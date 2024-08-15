@@ -1,6 +1,7 @@
 package web.example.progweb.model.abstractClass;
 
-import javax.ws.rs.container.ConnectionCallback;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.sql.*;
 
 public abstract class AbstractModel {
@@ -35,12 +36,13 @@ public abstract class AbstractModel {
         return dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
     }
 
-//  expect input in the format dd/mm/yyyy hh:mm:ss and return in the format yyyy-mm-dd hh:mm:ss
-    public String formatDateTime(String date) {
-        String[] dateParts = date.split(" ");
-        String[] dateParts2 = dateParts[0].split("/");
-        return dateParts2[2] + "-" + dateParts2[1] + "-" + dateParts2[0] + " " + dateParts[1];
-    }
+//  expect input in the format dd/mm/yyyyThh:mm:ss and return in the format yyyy-mm-dd hh:mm:ss
+public String formatDateTime(String date) {
+    DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+    DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    LocalDateTime dateTime = LocalDateTime.parse(date, inputFormatter);
+    return dateTime.format(outputFormatter);
+}
 
     public static Connection connectDB() throws SQLException, ClassNotFoundException {
         String url = "jdbc:derby://localhost:1527/ProgWebDB";

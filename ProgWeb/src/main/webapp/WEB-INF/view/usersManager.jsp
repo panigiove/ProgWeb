@@ -30,7 +30,7 @@
     <h1 class="mb-4">User Visualizer</h1>
 
     <!-- Form for sorting events -->
-    <form method="get" action="visualizzazioneUtenti" class="mb-4">
+    <form method="get" action="gestioneUtenti" class="mb-4">
         <div class="form-check">
             <input class="form-check-input" type="checkbox" id="sortByPurchases" name="sortByPurchases" <%= request.getParameter("sortByPurchases") != null ? "checked" : "" %> />
             <label class="form-check-label" for="sortByPurchases">

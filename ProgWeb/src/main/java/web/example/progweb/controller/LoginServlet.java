@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet(name="LoginServlet", value="/LoginServlet")
+@WebServlet(name="LoginServlet", value="/login")
 public class LoginServlet extends AbstractController {
 
     private UserModel userModel;
@@ -33,7 +33,7 @@ public class LoginServlet extends AbstractController {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/logIn.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/view/logIn.jsp").forward(request, response);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class LoginServlet extends AbstractController {
         // recupero sessione e parametri
         HttpSession session = request.getSession(false); // se non esiste ritorna a null
         try {
-            if (session == null) { // non autenticato precedentemente
+            if (session == null || (session.getAttribute("username") == null &&  session.getAttribute("admin") == null) ) { // non autenticato precedentemente
                 String username = request.getParameter("username");
                 String password = request.getParameter("password");
                 if (username != null && password != null) {
@@ -49,14 +49,16 @@ public class LoginServlet extends AbstractController {
                     if (adminModel.checkAdmin(username, password)) { // verifico se è un admin
                         session.setAttribute("username", username);
                         session.setAttribute("isAdmin", true);
-
+                        response.sendRedirect(request.getContextPath() + "/admin");
                     } else if (userModel.checkUser(username, password)) { // verifico se è un utente
                         session.setAttribute("username", username);
                         session.setAttribute("isAdmin", false);
+                        response.sendRedirect(request.getContextPath() + "/");
                     } else { // credenziali sbagliate
                         session.invalidate();
                         sendErrorMessage(request, response, "Credenziali non corrette, riprova", 401, "Unauthorized");
-                        request.getRequestDispatcher("/logIn.jsp").forward(request, response);
+                        response.sendRedirect(request.getContextPath() + "/login");
+//                        request.getRequestDispatcher("/logIn.jsp").forward(request, response);
                     }
                 } else { // formato request errato
                     sendErrorMessage(request, response, "username e password non presenti", 400, "Bad request");

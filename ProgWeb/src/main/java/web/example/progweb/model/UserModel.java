@@ -140,7 +140,7 @@ public class UserModel extends AbstractModel {
     }
 
     public List<User> getUsersOrderedByPurchase () throws SQLException {
-        String query = "SELECT id_utente, nome, cognome, data_nascita, email, telefono, n_acquisti FROM UTENTI ORDER BY n_acquisti DESC";
+        String query = "SELECT * FROM UTENTI ORDER BY n_acquisti DESC";
         ResultSet resultSet = unsafeExecuteQuery(query);
         List<User> users = new ArrayList<>();
         while (resultSet.next()) {
