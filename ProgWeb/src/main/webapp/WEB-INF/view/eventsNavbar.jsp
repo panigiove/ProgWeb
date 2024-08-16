@@ -1,12 +1,8 @@
 <%@ page import="web.example.progweb.model.EventModel" %>
 <%@ page import="web.example.progweb.model.entity.Event" %>
-<%@ page import="java.util.List" %><%--
-  Created by IntelliJ IDEA.
-  User: Giovanni
-  Date: 07/08/2024
-  Time: 11:48
-  To change this template use File | Settings | File Templates.
---%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.util.List" %>
+
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">I Nostri Eventi</a>
@@ -15,24 +11,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" id="Concerti" onclick="loadCards(1)">Concerti</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" id="Spettacoli Teatrali" href="#">Spettacoli Teatrali</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" id="Eventi Sportivi" href="#">Eventi Sportivi</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Visite Guidate
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" id="Mostre" href="#">Mostre</a></li>
-                        <li><a class="dropdown-item" id="Musei" href="#">Musei</a></li>
-                    </ul>
-                </li>
+                <c:forEach var="category" items="${categories}">
+                    <li class="nav-item">
+                        <form method="post" action="${pageContext.request.contextPath}/index/updateCards">
+                            <input type="submit" value="${category.name}" class="nav-link active"/>
+                            <input type="hidden" name="categoryId" value="${category.id}"/>
+                        </form>
+                    </li>
+                </c:forEach>
             </ul>
         </div>
     </div>
@@ -61,26 +47,3 @@
         %>
     </div>
 </div>
-
-<script>
-    function loadCards(categoryId){
-        let xhttp = new XMLHttpRequest();
-        xhttp.open('POST', 'updateCards', true);
-        xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhttp.onreadystatechange = function() {
-            if (xhttp.readyState === XMLHttpRequest.DONE) {
-                if (xhttp.status === 200) {
-                    const response = JSON.parse(xhttp.responseText);
-                    if (response.success === 'success') {
-                        console.log("success");
-                    } else {
-                        alert('Failed to delete event.');
-                    }
-                } else {
-                    alert('Error: ' + xhttp.status);
-                }
-            }
-        }
-        xhttp.send('categoryId=' + encodeURIComponent(categoryId));
-    }
-</script>

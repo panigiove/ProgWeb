@@ -27,7 +27,7 @@
                 <div class="card-body">
                     <h5 class="card-title"> informazioni generali </h5>
                     <p class="card-text">
-                        <strong> Data: </strong> <%=request.getParameter("data_evento") != null ? request.getParameter("data-evento") : "Data non disponibile"%>
+                        <strong> Data: </strong> <%=request.getParameter("data_evento") != null ? request.getParameter("data_evento") : "Data non disponibile"%>
                         <strong> Orario di inizio: </strong> <%=request.getParameter("ora_iniziale") != null ? request.getParameter("ora_iniziale") : "Ora di inizio non disponibile"%>
                         <strong> Luogo: </strong> <%=request.getParameter("luogo_evento") != null ? request.getParameter("luogo_evento") : "Posizione non disponibile"%>
                     </p>
@@ -49,7 +49,7 @@
         </div>
     </div>
 
-    <div class="rex mt-4">
+    <div class="rox mt-4">
         <div class="col-md-12">
             <div class="card-body">
                 <h5 class="card-title"> Biglietti</h5>
@@ -61,10 +61,10 @@
         </div>
     </div>
 
-    <form action="buyTicket" method="POST">
+    <form action="buyTicket.jsp" method="POST">
         <input type="hidden" name="evento" value="<%= request.getParameter("evento") %>">
         <input type="hidden" name="numero_di_posti_poltrona" id="hidden-seat-count" value="<%= request.getParameter("prezzo_poltrona") %>">
-        <input type="hidden" name="numero_di_posti_piedi" id="hidden-standing-count" value="<%= request.getParameter("prezzo_in_piedi) %>">
+        <input type="hidden" name="numero_di_posti_piedi" id="hidden-standing-count" value="<%= request.getParameter("prezzo_in_piedi") %>">
         <button type="submit" class="btn btn-success btn-block mt-3">Acquista</button>
     </form>
 </div>

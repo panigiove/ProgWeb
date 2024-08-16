@@ -69,7 +69,6 @@ public class AdminServlet extends AbstractController {
                 request.getRequestDispatcher("/WEB-INF/view/newEvent.jsp").forward(request, response);
             }
             else {
-                System.out.println("addio");
                 sendErrorPage(request, response, "page not founded", HttpServletResponse.SC_NOT_FOUND, "Not Found");
             }
         } catch (SQLException e) {
@@ -83,11 +82,11 @@ public class AdminServlet extends AbstractController {
 
         if ("/inserisciEvento".equals(path)) {
             String nomeEvento = request.getParameter("nomeEvento");
+            String descrizioneEvento = request.getParameter("descrizioneEvento");
             String dataInizioEvento = request.getParameter("dataInizioEvento");
             String dataFineEvento = request.getParameter("dataFineEvento");
             int categoriaEvento = Integer.parseInt(request.getParameter("categoriaEvento"));
             int localitaEvento = Integer.parseInt(request.getParameter("localitaEvento"));
-            String descrizioneEvento = request.getParameter("descrizioneEvento");
             BigDecimal prezzoPostoSeduto = new BigDecimal(request.getParameter("prezzoPostoSeduto"));
             BigDecimal prezzoPostoInPiedi = new BigDecimal(request.getParameter("prezzoPostoInPiedi"));
             int totalePostiSeduti = Integer.parseInt(request.getParameter("totalePostiSeduti"));
@@ -98,6 +97,7 @@ public class AdminServlet extends AbstractController {
                         categoriaEvento,
                         localitaEvento,
                         nomeEvento,
+                        descrizioneEvento,
                         dataInizioEvento,
                         dataFineEvento,
                         totalePostiSeduti,

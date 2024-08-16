@@ -27,6 +27,7 @@ public class Event {
     private final int idCategory;
     private final int idLocation;
     private final String name;
+    private final String descrizione;
     private final String start;
     private final String end;
     private final int totalSeats;
@@ -37,11 +38,12 @@ public class Event {
     private final BigDecimal standingPrice;
     private final int nClick;
 
-    public Event (int id, int idCategory, int idLocation, String name, String start, String end, int totalSeats, int availableSeats, int totalStanding, int availableStanding, BigDecimal seatPrice, BigDecimal standingPrice, int nClick) {
+    public Event (int id, int idCategory, int idLocation, String name, String descrizione,String start, String end, int totalSeats, int availableSeats, int totalStanding, int availableStanding, BigDecimal seatPrice, BigDecimal standingPrice, int nClick) {
         this.id = id;
         this.idCategory = idCategory;
         this.idLocation = idLocation;
         this.name = name;
+        this.descrizione = descrizione;
         this.start = start;
         this.end = end;
         this.totalSeats = totalSeats;

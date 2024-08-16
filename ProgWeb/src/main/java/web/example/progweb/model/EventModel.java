@@ -44,9 +44,9 @@ public class EventModel extends AbstractModel {
     private PreparedStatement checkIdPreparedStatement;
     private PreparedStatement deleteCategoryPreparedStatement;
     private PreparedStatement deleteLocationPreparedStatement;
-
     private PreparedStatement updateAvailabilityPreparedStatement;
     private PreparedStatement checkAvailabilityPreparedStatement;
+    private PreparedStatement checkIdCategoryPreparedStatement;
 
     public EventModel() throws SQLException, ClassNotFoundException {
         super();
@@ -61,9 +61,10 @@ public class EventModel extends AbstractModel {
     private void prepareStatement ()  throws SQLException {
         getEventByCategoryPreparedStatement = connection.prepareStatement("SELECT * FROM EVENTI WHERE id_categoria = ?");
         getEventByIdPreparedStatement = connection.prepareStatement("SELECT * FROM EVENTI WHERE id_evento = ?");
-        insertEventPreparedStatement = connection.prepareStatement("INSERT INTO EVENTI (id_categoria, id_localita, nome, inizio, fine, totale_poltrona, disponibilita_poltrona, totale_in_piedi, disponibilita_in_piedi, prezzi_poltrona, prezzi_in_piedi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        insertEventPreparedStatement = connection.prepareStatement("INSERT INTO EVENTI (id_categoria, id_localita, nome, descrizione, inizio, fine, totale_poltrona, disponibilita_poltrona, totale_in_piedi, disponibilita_in_piedi, prezzi_poltrona, prezzi_in_piedi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
         deleteEventPreparedStatement = connection.prepareStatement("DELETE FROM EVENTI WHERE id_evento = ?");
         checkIdPreparedStatement = connection.prepareStatement("SELECT * FROM EVENTI WHERE id_evento = ?");
+        checkIdCategoryPreparedStatement = connection.prepareStatement("SELECT * FROM CATEGORIA WHERE id_categoria = ?");
         deleteCategoryPreparedStatement = connection.prepareStatement("DELETE FROM CATEGORIA WHERE id_categoria = ?");
         deleteLocationPreparedStatement = connection.prepareStatement("DELETE FROM LOCALITA WHERE id_localita = ?");
         incrementClickPreparedStatement = connection.prepareStatement("UPDATE EVENTI SET n_click = n_click + 1 WHERE id_evento = ?");
@@ -72,18 +73,19 @@ public class EventModel extends AbstractModel {
         updateAvailabilityPreparedStatement = connection.prepareStatement("UPDATE EVENTI SET disponibilita_poltrona = disponibilita_poltrona + ?, disponibilita_in_piedi = disponibilita_in_piedi + ? WHERE id_evento = ?");
     }
 
-    public Event insertEvent(int idCategoria, int idLocalita, String name, String start, String end, int totalSeats, int availableSeats, int totalStanding, int availableStanding, BigDecimal seatPrice, BigDecimal standingPrice) throws SQLException {
+    public Event insertEvent(int idCategoria, int idLocalita, String name, String descrizione, String start, String end, int totalSeats, int availableSeats, int totalStanding, int availableStanding, BigDecimal seatPrice, BigDecimal standingPrice) throws SQLException {
         insertEventPreparedStatement.setInt(1, idCategoria);
         insertEventPreparedStatement.setInt(2, idLocalita);
         insertEventPreparedStatement.setString(3, name);
-        insertEventPreparedStatement.setString(4, formatDateTime(start));
-        insertEventPreparedStatement.setString(5, formatDateTime(end));
-        insertEventPreparedStatement.setInt(6, totalSeats);
-        insertEventPreparedStatement.setInt(7, availableSeats);
-        insertEventPreparedStatement.setInt(8, totalStanding);
-        insertEventPreparedStatement.setInt(9, availableStanding);
-        insertEventPreparedStatement.setBigDecimal(10, seatPrice);
-        insertEventPreparedStatement.setBigDecimal(11, standingPrice);
+        insertEventPreparedStatement.setString(4, descrizione);
+        insertEventPreparedStatement.setString(5, formatDateTime(start));
+        insertEventPreparedStatement.setString(6, formatDateTime(end));
+        insertEventPreparedStatement.setInt(7, totalSeats);
+        insertEventPreparedStatement.setInt(8, availableSeats);
+        insertEventPreparedStatement.setInt(9, totalStanding);
+        insertEventPreparedStatement.setInt(10, availableStanding);
+        insertEventPreparedStatement.setBigDecimal(11, seatPrice);
+        insertEventPreparedStatement.setBigDecimal(12, standingPrice);
         int affectedRows = insertEventPreparedStatement.executeUpdate();
         if (affectedRows > 0){
             try (ResultSet generatedKeys = insertEventPreparedStatement.getGeneratedKeys()) {
@@ -112,8 +114,8 @@ public class EventModel extends AbstractModel {
     }
 
     public boolean checkCategoryId(int id) throws SQLException{ // da rivedere se funziona
-        checkIdPreparedStatement.setInt(1, id);
-        ResultSet resultSet = checkIdPreparedStatement.executeQuery();
+        checkIdCategoryPreparedStatement.setInt(1, id);
+        ResultSet resultSet = checkIdCategoryPreparedStatement.executeQuery();
         return resultSet.next();
     }
 
@@ -137,6 +139,7 @@ public class EventModel extends AbstractModel {
                     resultSet.getInt("id_categoria"),
                     resultSet.getInt("id_localita"),
                     resultSet.getString("nome"),
+                    resultSet.getString("descrizione"),
                     resultSet.getString("inizio"),
                     resultSet.getString("fine"),
                     resultSet.getInt("totale_poltrona"),
@@ -152,15 +155,6 @@ public class EventModel extends AbstractModel {
         return events;
     }
 
-//    public BigDecimal getPrice (int id, boolean type) throws SQLException {
-//        String query = "SELECT " + (type ? "prezzi_in_piedi" : "prezzi_poltrona") + " FROM EVENTI WHERE id_evento = ?";
-//        PreparedStatement preparedStatement = connection.prepareStatement(query);
-//        preparedStatement.setInt(1, id);
-//        ResultSet resultSet = preparedStatement.executeQuery();
-//        resultSet.next();
-//        return resultSet.getBigDecimal(1);
-//    }
-
     public List<Event> getEventByCategory(int idCategoria) throws SQLException {
         getEventByCategoryPreparedStatement.setInt(1, idCategoria);
         ResultSet resultSet = getEventByCategoryPreparedStatement.executeQuery();
@@ -171,6 +165,7 @@ public class EventModel extends AbstractModel {
                     resultSet.getInt("id_categoria"),
                     resultSet.getInt("id_localita"),
                     resultSet.getString("nome"),
+                    resultSet.getString("descrizione"),
                     resultSet.getString("inizio"),
                     resultSet.getString("fine"),
                     resultSet.getInt("totale_poltrona"),
@@ -195,6 +190,7 @@ public class EventModel extends AbstractModel {
                     resultSet.getInt("id_categoria"),
                     resultSet.getInt("id_localita"),
                     resultSet.getString("nome"),
+                    resultSet.getString("descrizione"),
                     resultSet.getString("inizio"),
                     resultSet.getString("fine"),
                     resultSet.getInt("totale_poltrona"),
@@ -219,6 +215,7 @@ public class EventModel extends AbstractModel {
                     resultSet.getInt("id_categoria"),
                     resultSet.getInt("id_localita"),
                     resultSet.getString("nome"),
+                    resultSet.getString("descrizione"),
                     resultSet.getString("inizio"),
                     resultSet.getString("fine"),
                     resultSet.getInt("totale_poltrona"),
@@ -244,6 +241,7 @@ public class EventModel extends AbstractModel {
                     resultSet.getInt("id_categoria"),
                     resultSet.getInt("id_localita"),
                     resultSet.getString("nome"),
+                    resultSet.getString("descrizione"),
                     resultSet.getString("inizio"),
                     resultSet.getString("fine"),
                     resultSet.getInt("totale_poltrona"),
