@@ -3,6 +3,7 @@ package web.example.progweb.model;
 
 import web.example.progweb.model.abstractClass.AbstractModel;
 import web.example.progweb.model.entity.Category;
+import web.example.progweb.model.entity.Discount;
 import web.example.progweb.model.entity.Event;
 import web.example.progweb.model.entity.Location;
 
@@ -40,14 +41,12 @@ public class EventModel extends AbstractModel {
     private PreparedStatement insertEventPreparedStatement;
     private PreparedStatement deleteEventPreparedStatement;
     private PreparedStatement incrementClickPreparedStatement;
-    private PreparedStatement decrementPoltronePreparedStatement;
-    private PreparedStatement decrementInPiediPreparedStatement;
-    private PreparedStatement checkAvailabilityPreparedStatement;
     private PreparedStatement checkIdPreparedStatement;
     private PreparedStatement deleteCategoryPreparedStatement;
     private PreparedStatement deleteLocationPreparedStatement;
-    private PreparedStatement incrementPoltronePreparedStatement;
-    private PreparedStatement incrementInPiediPreparedStatement;
+
+    private PreparedStatement updateAvailabilityPreparedStatement;
+    private PreparedStatement checkAvailabilityPreparedStatement;
 
     public EventModel() throws SQLException, ClassNotFoundException {
         super();
@@ -64,15 +63,13 @@ public class EventModel extends AbstractModel {
         getEventByIdPreparedStatement = connection.prepareStatement("SELECT * FROM EVENTI WHERE id_evento = ?");
         insertEventPreparedStatement = connection.prepareStatement("INSERT INTO EVENTI (id_categoria, id_localita, nome, inizio, fine, totale_poltrona, disponibilita_poltrona, totale_in_piedi, disponibilita_in_piedi, prezzi_poltrona, prezzi_in_piedi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
         deleteEventPreparedStatement = connection.prepareStatement("DELETE FROM EVENTI WHERE id_evento = ?");
-        checkAvailabilityPreparedStatement = connection.prepareStatement("SELECT disponibilita_in_piedi FROM EVENTI WHERE id_evento = ?");
-        incrementClickPreparedStatement = connection.prepareStatement("UPDATE EVENTI SET n_click = n_click + 1 WHERE id_evento = ?");
-        decrementPoltronePreparedStatement = connection.prepareStatement("UPDATE EVENTI SET disponibilita_poltrona = disponibilita_poltrona - ? WHERE id_evento = ?");
-        decrementInPiediPreparedStatement = connection.prepareStatement("UPDATE EVENTI SET disponibilita_in_piedi = disponibilita_in_piedi - ? WHERE id_evento = ?");
         checkIdPreparedStatement = connection.prepareStatement("SELECT * FROM EVENTI WHERE id_evento = ?");
         deleteCategoryPreparedStatement = connection.prepareStatement("DELETE FROM CATEGORIA WHERE id_categoria = ?");
         deleteLocationPreparedStatement = connection.prepareStatement("DELETE FROM LOCALITA WHERE id_localita = ?");
-        incrementPoltronePreparedStatement = connection.prepareStatement("UPDATE EVENTI SET disponibilita_poltrona = disponibilita_poltrona + ? WHERE id_evento = ?");
-        incrementInPiediPreparedStatement = connection.prepareStatement("UPDATE EVENTI SET disponibilita_in_piedi = disponibilita_in_piedi + ? WHERE id_evento = ?");
+        incrementClickPreparedStatement = connection.prepareStatement("UPDATE EVENTI SET n_click = n_click + 1 WHERE id_evento = ?");
+
+        checkAvailabilityPreparedStatement = connection.prepareStatement("SELECT disponibilita_in_piedi, disponibilita_poltrona FROM EVENTI WHERE id_evento = ?");
+        updateAvailabilityPreparedStatement = connection.prepareStatement("UPDATE EVENTI SET disponibilita_poltrona = disponibilita_poltrona + ?, disponibilita_in_piedi = disponibilita_in_piedi + ? WHERE id_evento = ?");
     }
 
     public Event insertEvent(int idCategoria, int idLocalita, String name, String start, String end, int totalSeats, int availableSeats, int totalStanding, int availableStanding, BigDecimal seatPrice, BigDecimal standingPrice) throws SQLException {
@@ -108,38 +105,13 @@ public class EventModel extends AbstractModel {
         incrementClickPreparedStatement.executeUpdate();
     }
 
-    /*
-    typology: false -> poltrona, true -> in piedi
-     */
-    public boolean decrementAvailability(int id, boolean type, int n) throws SQLException {
-        if (checkAvailability(id, type, n)) {
-            if (type) {
-                decrementInPiediPreparedStatement.setInt(1, n);
-                decrementInPiediPreparedStatement.setInt(2, id);
-                decrementInPiediPreparedStatement.executeUpdate();
-            } else {
-                decrementPoltronePreparedStatement.setInt(1, n);
-                decrementPoltronePreparedStatement.setInt(2, id);
-                decrementPoltronePreparedStatement.executeUpdate();
-            }
-            return true;
-        }
-        return false;
-    }
-
-    public void incrementAvailability(int id, boolean type, int n) throws SQLException {
-        if (type) {
-            incrementInPiediPreparedStatement.setInt(1, n);
-            incrementInPiediPreparedStatement.setInt(2, id);
-            incrementInPiediPreparedStatement.executeUpdate();
-        } else {
-            incrementPoltronePreparedStatement.setInt(1, n);
-            incrementPoltronePreparedStatement.setInt(2, id);
-            incrementPoltronePreparedStatement.executeUpdate();
-        }
-    }
-
     public boolean checkId (int id) throws SQLException {
+        checkIdPreparedStatement.setInt(1, id);
+        ResultSet resultSet = checkIdPreparedStatement.executeQuery();
+        return resultSet.next();
+    }
+
+    public boolean checkCategoryId(int id) throws SQLException{ // da rivedere se funziona
         checkIdPreparedStatement.setInt(1, id);
         ResultSet resultSet = checkIdPreparedStatement.executeQuery();
         return resultSet.next();
@@ -180,14 +152,14 @@ public class EventModel extends AbstractModel {
         return events;
     }
 
-    public BigDecimal getPrice (int id, boolean type) throws SQLException {
-        String query = "SELECT " + (type ? "prezzi_in_piedi" : "prezzi_poltrona") + " FROM EVENTI WHERE id_evento = ?";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setInt(1, id);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        resultSet.next();
-        return resultSet.getBigDecimal(1);
-    }
+//    public BigDecimal getPrice (int id, boolean type) throws SQLException {
+//        String query = "SELECT " + (type ? "prezzi_in_piedi" : "prezzi_poltrona") + " FROM EVENTI WHERE id_evento = ?";
+//        PreparedStatement preparedStatement = connection.prepareStatement(query);
+//        preparedStatement.setInt(1, id);
+//        ResultSet resultSet = preparedStatement.executeQuery();
+//        resultSet.next();
+//        return resultSet.getBigDecimal(1);
+//    }
 
     public List<Event> getEventByCategory(int idCategoria) throws SQLException {
         getEventByCategoryPreparedStatement.setInt(1, idCategoria);
@@ -287,15 +259,6 @@ public class EventModel extends AbstractModel {
         return events;
     }
 
-    private boolean checkAvailability(int id, boolean type, int n) throws SQLException {
-        checkAvailabilityPreparedStatement.setInt(1, id);
-        ResultSet resultSet = checkAvailabilityPreparedStatement.executeQuery();
-        if (resultSet.next()) {
-            return resultSet.getInt(1) >= n;
-        }
-        return false;
-    }
-
     public List<Category> getAllCategory() throws SQLException {
         String query = "SELECT * FROM CATEGORIA";
         ResultSet resultSet = unsafeExecuteQuery(query);
@@ -324,5 +287,51 @@ public class EventModel extends AbstractModel {
         return locations;
     }
 
+    public boolean decrementAvailability(int id_event, int n_seats, int n_stands) throws SQLException {
+        // Check if the requested quantities are valid and available
+        if (n_seats >= 0 && n_stands >= 0 && checkAvailability(id_event, n_seats, n_stands)) {
+            // Set the parameters for the update statement
+            n_seats *= -1;
+            n_stands *= -1;
+            updateAvailabilityPreparedStatement.setInt(1, n_seats);
+            updateAvailabilityPreparedStatement.setInt(2, n_stands);
+            updateAvailabilityPreparedStatement.setInt(3, id_event);
 
+            // Execute the update statement
+            int rowsAffected = updateAvailabilityPreparedStatement.executeUpdate();
+
+            // Check if the update was successful
+            return rowsAffected > 0;
+        }
+        // Return false if the availability check fails or quantities are invalid
+        return false;
+    }
+
+    public void incrementAvailability(int id_event, int n_seats, int n_stands) throws SQLException {
+        if (n_seats >= 0 && n_stands >= 0){
+            updateAvailabilityPreparedStatement.setInt(1,n_seats);
+            updateAvailabilityPreparedStatement.setInt(2,n_stands);
+            updateAvailabilityPreparedStatement.setInt(3, id_event);
+            updateAvailabilityPreparedStatement.executeUpdate();
+        }
+    }
+
+    public boolean checkAvailability(int id_event, int n_seats, int n_stands) throws SQLException {
+        // Set the event ID parameter in the prepared statement
+        checkAvailabilityPreparedStatement.setInt(1, id_event);
+
+        // Execute the query and process the result
+        try (ResultSet resultSet = checkAvailabilityPreparedStatement.executeQuery()) {
+            if (resultSet.next()) {
+                // Retrieve availability values from the result set
+                int availableSeats = resultSet.getInt("disponibilita_poltrona");
+                int availableStanding = resultSet.getInt("disponibilita_in_piedi");
+
+                // Check if there are enough seats and standing places available
+                return availableSeats >= n_seats && availableStanding >= n_stands;
+            }
+            // If no results are found for the given event ID, return false
+            return false;
+        }
+    }
 }

@@ -52,12 +52,27 @@
         .form-group input[type="submit"]:hover {
             opacity: 0.9;
         }
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .signup-redirect {
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h2>Login</h2>
+
+    <% if (request.getAttribute("error") != null) { %>
+    <div class="error-message">
+        Credenziali non valide. Riprova.
+    </div>
+    <% } %>
+
     <form id="loginForm" action="${pageContext.request.contextPath}/login" method="post">
         <div class="form-group">
             <label for="username">Username:</label>

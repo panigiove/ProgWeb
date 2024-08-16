@@ -23,19 +23,19 @@ public class Ticket {
     private final int idEvento;
     private final int idUtente;
     private final int idSconto;
-    private final int quantita;
-    private final String tipologia;
+    private final int quantita_poltrona;
+    private final int quantita_in_piedi;
     private final String dataAcquisto;
     private final BigDecimal price;
 
 
-    public Ticket(int id_prenotazione, int id_evento, int id_utente, int id_sconto,int quantita, String tipologia, String data_acquisto, BigDecimal price) {
+    public Ticket(int id_prenotazione, int id_evento, int id_utente, int id_sconto,int quantita_poltrona, int quantita_in_piedi, String data_acquisto, BigDecimal price) {
         this.idPrenotazione = id_prenotazione;
         this.idEvento = id_evento;
         this.idUtente = id_utente;
         this.idSconto = id_sconto;
-        this.quantita = quantita;
-        this.tipologia = tipologia;
+        this.quantita_poltrona = quantita_poltrona;
+        this.quantita_in_piedi = quantita_in_piedi;
         this.dataAcquisto = data_acquisto;
         this.price = price;
     }
@@ -56,12 +56,12 @@ public class Ticket {
         return idSconto;
     }
 
-    public int getQuantita() {
-        return quantita;
+    public int quantita_poltrona() {
+        return quantita_poltrona;
     }
 
-    public String getTipology() {
-        return tipologia;
+    public int quantita_in_piedi() {
+        return quantita_in_piedi;
     }
 
     public String data_acquisto() {
@@ -79,8 +79,8 @@ public class Ticket {
                 ", idEvento=" + idEvento +
                 ", idUtente=" + idUtente +
                 ", idSconto=" + idSconto +
-                ", quantita=" + quantita +
-                ", tipologia='" + tipologia + '\'' +
+                ", quantita poltrona="+quantita_poltrona+
+                ", quantita in piedi="+quantita_in_piedi+
                 ", dataAcquisto='" + dataAcquisto + '\'' +
                 ", price=" + price +
                 '}';

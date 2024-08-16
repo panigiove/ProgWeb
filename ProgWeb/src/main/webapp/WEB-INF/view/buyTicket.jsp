@@ -15,9 +15,16 @@
 
         .custom-input-group .custom-btn {
             width: 40px;
+            height: 38px;
             font-weight: bold;
             background-color: olivedrab;
             color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            line-height: 1;
+            border: 1px solid darkslategrey;
         }
 
         .custom-input-group .custom-btn:hover {
@@ -28,12 +35,15 @@
             max-width: 40px;
             margin: 0 5px;
             text-align: center;
+            height: 38px;
+            border-radius: 0;
         }
 
         .custom-input-group .form-control {
             padding: 0.5rem 0.5rem;
             font-size: 1rem;
             border-radius: 0.25rem;
+            height: 38px;
         }
 
         .input-group.custom-input-group {
@@ -71,13 +81,6 @@
                         <button class="btn btn-outline-secondary btn-sm custom-btn" type="button" onclick="updateQuantity('standing', 1)">+</button>
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label for="codice-sconto" class="form-label"><strong>Codice Sconto</strong></label>
-                    <div class="input-group sconto-input-group">
-                        <input type="text" id="codice-sconto" class="form-control" placeholder="Inserisci il codice sconto:">
-                        <button type="button" class="btn btn-secondary" onclick="verificaSconto()">Applica</button>
-                    </div>
-                </div>
 
                 <p class="mb-5 text-center" style="font-size: 1.5rem;"><strong>Prezzo Totale:</strong> <span id="total-price">0</span> €</p>
             </div>
@@ -87,9 +90,8 @@
             <input type="hidden" name="evento" value="<%= request.getParameter("evento") %>">
             <input type="hidden" name="numero_di_posti_poltrona" id="hidden-seat-count" value="<%= request.getParameter("numero_di_posti_poltrona") != null ? request.getParameter("numero_di_posti_poltrona") : 0 %>">
             <input type="hidden" name="numero_di_posti_piedi" id="hidden-standing-count" value="<%= request.getParameter("numero_di_posti_piedi") != null ? request.getParameter("numero_di_posti_piedi") : 0 %>">
-            <input type="hidden" name="sconto" id="discount" value="0">
             <input type="hidden" name="totale" id="hidden-total-price" value="0">
-            <button type="submit" class="btn btn-success btn-block mt-3">Acquista</button>
+            <button type="submit" class="btn btn-success btn-block mt-3"> procedi cn il pagamento</button>
         </form>
     </div>
 </div>
@@ -119,32 +121,7 @@
         document.getElementById('hidden-total-price').value = totalPrice;
     }
 
-    function verificaSconto() {
-        var codiceSconto = document.getElementById('codice-sconto').value;
 
-        if (codiceSconto) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "verificaSconto.jsp", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    var risposta = JSON.parse(xhr.responseText);
-                    if (risposta.success) {
-                        // Aggiorna il prezzo totale
-                        var sconto = risposta.sconto;
-                        applicaSconto(sconto);
-                    } else {
-                        alert("Codice sconto non valido");
-                    }
-                }
-            };
-
-            xhr.send("codice_sconto=" + encodeURIComponent(codiceSconto));
-        } else {
-            alert("Inserisci un codice sconto.");
-        }
-    }
 
     function applicaSconto(sconto) {
         var totalPriceElement = document.getElementById('total-price');

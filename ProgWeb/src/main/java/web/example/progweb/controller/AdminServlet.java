@@ -62,7 +62,6 @@ public class AdminServlet extends AbstractController {
                 request.setAttribute("users", users);
                 request.getRequestDispatcher("/WEB-INF/view/usersManager.jsp").forward(request, response);
             }else if ("/newEvent".equals(path)){
-                System.out.println("ciao");
                 List<Category> categories = eventModel.getAllCategory();
                 List<Location> locations = eventModel.getAllLocation();
                 request.setAttribute("locations", locations);
@@ -117,6 +116,29 @@ public class AdminServlet extends AbstractController {
             } catch (SQLException e) {
                 System.err.println("Error during event insertion: " + e.getMessage());
                 sendErrorPage(request, response, "Error inserting event", HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error");
+            }
+        } else if ("/deleteEvent".equals(request.getPathInfo())) {
+            int eventId;
+            try {
+                // Parse the eventId parameter from the request
+                eventId = Integer.parseInt(request.getParameter("eventId"));
+            } catch (NumberFormatException e) {
+                // Handle invalid eventId format
+                sendErrorMessage(request, response, "Invalid Event ID format", HttpServletResponse.SC_BAD_REQUEST, "Invalid Event ID");
+                return;
+            }
+            try {
+                if (!eventModel.checkId(eventId)) {
+                    sendJsonMessage(response, "{\"success\": \"fail\"}");
+                } else {
+                    // Attempt to delete the event
+                    eventModel.deleteEvent(eventId);
+                    sendJsonMessage(response, "{\"success\": \"success\"}");
+                }
+            } catch (SQLException e) {
+                // Log the error and send a server error response
+                System.err.println("Error during event deletion: " + e.getMessage());
+                sendErrorPage(request, response, "Error deleting event", HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error");
             }
         } else {
             // Handle other paths

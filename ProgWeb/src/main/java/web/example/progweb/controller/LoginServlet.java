@@ -56,9 +56,8 @@ public class LoginServlet extends AbstractController {
                         response.sendRedirect(request.getContextPath() + "/");
                     } else { // credenziali sbagliate
                         session.invalidate();
-                        sendErrorMessage(request, response, "Credenziali non corrette, riprova", 401, "Unauthorized");
-                        response.sendRedirect(request.getContextPath() + "/login");
-//                        request.getRequestDispatcher("/logIn.jsp").forward(request, response);
+                        request.setAttribute("error", true);
+                        request.getRequestDispatcher("/WEB-INF/view/logIn.jsp").forward(request,response);
                     }
                 } else { // formato request errato
                     sendErrorMessage(request, response, "username e password non presenti", 400, "Bad request");
