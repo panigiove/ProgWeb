@@ -18,7 +18,7 @@
 
 
 <br/>
-<jsp:include page="/WEB-INF/view/mostClickedCard.jsp"/><br>
+<jsp:include page="/WEB-INF/view/display3MostClickedEvent.jsp"/><br>
 <jsp:include page="/WEB-INF/view/eventsNavbar.jsp"/><br>
 <jsp:include page="/WEB-INF/view/footer.jsp"/>
 

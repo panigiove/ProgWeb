@@ -36,6 +36,7 @@ public class IndexServlet extends AbstractController {
         try {
             String path = request.getPathInfo();
             if (path == null || "/".equals(path)){
+                request.setAttribute("3mostClieckedEvent", eventModel.get3MostClickedEvent());
                 request.setAttribute("discounts", discountModel.getValidDiscounts());
                 request.getRequestDispatcher("/index.jsp").forward(request, response);
             }else if ("/getEvents".equals(path)){
