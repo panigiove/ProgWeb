@@ -19,7 +19,7 @@
 
 <br/>
 <jsp:include page="/WEB-INF/view/display3MostClickedEvent.jsp"/><br>
-<jsp:include page="/WEB-INF/view/eventsNavbar.jsp"/><br>
+<jsp:include page="/WEB-INF/view/displayEventsNavbar.jsp"/><br>
 <jsp:include page="/WEB-INF/view/footer.jsp"/>
 
 <div style="height: 150px"></div>
