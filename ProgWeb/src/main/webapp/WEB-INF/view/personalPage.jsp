@@ -1,6 +1,8 @@
 <%@ page import="web.example.progweb.model.entity.Ticket" %>
 <%@ page import="java.util.List" %>
-<%@ page import="web.example.progweb.model.entity.User" %><%--
+<%@ page import="web.example.progweb.model.entity.User" %>
+<%@ page import="web.example.progweb.model.entity.Event" %>
+<%@ page import="web.example.progweb.model.EventModel" %><%--
   Created by IntelliJ IDEA.
   User: Giovanni
   Date: 10/08/2024
@@ -72,7 +74,6 @@
             padding: 10px;
             border-radius: 5px;
             border: 1px solid #ddd;
-            display: flex;
             justify-content: space-between;
         }
 
@@ -108,6 +109,7 @@
     <%
         User currentUser = (User) request.getAttribute("currentUser");
         List<Ticket> userTickets = (List<Ticket>) request.getAttribute("userTickets");
+        EventModel eventModel = (EventModel) request.getAttribute("eventModel");
     %>
 
     <!-- Sezione Dati Personali -->
@@ -120,8 +122,6 @@
         <p><strong>Telefono:</strong> <%= currentUser.getPhone() %> </p>
         <p><strong>Numero di acquisti:</strong> <%= currentUser.getnPurchases() %> </p>
         <p><strong>Username:</strong> <%= currentUser.getUsername() %> </p>
-
-        <!-- Altri dati personali -->
     </div>
 
     <!-- Sezione Acquisti -->
@@ -130,11 +130,18 @@
         <ul>
             <%
                 for(Ticket ticket : userTickets){
+                    Event event = eventModel.getEventById(ticket.idEvento());
             %>
-                <li>
-                    <span></span>
-                    <span></span>
-                </li>
+            <li>
+                <h3><%= event.getName()%></h3>
+                <p><strong>Descrizione:</strong> <%= event.getDescrizione()%></p>
+                <p><strong>Data di Inizio:</strong> <%= event.getStart()%></p>
+                <p><strong>Data di Fine:</strong> <%= event.getEnd()%></p>
+                <p><strong>Data di Acquisto:</strong> <%= ticket.data_acquisto()%></p>
+                <p><strong>Posti in Poltrona acquistati:</strong> <%= ticket.quantita_poltrona()%></p>
+                <p><strong>Posti in Piedi acquistati:</strong> <%= ticket.quantita_in_piedi()%></p>
+                <p><strong>Prezzo Totale:</strong> <%= ticket.getPrice()%></p>
+            </li>
             <%
                 }
             %>
@@ -142,8 +149,9 @@
         </ul>
     </div>
 
+
     <!-- Link di cancellazione iscrizione -->
-    <form action="DeleteAccountServlet" method="post">
+    <form action="${pageContext.request.contextPath}/deleteAccount" method="post">
         <button class="delete-button" type="submit">Cancella Iscrizione</button>
     </form>
 </div>

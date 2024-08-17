@@ -1,6 +1,8 @@
 package web.example.progweb.controller;
 
 import web.example.progweb.controller.abstractClass.AbstractController;
+import web.example.progweb.model.DiscountModel;
+import web.example.progweb.model.EventModel;
 import web.example.progweb.model.UserModel;
 
 import javax.servlet.ServletException;
@@ -14,17 +16,10 @@ import java.sql.SQLException;
 
 @WebServlet(name = "LogoutServlet", value = "/logout")
 public class LogoutServlet extends AbstractController {
-    private UserModel userModel;
 
     @Override
     public void init() throws ServletException {
         super.init();
-        try {
-            this.userModel = new UserModel(connection);
-        } catch (SQLException e) {
-            System.err.println("Errore durante la connessione al database: " + e.getMessage());
-            throw new ServletException("Impossibile stabilire la connessione al database", e);
-        }
     }
 
     @Override
@@ -33,7 +28,6 @@ public class LogoutServlet extends AbstractController {
         if(session != null) {
             session.invalidate();
         }
-
-        req.getRequestDispatcher("/index.jsp").forward(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/");
     }
 }

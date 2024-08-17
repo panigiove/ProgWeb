@@ -16,7 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
-@WebServlet(name = "IndexServlet", urlPatterns = {"/", "/user/*"})
+@WebServlet(name = "IndexServlet", urlPatterns = {"/", "/index/*"})
 public class IndexServlet extends AbstractController {
     private EventModel eventModel;
     private DiscountModel discountModel;

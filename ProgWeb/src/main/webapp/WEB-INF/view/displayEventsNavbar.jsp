@@ -38,7 +38,7 @@
         e.preventDefault();
         let categoryId = this.getAttribute('data-category-id');
 
-        fetch('<%= request.getContextPath() %>/user/getEvents?categoryId=' + categoryId)
+        fetch('<%= request.getContextPath() %>/index/getEvents?categoryId=' + categoryId)
                 .then(function (response) {
                   if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -80,7 +80,7 @@
                 '<p><strong>Prezzo (In Piedi):</strong> €' + event.standingPrice.toFixed(2) + '</p>' +  // Display standing price
                 '<p><strong>Disponibilità (Poltrone):</strong> ' + (event.availableSeats === 0 ? '<span class="text-danger">Esaurito</span>' : event.availableSeats) + '</p>' + // Seat availability
                 '<p><strong>Disponibilità (In Piedi):</strong> ' + (event.availableStanding === 0 ? '<span class="text-danger">Esaurito</span>' : event.availableStanding) + '</p>' + // Standing availability
-                '<a href="#" class="btn btn-primary">Dettagli</a>' +
+                '<a href="<%= request.getContextPath() %>/event?eventId=' + event.id + '" class="btn btn-primary">Dettagli</a>' +
                 '</div>' +
                 '</div>' +
                 '</div>';

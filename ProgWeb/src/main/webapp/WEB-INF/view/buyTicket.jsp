@@ -15,28 +15,28 @@
 
         .custom-input-group .custom-btn {
             width: 40px;
-            height: 38px;
+            height: 40px;
             font-weight: bold;
-            background-color: olivedrab;
+            background-color: #2E8B57;
             color: black;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 0;
             line-height: 1;
-            border: 1px solid darkslategrey;
+            border: 1px solid #333533;
         }
 
         .custom-input-group .custom-btn:hover {
-            background-color: darkolivegreen;
+            background-color: #A1C7A6;
         }
 
         .custom-input-group .custom-input {
-            max-width: 40px;
-            margin: 0 5px;
+            max-width: 60px;
+            margin: 0px;
             text-align: center;
             height: 40px;
-            font-size: 1.5 rem;
+            text-font: 0.5rem;
             color: black;
             border: none;
             background-color: transparent;
@@ -46,7 +46,7 @@
         .input-group.custom-input-group {
             display: flex;
             justify-content: right;
-            align-items: right;
+            align-items: normal;
         }
 
         .card {
@@ -66,7 +66,7 @@
                     <label for="seat-count" class="col-form-label col-auto"><strong>Posti in poltrona</strong></label>
                     <div class ="col">
                         <div class="input-group custom-input-group">
-                            <input type="number" id="seat-count" class="form-control custom-input" value="<%= request.getParameter("numero_di_posti_poltrona") != null ? request.getParameter("numero_di_posti_poltrona") : 0 %>" readonly>
+                            <input type="number" id="seat-count" class="form-control custom-input" value="0" readonly>
                             <button class="btn btn-outline-secondary btn-sm custom-btn" type="button" onclick="updateQuantity('seat', -1)">-</button>
                             <button class="btn btn-outline-secondary btn-sm custom-btn" type="button" onclick="updateQuantity('seat', 1)">+</button>
                         </div>
@@ -76,7 +76,7 @@
                     <label for="standing-count" class="col-form-label col-auto"><strong>Posti in piedi</strong></label>
                     <div class="col">
                         <div class="input-group custom-input-group">
-                            <input type="number" id="standing-count" class="form-control custom-input" value="<%= request.getParameter("numero_di_posti_poltrona") != null ? request.getParameter("numero_di_posti_poltrona") : 0 %>" readonly>
+                            <input type="number" id="standing-count" class="form-control custom-input" value="0" readonly>
                             <button class="btn btn-outline-secondary btn-sm custom-btn" type="button" onclick="updateQuantity('standing', -1)">-</button>
                             <button class="btn btn-outline-secondary btn-sm custom-btn" type="button" onclick="updateQuantity('standing', 1)">+</button>
                         </div>
@@ -89,19 +89,32 @@
 
         <form action="resumeOrder.jsp" method="POST">
             <input type="hidden" name="evento" value="<%= request.getParameter("evento") %>">
-            <input type="hidden" name="numero_di_posti_poltrona" id="hidden-seat-count" value="<%= request.getParameter("numero_di_posti_poltrona") != null ? request.getParameter("numero_di_posti_poltrona") : 0 %>">
-            <input type="hidden" name="numero_di_posti_piedi" id="hidden-standing-count" value="<%= request.getParameter("numero_di_posti_piedi") != null ? request.getParameter("numero_di_posti_piedi") : 0 %>">
+            <input type="hidden" name="numero_di_posti_poltrona" id="hidden-seat-count" value="0">
+            <input type="hidden" name="numero_di_posti_piedi" id="hidden-standing-count" value="0">
             <input type="hidden" name="totale" id="hidden-total-price" value="0.00">
-            <button type="submit" class="btn btn-success btn-block mt-3">Procedi con il pagamento</button>
+            <button type="submit" class="btn btn-success w-100 mt-3">Procedi con il pagamento</button>
         </form>
+
     </div>
 </div>
 
 <script>
+    function updateTotalPrice() {
+        var seatCount = parseInt(document.getElementById('seat-count').value) || 0;
+        var standingCount = parseInt(document.getElementById('standing-count').value) || 0;
+
+        var seatPrice = 10;
+        var standingPrice = 5;
+
+        var totalPrice = (seatCount * seatPrice) + (standingCount * standingPrice);
+        document.getElementById('total-price').innerText = totalPrice.toFixed(2);
+        document.getElementById('hidden-total-price').value = totalPrice.toFixed(2);
+    }
+
     function updateQuantity(type, change) {
         var quantityInput = document.getElementById(type + '-count');
         var hiddenInput = document.getElementById('hidden-' + type + '-count');
-        var currentValue = parseInt(quantityInput.value);
+        var currentValue = parseInt(quantityInput.value) || 0;
         var newValue = currentValue + change;
 
         if (newValue >= 0) {
@@ -109,17 +122,6 @@
             hiddenInput.value = newValue;
             updateTotalPrice();
         }
-    }
-
-    function updateTotalPrice() {
-        var seatCount = parseInt(document.getElementById('seat-count').value);
-        var standingCount = parseInt(document.getElementById('standing-count').value);
-        var seatPrice = 10;  // In futuro, il prezzo deve essere recuperato dal database
-        var standingPrice = 5;
-
-        var totalPrice = (seatCount * seatPrice) + (standingCount * standingPrice);
-        document.getElementById('total-price').innerText = totalPrice.toFixed(2);
-        document.getElementById('hidden-total-price').value = totalPrice.toFixed(2);
     }
 
     updateTotalPrice();
