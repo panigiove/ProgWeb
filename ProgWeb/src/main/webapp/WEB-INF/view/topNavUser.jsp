@@ -7,14 +7,11 @@
 
 <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
-        <!-- Spazio per l'icona e il nome del sito -->
         <a class="navbar-brand" href="#">
-<%--            <img src="${pageContext.request.contextPath}/images/icon.jpg" alt="Icona" width="30" height="30" class="d-inline-block align-text-top">--%>
             <img src="${pageContext.request.contextPath}/images/icon.jpg" alt="Icon" width="30" height="30">
             EntriEasy
         </a>
 
-        <!-- Collegamenti di navigazione allineati a destra -->
         <div class="d-flex">
             <% if (username == null || isAdmin == null) { %>
             <a class="nav-link me-3 text-primary" href="${pageContext.request.contextPath}/signup">Sign up</a>

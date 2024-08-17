@@ -1,4 +1,6 @@
 <%@ page import="web.example.progweb.model.entity.Event" %>
+<%@ page import="web.example.progweb.model.entity.Discount" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -11,6 +13,7 @@
 
 <%
     Event event = (Event) request.getAttribute("event");
+    List<Discount> discounts = (List<Discount>) request.getAttribute("discounts");
 %>
 
 <div class="container mt-5 d-flex flex-column align-items-center">
@@ -26,8 +29,8 @@
                 <div class="card-body text-right">
                     <h5 class="card-title">Informazioni Generali</h5>
                     <p class="card-text">
-                        <strong>Data:</strong> <%=event.getStart() != null ? event.getStart() : "Data non disponibile"%><br>
-                        <strong>Orario di Inizio:</strong> <%=request.getParameter("ora_iniziale") != null ? request.getParameter("ora_iniziale") : "Ora di inizio non disponibile"%><br>
+                        <strong>Data e Ora di Inizio:</strong> <%=event.getStart() != null ? event.getStart() : "Data e ora di inizio non disponibili"%><br>
+                        <strong>Data e Ora di Fine:</strong> <%= event.getEnd() != null ? event.getEnd() : "Data e ora di fine non disponibili"%>
                         <strong>Luogo:</strong> <%=event.getNomeLocation() != null ? event.getNomeLocation() : "Posizione non disponibile"%>
                     </p>
                 </div>
@@ -54,20 +57,38 @@
                 <div class="card-body text-right">
                     <h5 class="card-title">Biglietti</h5>
                     <p class="card-text">
-                        <strong>Prezzi in Poltrona:</strong> <%=event.getSeatPrice() != null ? event.getSeatPrice() : "Non ancora disponibili"%><br>
-                        <strong>Prezzi in Piedi:</strong> <%=event.getStandingPrice() != null ? event.getStandingPrice() : "Non ancora disponibili"%>
+                        <strong> Posti disponibili: </strong>
+                        <strong>Prezzi in Poltrona:</strong> <%=event.getSeatPrice() != null ? event.getSeatPrice()+" €" : "Non ancora disponibili"%><br>
+                        <strong>Prezzi in Piedi:</strong> <%=event.getStandingPrice() != null ? event.getStandingPrice()+ " €" : "Non ancora disponibili"%>
                     </p>
                 </div>
             </div>
         </div>
     </div>
 
+
+    <div class="container discount-list mt-4 w-100">
+        <div class="col-md-12 d-flex justify-content-center">
+            <h5 class="card-title"> Sconti Correlati </h5>
+            <% if (discounts == null || discounts.isEmpty()) { %>
+            <div class ="alert alert-info" role="alert"> Non sono presenti sconti per questo evento </div>
+            <% } else {
+                for (int i = 0; i < discounts.size(); i++) { %>
+            <div class="card discount-card">
+                <div class="card-header discount-title">
+                    <h5 class="mb-0"><%= discounts.get(i) %> </h5>
+                </div>
+            </div>
+            <% }
+            } %>
+        </div>
+    </div>
+
+
     <div class="row mt-4 w-100">
         <div class="col-md-12 d-flex justify-content-center">
-            <form action="buyTicket.jsp" method="POST" class="w-75">
-                <input type="hidden" name="evento" value="<%= request.getParameter("evento") %>">
-                <input type="hidden" name="numero_di_posti_poltrona" id="hidden-seat-count" value="<%=request.getParameter("prezzo_poltrona") %>">
-                <input type="hidden" name="numero_di_posti_piedi" id="hidden-standing-count" value="<%=request.getParameter("prezzo_in_piedi") %>">
+            <form action="${pageContext.request.contextPath}/event/buyTicket" method="POST" class="w-75">
+                <input type="hidden" name="eventId" value="<%= event.getId() %>">
                 <button type="submit" class="btn btn-success w-100 mt-3">Acquista</button>
             </form>
         </div>

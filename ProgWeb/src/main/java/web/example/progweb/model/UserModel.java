@@ -32,6 +32,7 @@ public class UserModel extends AbstractModel {
     private PreparedStatement incrementPurchasesPreparedStatement;
     private PreparedStatement getPurchasePreparedStatement;
     private PreparedStatement checkIdPreparedStatement;
+    private PreparedStatement anonimizzareBigliettiPreparedStatement;
 
     public UserModel() throws SQLException, ClassNotFoundException {
         super();
@@ -46,6 +47,7 @@ public class UserModel extends AbstractModel {
         checkUsernamePreparedStatement = connection.prepareStatement("SELECT * FROM UTENTI WHERE username = ?");
         insertUserPreparedStatement = connection.prepareStatement("INSERT INTO UTENTI (nome, cognome, data_nascita, email, telefono, username, password) VALUES (?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
         deleteUserPreparedStatement = connection.prepareStatement("DELETE FROM UTENTI WHERE username = ?");
+        anonimizzareBigliettiPreparedStatement = connection.prepareStatement("UPDATE PRENOTAZIONE_BIGLIETTI SET id_utente = -1 WHERE id_utente = ?");
         getUserPreparedStatement = connection.prepareStatement("SELECT * FROM UTENTI WHERE id_utente = ?");
         getUserIdPreparedStatement = connection.prepareStatement("SELECT id_utente FROM UTENTI WHERE username = ?");
         incrementPurchasesPreparedStatement = connection.prepareStatement("UPDATE UTENTI SET n_acquisti = n_acquisti + 1 WHERE id_utente = ?");
@@ -84,9 +86,16 @@ public class UserModel extends AbstractModel {
         return null;
     }
 
+    /**
+     * Cancella l'utente con username dato e anonimizza le righe biglietti ad esso collegato
+     * @param username
+     * @throws SQLException
+     */
     public void deleteUser(String username) throws SQLException {
         deleteUserPreparedStatement.setString(1, username);
-        deleteUserPreparedStatement.executeUpdate();
+        anonimizzareBigliettiPreparedStatement.setInt(1, getUserId(username));
+        deleteUserPreparedStatement.executeQuery();
+        anonimizzareBigliettiPreparedStatement.executeQuery();
     }
 
     /**
@@ -106,7 +115,7 @@ public class UserModel extends AbstractModel {
     /**
      * Controllo se username già preso
      * @param username
-     * @return
+     * @return True se esiste, False altrimenti
      * @throws SQLException
      */
     public boolean checkUsername (String username) throws SQLException {
@@ -118,7 +127,7 @@ public class UserModel extends AbstractModel {
     /**
      * Controllo ID
      * @param id
-     * @return
+     * @return True se esiste, False altrimenti
      * @throws SQLException
      */
     public boolean checkId (int id) throws SQLException {

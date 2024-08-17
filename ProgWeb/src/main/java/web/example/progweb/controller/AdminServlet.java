@@ -1,5 +1,6 @@
 package web.example.progweb.controller;
 
+
 import web.example.progweb.controller.abstractClass.AbstractController;
 import web.example.progweb.model.EventModel;
 import web.example.progweb.model.UserModel;
@@ -15,6 +16,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "adminSevlet", value = "/admin/*")
@@ -41,12 +44,17 @@ public class AdminServlet extends AbstractController {
             } else if ("/gestioneEventi".equals(path)) {
                 List<Event> events;
                 String sortByClicks = request.getParameter("sortByClicks");
+                List<Category> categories = eventModel.getAllCategory();
+                List<AbstractMap.SimpleEntry<String, Integer>> nclicks = new ArrayList<>();;
+                for(Category category : categories){
+                    nclicks.add(new AbstractMap.SimpleEntry<>(category.getName(), eventModel.getCategoryTotalNclick(category.getId())));
+                }
                 if ("on".equals(sortByClicks)) {
                     events = eventModel.getEventsOrderedByClick();
-                }
-                else {
+                } else {
                     events = eventModel.getEvents();
                 }
+                request.setAttribute("nclicks", nclicks);
                 request.setAttribute("events", events);
                 request.getRequestDispatcher("/WEB-INF/view/eventManager.jsp").forward(request, response);
             } else if("/gestioneUtenti".equals(path)){

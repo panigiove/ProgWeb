@@ -1,5 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="web.example.progweb.model.entity.Event" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="container">
     <div class="row">
@@ -13,12 +14,12 @@
                 <div class="card-body">
                     <h5 class="card-title"><%= event.getName() %></h5>
                     <p class="card-text"><%= event.getDescrizione() %></p>
-                    <p><strong>Location:</strong> <%= event.getNomeLocation() %></p>
-                    <p><strong>Start:</strong> <%= Event.formatData(event.getStart()) %></p>
-                    <p><strong>End:</strong> <%= Event.formatData(event.getEnd()) %></p>
-                    <p><strong>Available Tickets:</strong> <%= (event.getAvailableSeats() + event.getAvailableStanding()) == 0 ? "<span class='text-danger'>Esaurito</span>" : event.getAvailableSeats() + event.getAvailableStanding() %></p>
+                    <p><strong>Luogo:</strong> <%= event.getNomeLocation() %></p>
+                    <p><strong>Inizio:</strong> <%= Event.formatData(event.getStart()) %></p>
+                    <p><strong>Fine:</strong> <%= Event.formatData(event.getEnd()) %></p>
+                    <p><strong>Biglietti Disponibili:</strong> <%= (event.getAvailableSeats() + event.getAvailableStanding()) == 0 ? "<span class='text-danger'>Esaurito</span>" : event.getAvailableSeats() + event.getAvailableStanding() %></p>
 
-                    <a href="eventInformation.jsp?id=<%= event.getId() %>" class="btn btn-primary">Details</a>
+                    <a href="${pageContext.request.contextPath}/event?eventId=<%= event.getId()%>" class="btn btn-primary">Dettagli</a>
                 </div>
             </div>
         </div>

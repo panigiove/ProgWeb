@@ -1,3 +1,6 @@
+<%@ page import="web.example.progweb.model.entity.Event" %>
+<%@ page import="web.example.progweb.model.entity.Discount" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -6,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <style>
+
         .centered-container {
             display: flex;
             justify-content: center;
@@ -56,12 +60,18 @@
 </head>
 
 <body>
+
+<%
+    Event event = (Event) request.getAttribute("event");
+    List<Discount> discounts = (List<Discount>) request.getAttribute("discounts");
+%>
+
 <div class="centered-container">
     <div class="container text-center">
         <h1 class="mb-4 text-center">Compra biglietti</h1>
         <div class="card mb-4" style="max-width: 500px;">
             <div class="card-body text-center">
-                <h2 class="card-title text-center">Evento: <%= request.getParameter("evento") %></h2>
+                <h2 class="card-title text-center">Evento: <%= event.getName() %></h2>
                 <div class="mb-3 row align-items-center">
                     <label for="seat-count" class="col-form-label col-auto"><strong>Posti in poltrona</strong></label>
                     <div class ="col">
@@ -88,7 +98,7 @@
         </div>
 
         <form action="resumeOrder.jsp" method="POST">
-            <input type="hidden" name="evento" value="<%= request.getParameter("evento") %>">
+            <input type="hidden" name="event" value="<%= event %>">
             <input type="hidden" name="numero_di_posti_poltrona" id="hidden-seat-count" value="0">
             <input type="hidden" name="numero_di_posti_piedi" id="hidden-standing-count" value="0">
             <input type="hidden" name="totale" id="hidden-total-price" value="0.00">

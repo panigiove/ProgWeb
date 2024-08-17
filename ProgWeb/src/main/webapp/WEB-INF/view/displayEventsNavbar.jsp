@@ -73,7 +73,7 @@
                 '<div class="card-body">' +
                 '<h5 class="card-title">' + event.name + '</h5>' +
                 '<p class="card-text">' + event.descrizione + '</p>' +
-                '<p><strong>Location:</strong> ' + event.nomeLocation + '</p>' +  // Display location
+                '<p><strong>Luogo:</strong> ' + event.nomeLocation + '</p>' +  // Display location
                 '<p><strong>Inizio:</strong> ' + formatDate(event.start) + '</p>' +  // Display start time
                 '<p><strong>Fine:</strong> ' + formatDate(event.end) + '</p>' +  // Display end time
                 '<p><strong>Prezzo (Poltrone):</strong> €' + event.seatPrice.toFixed(2) + '</p>' +  // Display seat price

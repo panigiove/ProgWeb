@@ -24,6 +24,7 @@ import java.util.List;
  * - Ottenere eventi in diversi modi (tutti, per categoria, ordinati per clic, i 3 eventi più cliccati)
  * - Recuperare tutte le categorie e tutte le località
  * - Ottenere il nome di una località dato il suo ID
+ *  * - Ottenere le statistiche categoria
  *
  * Utilizza la classe Event, Location e Category per rappresentare i risultati delle query e gestire le informazioni.
  */
@@ -40,6 +41,7 @@ public class EventModel extends AbstractModel {
     private PreparedStatement checkAvailabilityPreparedStatement;
     private PreparedStatement checkIdCategoryPreparedStatement;
     private PreparedStatement getLocationNamePreparedStatement;
+    private PreparedStatement getCategoryTotalNclickPreparedStatement;
 
     public EventModel() throws SQLException, ClassNotFoundException {
         super();
@@ -56,6 +58,7 @@ public class EventModel extends AbstractModel {
         deleteEventPreparedStatement = connection.prepareStatement("DELETE FROM EVENTI WHERE id_evento = ?");
         checkIdPreparedStatement = connection.prepareStatement("SELECT * FROM EVENTI WHERE id_evento = ?");
         checkIdCategoryPreparedStatement = connection.prepareStatement("SELECT * FROM CATEGORIA WHERE id_categoria = ?");
+        getCategoryTotalNclickPreparedStatement = connection.prepareStatement("SELECT SUM(n_click) AS totale_click FROM EVENTI WHERE id_categoria = ?");
         deleteCategoryPreparedStatement = connection.prepareStatement("DELETE FROM CATEGORIA WHERE id_categoria = ?");
         deleteLocationPreparedStatement = connection.prepareStatement("DELETE FROM LOCALITA WHERE id_localita = ?");
         incrementClickPreparedStatement = connection.prepareStatement("UPDATE EVENTI SET n_click = n_click + 1 WHERE id_evento = ?");
@@ -141,6 +144,22 @@ public class EventModel extends AbstractModel {
         deleteCategoryPreparedStatement.setInt(1, id);
         deleteCategoryPreparedStatement.executeUpdate();
     }
+
+    /**
+     * Ottenere il numero totale di click di una categoria
+     * @param idCategory
+     * @return -1 se la query non trova nulla
+     * @throws SQLException
+     */
+    public int getCategoryTotalNclick (int idCategory) throws SQLException{
+        getCategoryTotalNclickPreparedStatement.setInt(1, idCategory);
+        ResultSet rs =  getCategoryTotalNclickPreparedStatement.executeQuery();
+        if (rs.next()){
+            return rs.getInt("totale_click");
+        }
+        return -1;
+    }
+
 
     /**
      * Ottenere tutti gli eventi
