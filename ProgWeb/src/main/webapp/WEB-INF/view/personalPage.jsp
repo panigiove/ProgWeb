@@ -151,7 +151,7 @@
 
 
     <!-- Link di cancellazione iscrizione -->
-    <form action="${pageContext.request.contextPath}/deleteAccount" method="post">
+    <form action="${pageContext.request.contextPath}/personalArea/deleteAccount" method="post">
         <button class="delete-button" type="submit">Cancella Iscrizione</button>
     </form>
 </div>

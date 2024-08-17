@@ -58,66 +58,6 @@
 </head>
 <body>
 
-<%--
-  Created by IntelliJ IDEA.
-  User: Giovanni
-  Date: 08/08/2024
-  Time: 10:18
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-        .form-group input[type="submit"],
-        .form-group input[type="reset"] {
-            width: auto;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            cursor: pointer;
-            padding: 10px 20px;
-        }
-        .form-group input[type="reset"] {
-            background-color: #dc3545;
-        }
-        .form-group input[type="submit"]:hover,
-        .form-group input[type="reset"]:hover {
-            opacity: 0.9;
-        }
-    </style>
-</head>
-<body>
-
 <div class="container">
     <h2>Sign Up</h2>
     <form id="signupForm" action="${pageContext.request.contextPath}/signup" method="post">
@@ -171,13 +111,50 @@
 </div>
 
 <script>
+    document.getElementById('signupForm').addEventListener('submit', function(event) {
+        const phoneInput = document.getElementById('telefono').value;
+        const emailInput = document.getElementById('email').value;
+        const passwordInput = document.getElementById('password').value;
+        const dateOfBirth = document.getElementById('data_nascita').value;
+
+        // Validazione del numero di telefono
+        const phoneRegex = /^\d{10}$/;
+        if (!phoneRegex.test(phoneInput)) {
+            alert("Il numero di telefono deve contenere esattamente 10 cifre.");
+            event.preventDefault();
+            return;
+        }
+
+        // Validazione dell'email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailInput)) {
+            alert("Inserisci un indirizzo email valido.");
+            event.preventDefault();
+            return;
+        }
+
+        // Validazione della password
+        const passwordRegex = /^(?=.*[!@#$%^&*])(?=.*\d{2,}).{9,}$/;
+        if (!passwordRegex.test(passwordInput)) {
+            alert("La password deve avere almeno 9 caratteri, inclusi almeno un carattere speciale e due cifre.");
+            event.preventDefault();
+            return;
+        }
+
+        // Validazione della data di nascita
+        if (!validateDate(dateOfBirth)) {
+            event.preventDefault();
+            return;
+        }
+    });
+
     function validateDate(dateOfBirth){
         const dob = /^(\d{2})\/(\d{2})\/(\d{4})$/;
         const match = dateOfBirth.match(dob);
 
-        if(!match){
+        if (!match) {
             alert("Il formato di data di nascita non è valido, usare: GG/MM/AAAA");
-            return;
+            return false;
         }
 
         const day = parseInt(match[1], 10);
@@ -188,14 +165,14 @@
 
         if (birthDate.getFullYear() !== year || birthDate.getMonth() !== month || birthDate.getDate() !== day) {
             alert("La data di nascita non è valida, assicurati di inserire giorno, mese e anno giusti!");
-            return;
+            return false;
         }
 
         const today = new Date();
 
         if (birthDate > today){
             alert("La data non è valida, è futura!");
-            return;
+            return false;
         }
 
         let age = today.getFullYear() - year;
@@ -205,10 +182,12 @@
             age--;
         }
 
-        if(age<18){
+        if (age < 18) {
             alert("Non puoi iscriverti al sito, non sei maggiorenne!");
-            return;
+            return false;
         }
+
+        return true;
     }
 </script>
 

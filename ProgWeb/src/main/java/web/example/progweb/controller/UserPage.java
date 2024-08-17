@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name="UserPage", value="/personalArea")
+@WebServlet(name="UserPage", value="/personalArea/*")
 public class UserPage extends AbstractController {
     private UserModel userModel;
     private TicketModel ticketModel;

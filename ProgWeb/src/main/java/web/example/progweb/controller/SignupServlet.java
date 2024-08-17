@@ -3,7 +3,6 @@ package web.example.progweb.controller;
 import web.example.progweb.controller.abstractClass.AbstractController;
 import web.example.progweb.model.UserModel;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,14 +27,6 @@ public class SignupServlet extends AbstractController {
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        create_response(request, response);
-    }
-
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/view/signUp.jsp").forward(request,response);
-    }
-
-    public void create_response(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         response.setContentType("text/plain");
         try{
@@ -62,4 +53,7 @@ public class SignupServlet extends AbstractController {
         }
     }
 
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/view/signUp.jsp").forward(request,response);
+    }
 }
