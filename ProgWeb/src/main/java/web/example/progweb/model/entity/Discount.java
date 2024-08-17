@@ -15,12 +15,14 @@ import java.math.BigDecimal;
 public class Discount {
     private int id_discount;
     private int id_event;
+    private String nomeEvent;
     private String expiration_date;
     private BigDecimal discount;
 
-    public Discount(int id_discount, int id_event, String expiration_date, BigDecimal discount) {
+    public Discount(int id_discount, int id_event, String nomeEvent, String expiration_date, BigDecimal discount) {
         this.id_discount = id_discount;
         this.id_event = id_event;
+        this.nomeEvent = nomeEvent;
         this.expiration_date = expiration_date;
         this.discount = discount;
     }

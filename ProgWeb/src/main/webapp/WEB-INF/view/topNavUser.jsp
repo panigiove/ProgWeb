@@ -9,7 +9,8 @@
     <div class="container-fluid">
         <!-- Spazio per l'icona e il nome del sito -->
         <a class="navbar-brand" href="#">
-            <img src="${pageContext.request.contextPath}/images/icon.png" alt="Icona" width="30" height="30" class="d-inline-block align-text-top">
+<%--            <img src="${pageContext.request.contextPath}/images/icon.jpg" alt="Icona" width="30" height="30" class="d-inline-block align-text-top">--%>
+            <img src="${pageContext.request.contextPath}/images/icon.jpg" alt="Icon" width="30" height="30">
             EntriEasy
         </a>
 

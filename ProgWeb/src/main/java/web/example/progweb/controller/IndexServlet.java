@@ -7,6 +7,8 @@ import web.example.progweb.model.entity.Category;
 import web.example.progweb.model.entity.Discount;
 import web.example.progweb.model.entity.Event;
 
+import com.google.gson.Gson;
+
 import java.io.*;
 import java.sql.SQLException;
 import java.util.List;
@@ -14,7 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
-@WebServlet(name = "IndexServlet", value = "/index/*")
+@WebServlet(name = "IndexServlet", urlPatterns = {"/", "/user/*"})
 public class IndexServlet extends AbstractController {
     private EventModel eventModel;
     private DiscountModel discountModel;
@@ -32,15 +34,32 @@ public class IndexServlet extends AbstractController {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         try {
-            List<Discount> discounts = discountModel.getValidDiscounts();
-            List<Category> categories = eventModel.getAllCategory();
-            request.setAttribute("categories", categories);
-            request.setAttribute("discounts", discounts);
+            String path = request.getPathInfo();
+            if ("/getEvents".equals(path))
+            {
+                String categoryIdParam = request.getParameter("categoryId");
+                if (categoryIdParam != null){
+                    try{
+                        int categoryId = Integer.parseInt(categoryIdParam);
+                        if (eventModel.checkCategoryId(categoryId)){
+                            sendJsonMessage(response, new Gson().toJson(eventModel.getEventByCategory(categoryId)));
+                        }else {
+                            sendErrorMessage(request, response, "Categoria non trovata", HttpServletResponse.SC_BAD_REQUEST, "Bad Request");
+                        }
+                    }catch (NumberFormatException e){
+                        sendErrorMessage(request, response, "Formato ID categoria non valido", HttpServletResponse.SC_BAD_REQUEST, "Invalid Category ID");
+                    }
+                }else{
+                    request.getRequestDispatcher("/index.jsp").forward(request, response);
+                }
+            }else if ("/getDiscounts".equals(path)){
+                System.out.println(new Gson().toJson(discountModel.getValidDiscounts()));
+                sendJsonMessage(response, new Gson().toJson(discountModel.getValidDiscounts()));
+            }
         } catch (SQLException e) {
             System.err.println("Errore durante la connessione al database: " + e.getMessage());
             sendErrorMessage(request,response,"Errore durante il recupero dei scounti", HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error");
         }
-        request.getRequestDispatcher("/index.jsp").forward(request, response);
     }
 
     @Override

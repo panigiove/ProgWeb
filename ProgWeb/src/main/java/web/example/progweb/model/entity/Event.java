@@ -26,6 +26,7 @@ public class Event {
     private final int id;
     private final int idCategory;
     private final int idLocation;
+    private final String nomeLocation;
     private final String name;
     private final String descrizione;
     private final String start;
@@ -38,10 +39,11 @@ public class Event {
     private final BigDecimal standingPrice;
     private final int nClick;
 
-    public Event (int id, int idCategory, int idLocation, String name, String descrizione,String start, String end, int totalSeats, int availableSeats, int totalStanding, int availableStanding, BigDecimal seatPrice, BigDecimal standingPrice, int nClick) {
-        this.id = id;
+    public Event (int id, int idCategory, int idLocation, String nomeLocation, String name, String descrizione,String start, String end, int totalSeats, int availableSeats, int totalStanding, int availableStanding, BigDecimal seatPrice, BigDecimal standingPrice, int nClick) {
+       this.id = id;
         this.idCategory = idCategory;
         this.idLocation = idLocation;
+        this.nomeLocation = nomeLocation;
         this.name = name;
         this.descrizione = descrizione;
         this.start = start;
@@ -67,6 +69,10 @@ public class Event {
         return this.nClick;
     }
 
+    public String getNomeLocation() {
+        return nomeLocation;
+    }
+
     public int getIdLocation() {
         return this.idLocation;
     }
@@ -81,6 +87,10 @@ public class Event {
 
     public String getEnd() {
         return this.end;
+    }
+
+    public String getDescrizione() {
+        return descrizione;
     }
 
     public int getTotalSeats() {
@@ -107,13 +117,27 @@ public class Event {
         return this.standingPrice;
     }
 
+    public static String formatData (String data) {
+        try {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            java.text.SimpleDateFormat outputFormat = new java.text.SimpleDateFormat("dd MMMM yyyy HH:mm");
+            java.util.Date date = sdf.parse(data);
+            return outputFormat.format(date);
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            return data;
+        }
+    }
+
     @Override
     public String toString() {
         return "Event{" +
                 "id='" + id + '\'' +
                 ", idCategory='" + idCategory + '\'' +
                 ", idLocation='" + idLocation + '\'' +
+                ", nome location='" + nomeLocation + '\'' +
                 ", name='" + name + '\'' +
+                ", descrizione='" + descrizione + '\'' +
                 ", start='" + start + '\'' +
                 ", end='" + end + '\'' +
                 ", totalSeats='" + totalSeats + '\'' +

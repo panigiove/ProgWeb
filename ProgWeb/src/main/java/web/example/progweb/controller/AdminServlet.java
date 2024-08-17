@@ -36,7 +36,6 @@ public class AdminServlet extends AbstractController {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             String path = request.getPathInfo();
-            System.out.println(path);
             if (path == null || "/".equals(path)) {
                 request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
             } else if ("/gestioneEventi".equals(path)) {
@@ -128,7 +127,7 @@ public class AdminServlet extends AbstractController {
                 return;
             }
             try {
-                if (!eventModel.checkId(eventId)) {
+                if (!eventModel.checkIdEvent(eventId)) {
                     sendJsonMessage(response, "{\"success\": \"fail\"}");
                 } else {
                     // Attempt to delete the event

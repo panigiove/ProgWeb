@@ -1,49 +1,99 @@
-<%@ page import="web.example.progweb.model.EventModel" %>
-<%@ page import="web.example.progweb.model.entity.Event" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="java.util.List" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">I Nostri Eventi</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <c:forEach var="category" items="${categories}">
-                    <li class="nav-item">
-                        <form method="post" action="${pageContext.request.contextPath}/index/updateCards">
-                            <input type="submit" value="${category.name}" class="nav-link active"/>
-                            <input type="hidden" name="categoryId" value="${category.id}"/>
-                        </form>
-                    </li>
-                </c:forEach>
-            </ul>
-        </div>
-    </div>
+<!-- Titolo centrale -->
+<header class="bg-dark text-white text-center py-4">
+  <h1>I Nostri Eventi</h1>
+</header>
+
+<!-- Navbar con le categorie -->
+<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+  <div class="container-fluid justify-content-center">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link text-white category-link" href="#" data-category-id="1">Concerti</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white category-link" href="#" data-category-id="2">Spettacoli Teatrali</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white category-link" href="#" data-category-id="3">Eventi Sportivi</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white category-link" href="#" data-category-id="4">Visite Guidate a Mostre</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white category-link" href="#" data-category-id="5">Visite Guidate a Musei</a>
+      </li>
+    </ul>
+  </div>
 </nav>
 
-<div class="container text-center">
-    <div class="row">
-        <%
-            if(request.getAttribute("events") != null){
-                List<Event> events = (List<Event>) request.getAttribute("events");
-                for (Event event : events) {
-        %>
-        <div class="col">
-            <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title"><%= event.getName() %></h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-        <%
-                }
-            }
-        %>
-    </div>
-</div>
+<!-- Container for event cards -->
+<div id="eventContainer" class="row row-cols-1 row-cols-md-3 g-4 mt-3"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.category-link').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        let categoryId = this.getAttribute('data-category-id');
+
+        fetch('<%= request.getContextPath() %>/user/getEvents?categoryId=' + categoryId)
+                .then(function (response) {
+                  if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                  }
+                  return response.json();
+                })
+                .then(function (data) {
+                  displayEvents(data);
+                })
+                .catch(function (error) {
+                  console.error('Error fetching events:', error);
+                });
+      });
+    });
+
+    function displayEvents(events) {
+      let container = document.getElementById('eventContainer');
+      container.innerHTML = '';
+
+      events.forEach(function (event) {
+        // Determina le classi da applicare in base alla disponibilità
+        let cardClass = '';
+        if (event.availableSeats === 0 && event.availableStanding === 0) {
+          cardClass = 'card-grigia'; // Card grigia se entrambi i tipi di posti sono esauriti
+        } else if (event.availableSeats === 0 || event.availableStanding === 0) {
+          cardClass = 'card-rosso'; // Card rossa se almeno un tipo di posto è esaurito
+        }
+
+        let card =
+                '<div class="col-lg-4 col-md-6 mb-4">' +  // Adjust column sizing and margin-bottom
+                '<div class="card ' + cardClass + '" style="width: 100%;">' +
+                '<div class="card-body">' +
+                '<h5 class="card-title">' + event.name + '</h5>' +
+                '<p class="card-text">' + event.descrizione + '</p>' +
+                '<p><strong>Location:</strong> ' + event.nomeLocation + '</p>' +  // Display location
+                '<p><strong>Inizio:</strong> ' + formatDate(event.start) + '</p>' +  // Display start time
+                '<p><strong>Fine:</strong> ' + formatDate(event.end) + '</p>' +  // Display end time
+                '<p><strong>Prezzo (Poltrone):</strong> €' + event.seatPrice.toFixed(2) + '</p>' +  // Display seat price
+                '<p><strong>Prezzo (In Piedi):</strong> €' + event.standingPrice.toFixed(2) + '</p>' +  // Display standing price
+                '<p><strong>Disponibilità (Poltrone):</strong> ' + (event.availableSeats === 0 ? '<span class="text-danger">Esaurito</span>' : event.availableSeats) + '</p>' + // Seat availability
+                '<p><strong>Disponibilità (In Piedi):</strong> ' + (event.availableStanding === 0 ? '<span class="text-danger">Esaurito</span>' : event.availableStanding) + '</p>' + // Standing availability
+                '<a href="#" class="btn btn-primary">Dettagli</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+
+        container.insertAdjacentHTML('beforeend', card);
+      });
+    }
+
+    function formatDate(dateString) {
+      const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
+      const date = new Date(dateString);
+      return date.toLocaleDateString('it-IT', options);
+    }
+
+  });
+</script>

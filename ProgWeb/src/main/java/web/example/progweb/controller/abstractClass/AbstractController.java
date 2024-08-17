@@ -11,24 +11,35 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * AbstractController fornisce un template per le servlet del progetto.
+ *
+ * - Gestisce la connessione al database, creando e chiudendo la connessione al momento dell'istanza e distruzione della servlet.
+ * - Offre metodi per inviare pagine di errore, messaggi di errore e risposte JSON al client.
+ */
 public abstract class AbstractController extends HttpServlet {
     protected Connection connection;
+
+    /**
+     * Crea una connessione al DB all'istanza della Servlet-> il progetto è pensato all'utilizzo di una singola connessione a Servlet
+     * @throws ServletException
+     */
     @Override
     public void init() throws ServletException {
-        // Initialization code, if needed
         super.init();
         try{
             connection = AbstractModel.connectDB();
         } catch (SQLException | ClassNotFoundException e) {
-            // Log dell'errore e rilancio dell'eccezione
             System.err.println("Errore durante la connessione al database: " + e.getMessage());
             throw new ServletException("Impossibile stabilire la connessione al database", e);
         }
     }
 
+    /**
+     * Chiusura della connessione alla distruzione della Servlet
+     */
     @Override
     public void destroy() {
-        // Cleanup code, if needed
         super.destroy();
         try {
             connection.close();
@@ -37,18 +48,32 @@ public abstract class AbstractController extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Default implementation or leave it abstract if subclasses must implement it
-        // This can be overridden in subclasses
+    /**
+     * Invia una pagina di errore al client
+     * @param request
+     * @param response
+     * @param message messaggio
+     * @param errorCode il codice dell'errore
+     * @param errorString il messaggio dell'errore
+     * @throws ServletException
+     * @throws IOException
+     */
+    protected void sendErrorPage(HttpServletRequest request, HttpServletResponse response, String message, int errorCode, String errorString) throws ServletException, IOException {
+        request.setAttribute("message", message);
+        request.setAttribute("errorCode", errorCode);
+        request.setAttribute("errorString", errorString);
+        request.getRequestDispatcher("/WEB-INF/view/error.jsp").forward(request, response);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Default implementation or leave it abstract if subclasses must implement it
-        // This can be overridden in subclasses
-    }
-
+    /**
+     * Invia un messaggio di errore al client
+     * @param request
+     * @param response
+     * @param message messaggio
+     * @param errorCode il codice dell'errore
+     * @param errorString il messaggio dell'errore
+     * @throws IOException
+     */
     protected void sendErrorMessage(HttpServletRequest request, HttpServletResponse response, String message, int errorCode, String errorString) throws IOException {
         response.setContentType("text/plain");
         response.setStatus(errorCode);
@@ -57,26 +82,16 @@ public abstract class AbstractController extends HttpServlet {
         }
     }
 
-    protected void sendErrorPage(HttpServletRequest request, HttpServletResponse response, String message, int errorCode, String errorString) throws ServletException, IOException {
-        request.setAttribute("message", message);
-        request.setAttribute("errorCode", errorCode);
-        request.setAttribute("errorString", errorString);
-        request.getRequestDispatcher("/WEB-INF/view/error.jsp").forward(request, response);
-    }
-
-    protected void sendSuccessMessage(HttpServletRequest request, HttpServletResponse response, String message) throws IOException {
-        response.setContentType("text/plain");
-        response.setStatus(HttpServletResponse.SC_OK);
-        try (PrintWriter out = response.getWriter()){
-            out.println(message);
-        }
-    }
-
+    /**
+     * Invio di un messaggio JSON al client
+     * @param response
+     * @param json stringa contenente un JSON
+     * @throws IOException
+     */
     protected void sendJsonMessage(HttpServletResponse response, String json) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        // Write JSON response to the output stream
         try (PrintWriter out = response.getWriter()) {
             out.print(json);
             out.flush();

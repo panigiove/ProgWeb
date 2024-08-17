@@ -87,12 +87,11 @@ INSERT INTO CATEGORIA (categoria) VALUES ('eventi sportivi');
 INSERT INTO CATEGORIA (categoria) VALUES ('visite guidate a mostre');
 INSERT INTO CATEGORIA (categoria) VALUES ('visite guidate a musei');
 
--- Inserimento dell'evento 'Concerto di Rock'
 INSERT INTO EVENTI (
     id_categoria,
     id_localita,
     nome,
-    descrizione,  -- Aggiunto campo descrizione
+    descrizione,
     inizio,
     fine,
     totale_poltrona,
@@ -103,27 +102,26 @@ INSERT INTO EVENTI (
     prezzi_in_piedi,
     n_click
 ) VALUES (
-    1, -- id_categoria (concerti)
-    1, -- id_localita (Trento)
+    1,
+    1,
     'Concerto di Rock',
-    'Un evento musicale imperdibile con band rock famose.', -- Descrizione dell'evento
+    'Un evento musicale imperdibile con band rock famose.',
     '2024-08-10 21:00:00',
     '2024-08-10 23:00:00',
-    100, -- totale_poltrona
-    50,  -- disponibilità_poltrona
-    200, -- totale_in_piedi
-    150, -- disponibilità_in_piedi
-    30.00, -- prezzi_poltrona
-    15.00,  -- prezzi_in_piedi
-    100 -- n_click
+    100,
+    50,
+    200,
+    150,
+    30.00,
+    15.00,
+    100
 );
 
--- Inserimento dell'evento 'Spettacolo Teatrale'
 INSERT INTO EVENTI (
     id_categoria,
     id_localita,
     nome,
-    descrizione,  -- Aggiunto campo descrizione
+    descrizione,
     inizio,
     fine,
     totale_poltrona,
@@ -134,19 +132,363 @@ INSERT INTO EVENTI (
     prezzi_in_piedi,
     n_click
 ) VALUES (
-    2, -- id_categoria (spettacoli teatrali)
-    2, -- id_localita (Povo)
+    2,
+    2,
     'Spettacolo Teatrale',
-    'Un coinvolgente spettacolo teatrale con performance straordinarie.', -- Descrizione dell'evento
+    'Un coinvolgente spettacolo teatrale con performance straordinarie.',
     '2024-09-05 20:00:00',
     '2024-09-05 22:00:00',
-    80,  -- totale_poltrona
-    30,  -- disponibilità_poltrona
-    100, -- totale_in_piedi
-    80,  -- disponibilità_in_piedi
-    25.00, -- prezzi_poltrona
-    10.00,  -- prezzi_in_piedi
-    200 -- n_click
+    80,
+    30,
+    100,
+    80,
+    25.00,
+    10.00,
+    200
+);
+
+INSERT INTO EVENTI (
+    id_categoria,
+    id_localita,
+    nome,
+    descrizione,
+    inizio,
+    fine,
+    totale_poltrona,
+    disponibilita_poltrona,
+    totale_in_piedi,
+    disponibilita_in_piedi,
+    prezzi_poltrona,
+    prezzi_in_piedi,
+    n_click
+) VALUES (
+    1,
+    1,
+    'Concerto di Jazz',
+    'Una serata di musica jazz con artisti internazionali.',
+    '2024-09-15 20:00:00',
+    '2024-09-15 23:00:00',
+    150,
+    70,
+    250,
+    180,
+    35.00,
+    18.00,
+    75
+);
+
+
+INSERT INTO EVENTI (
+    id_categoria,
+    id_localita,
+    nome,
+    descrizione,
+    inizio,
+    fine,
+    totale_poltrona,
+    disponibilita_poltrona,
+    totale_in_piedi,
+    disponibilita_in_piedi,
+    prezzi_poltrona,
+    prezzi_in_piedi,
+    n_click
+) VALUES (
+    2,
+    3,
+    'Commedia dell`Arte',
+    'Un esilarante spettacolo di commedia dell`arte con attori professionisti.',
+    '2024-10-10 19:30:00',
+    '2024-10-10 21:30:00',
+    100,
+    50,
+    120,
+    90,
+    20.00,
+    12.00,
+    90
+);
+
+INSERT INTO EVENTI (
+    id_categoria,
+    id_localita,
+    nome,
+    descrizione,
+    inizio,
+    fine,
+    totale_poltrona,
+    disponibilita_poltrona,
+    totale_in_piedi,
+    disponibilita_in_piedi,
+    prezzi_poltrona,
+    prezzi_in_piedi,
+    n_click
+) VALUES (
+    3,
+    4,
+    'Partita di Calcio',
+    'Una sfida emozionante tra le migliori squadre locali.',
+    '2024-08-20 18:00:00',
+    '2024-08-20 20:00:00',
+    500,
+    0,
+    1000,
+    0,
+    40.00,
+    25.00,
+    200
+);
+
+INSERT INTO EVENTI (
+    id_categoria,
+    id_localita,
+    nome,
+    descrizione,
+    inizio,
+    fine,
+    totale_poltrona,
+    disponibilita_poltrona,
+    totale_in_piedi,
+    disponibilita_in_piedi,
+    prezzi_poltrona,
+    prezzi_in_piedi,
+    n_click
+) VALUES (
+    4,
+    5,
+    'Mostra d`Arte Moderna',
+    'Una visita guidata attraverso le più recenti opere di arte moderna.',
+    '2024-08-25 10:00:00',
+    '2024-08-25 12:00:00',
+    50,
+    25,
+    0,
+    0,
+    15.00,
+    0.00,
+    60
+);
+
+INSERT INTO EVENTI (
+    id_categoria,
+    id_localita,
+    nome,
+    descrizione,
+    inizio,
+    fine,
+    totale_poltrona,
+    disponibilita_poltrona,
+    totale_in_piedi,
+    disponibilita_in_piedi,
+    prezzi_poltrona,
+    prezzi_in_piedi,
+    n_click
+) VALUES (
+    5, 
+    2,
+    'Tour del Museo di Storia Naturale',
+    'Una visita guidata al museo con focus sulle esposizioni di storia naturale.',
+    '2024-09-20 14:00:00',
+    '2024-09-20 16:00:00',
+    40, 
+    20,  
+    0,   
+    0,   
+    12.00, 
+    0.00,  
+    45 
+);
+
+INSERT INTO EVENTI (
+    id_categoria,
+    id_localita,
+    nome,
+    descrizione,
+    inizio,
+    fine,
+    totale_poltrona,
+    disponibilita_poltrona,
+    totale_in_piedi,
+    disponibilita_in_piedi,
+    prezzi_poltrona,
+    prezzi_in_piedi,
+    n_click
+) VALUES (
+    1, 
+    3,
+    'Concerto di Jazz`s Delight',
+    'Un evento esclusivo con alcuni dei migliori artisti jazz internazionali.',
+    '2024-10-15 20:00:00',
+    '2024-10-15 23:00:00',
+    150,
+    0,  
+    300, 
+    0,
+    35.00, 
+    20.00,
+    150 
+);
+
+
+INSERT INTO EVENTI (
+    id_categoria,
+    id_localita,
+    nome,
+    descrizione,
+    inizio,
+    fine,
+    totale_poltrona,
+    disponibilita_poltrona,
+    totale_in_piedi,
+    disponibilita_in_piedi,
+    prezzi_poltrona,
+    prezzi_in_piedi,
+    n_click
+) VALUES (
+    2, 
+    1, 
+    'Teatro dell`Assurdo',
+    'Una commedia teatrale esilarante e surreale che esplora l`assurdo della vita.',
+    '2024-11-01 21:00:00',
+    '2024-11-01 23:00:00',
+    100, 
+    50,  
+    0,  
+    0,   
+    28.00, 
+    0.00,  
+    180 
+);
+
+INSERT INTO EVENTI (
+    id_categoria,
+    id_localita,
+    nome,
+    descrizione,
+    inizio,
+    fine,
+    totale_poltrona,
+    disponibilita_poltrona,
+    totale_in_piedi,
+    disponibilita_in_piedi,
+    prezzi_poltrona,
+    prezzi_in_piedi,
+    n_click
+) VALUES (
+    3,
+    2, 
+    'Maratona di Povo',
+    'Una maratona annuale che attira corridori da tutto il mondo.',
+    '2024-12-01 09:00:00',
+    '2024-12-01 15:00:00',
+    500, 
+    200, 
+    1000, 
+    800, 
+    40.00, 
+    20.00, 
+    300 
+);
+
+INSERT INTO EVENTI (
+    id_categoria,
+    id_localita,
+    nome,
+    descrizione,
+    inizio,
+    fine,
+    totale_poltrona,
+    disponibilita_poltrona,
+    totale_in_piedi,
+    disponibilita_in_piedi,
+    prezzi_poltrona,
+    prezzi_in_piedi,
+    n_click
+) VALUES (
+    4,
+    4,
+    'Mostra di Arte Moderna',
+    'Una visita guidata alla mostra di arte moderna con opere di artisti contemporanei.',
+    '2024-10-20 10:00:00',
+    '2024-10-20 12:00:00',
+    80, 
+    40,  
+    0,   
+    0,   
+    25.00, 
+    0.00,  
+    90 
+);
+
+INSERT INTO EVENTI (
+    id_categoria,
+    id_localita,
+    nome,
+    descrizione,
+    inizio,
+    fine,
+    totale_poltrona,
+    disponibilita_poltrona,
+    totale_in_piedi,
+    disponibilita_in_piedi,
+    prezzi_poltrona,
+    prezzi_in_piedi,
+    n_click
+) VALUES (
+    5, 
+    5, 
+    'Visita al Museo d`Arte Antica',
+    'Esplora una collezione di arte antica con una guida esperta.',
+    '2024-11-10 11:00:00',
+    '2024-11-10 13:00:00',
+    50, 
+    20,  
+    0,   
+    0,   
+    18.00, 
+    0.00,  
+    60 
+);
+
+INSERT INTO EVENTI (
+    id_categoria,
+    id_localita,
+    nome,
+    descrizione,
+    inizio,
+    fine,
+    totale_poltrona,
+    disponibilita_poltrona,
+    totale_in_piedi,
+    disponibilita_in_piedi,
+    prezzi_poltrona,
+    prezzi_in_piedi,
+    n_click
+) VALUES (
+    1, 
+    5, 
+    'Concerto di Musica Classica',
+    'Un concerto di musica classica con un ensemble di musicisti di fama.',
+    '2024-12-15 20:00:00',
+    '2024-12-15 22:00:00',
+    120,
+    60,  
+    0,  
+    0,   
+    50.00, 
+    0.00,  
+    130 
+);
+
+
+
+INSERT INTO SCONTI_EVENTO (
+    id_evento,
+    data_scadenza,
+    sconto
+) VALUES (
+    1, 
+    '2024-12-09',
+    10.00 
 );
 
 INSERT INTO SCONTI_EVENTO (
@@ -154,26 +496,36 @@ INSERT INTO SCONTI_EVENTO (
     data_scadenza,
     sconto
 ) VALUES (
-    1, -- id_evento (Concerto di Rock)
-    '2024-08-09',
-    10.00 -- sconto (10%)
-);
-
-INSERT INTO SCONTI_EVENTO (
-    id_evento,
-    data_scadenza,
-    sconto
-) VALUES (
-    2, -- id_evento (Spettacolo Teatrale)
+    2, 
     '2024-09-04',
-    15.00 -- sconto (15%)
+    15.00 
+);
+
+INSERT INTO SCONTI_EVENTO (
+    id_evento,
+    data_scadenza,
+    sconto
+) VALUES (
+    4, 
+    '2025-03-08',
+    15.00 
+);
+
+INSERT INTO SCONTI_EVENTO (
+    id_evento,
+    data_scadenza,
+    sconto
+) VALUES (
+    3, 
+    '2025-01-14',
+    15.00 
 );
 
 INSERT INTO STATISTICHE_CATEGORIA (
     id_categoria,
     n_click
 ) VALUES (
-    1, -- id_categoria (concerti)
+    1, 
     200
 );
 
@@ -181,7 +533,7 @@ INSERT INTO STATISTICHE_CATEGORIA (
     id_categoria,
     n_click
 ) VALUES (
-    2, -- id_categoria (spettacoli teatrali)
+    2, 
     120
 );
 
@@ -225,10 +577,6 @@ INSERT INTO UTENTI (
     'securepass456'
 );
 
-
--- Per il Concerto di Rock, prezzo per poltrona è 30.00
--- Prezzo finale per poltrona con sconto: 30.00 * (1 - 0.10) = 27.00
--- Prezzo totale per 2 poltrone: 27.00 * 2 = 54.00
 INSERT INTO PRENOTAZIONE_BIGLIETTI (
     id_evento,
     id_utente,
@@ -238,18 +586,16 @@ INSERT INTO PRENOTAZIONE_BIGLIETTI (
     data_acquisto,
     prezzo
 ) VALUES (
-    1, -- id_evento (Concerto di Rock)
-    1, -- id_utente (Mario Rossi)
-    1, -- id_sconto (10% sconto)
-    2, -- quantita_poltrona
-    0, -- quantita_in_piedi
+    1, 
+    1, 
+    1, 
+    2,
+    0, 
     '2024-08-01 10:30:00',
-    54.00 -- Prezzo totale dopo sconto per 2 poltrone
+    54.00 
 );
 
--- Per lo Spettacolo Teatrale, prezzo per in piedi è 10.00
--- Prezzo finale per in piedi con sconto: 10.00 * (1 - 0.15) = 8.50
--- Prezzo totale per 1 biglietto: 8.50
+
 INSERT INTO PRENOTAZIONE_BIGLIETTI (
     id_evento,
     id_utente,
@@ -259,13 +605,13 @@ INSERT INTO PRENOTAZIONE_BIGLIETTI (
     data_acquisto,
     prezzo
 ) VALUES (
-    2, -- id_evento (Spettacolo Teatrale)
-    2, -- id_utente (Giulia Bianchi)
-    2, -- id_sconto (15% sconto)
-    0, -- quantita_poltrona
-    1, -- quantita_in_piedi
+    2, 
+    2,
+    2,
+    0, 
+    1,
     '2024-08-02 11:00:00',
-    8.50 -- Prezzo totale dopo sconto per 1 biglietto in piedi
+    8.50
 );
 
 INSERT INTO AMMINISTRATORI (

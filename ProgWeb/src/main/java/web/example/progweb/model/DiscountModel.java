@@ -2,6 +2,7 @@ package web.example.progweb.model;
 
 import web.example.progweb.model.abstractClass.AbstractModel;
 import web.example.progweb.model.entity.Discount;
+import web.example.progweb.model.entity.Event;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +11,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DiscountModel gestisce le operazioni relative agli sconti.
+ *
+ * Fornisce metodi per creare, cancellare, ottenere sconti per evento e ottenere tutti gli sconti validi.
+ *
+ * Classe Discount per passare i risultati delle query
+ */
 public class DiscountModel extends AbstractModel {
 
     private PreparedStatement getValidDiscountsOfEventPreparedStatement;
@@ -17,17 +25,19 @@ public class DiscountModel extends AbstractModel {
     private PreparedStatement deleteDiscountPreparedStatement;
     private PreparedStatement createDiscountPreparedStatement;
 
+    private EventModel eventModel;
+
     public DiscountModel() throws SQLException, ClassNotFoundException {
         super();
-        prepareStatements();
+        eventModel = new EventModel(connection);
     }
 
     public DiscountModel(Connection connection) throws SQLException{
         super(connection);
-        prepareStatements();
+        eventModel = new EventModel(connection);
     }
 
-    private void prepareStatements() throws  SQLException {
+    protected void prepareStatements() throws  SQLException {
         getDiscountByIdPreparedStatement = connection.prepareStatement("SELECT * FROM SCONTI_EVENTO WHERE id_sconto = ?");
         deleteDiscountPreparedStatement = connection.prepareStatement("DELETE FROM SCONTI_EVENTO WHERE id_sconto = ?");
         createDiscountPreparedStatement = connection.prepareStatement("INSERT INTO SCONTI_EVENTO (id_evento, data_scadenza, sconto) VALUES (?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
@@ -45,9 +55,11 @@ public class DiscountModel extends AbstractModel {
         ResultSet resultSet = getDiscountByIdPreparedStatement.executeQuery();
         Discount discount = null;
         if (resultSet.next()) {
+            String nomeEvento = eventModel.getEventName(resultSet.getInt("id_evento"));
             discount = new Discount(
                     resultSet.getInt("id_sconto"),
                     resultSet.getInt("id_evento"),
+                    nomeEvento,
                     resultSet.getString("data_scadenza"),
                     resultSet.getBigDecimal("sconto")
             );
@@ -58,17 +70,17 @@ public class DiscountModel extends AbstractModel {
     public List<Discount> getValidDiscountsOfEvent(int idEvent) throws SQLException {
         List<Discount> discounts = new ArrayList<>();
 
-        // Use the prepared statement to get valid discounts for the event
         try (PreparedStatement statement = getValidDiscountsOfEventPreparedStatement) {
-            statement.setInt(1, idEvent);  // Set the event ID parameter in the prepared statement
+            statement.setInt(1, idEvent);
 
             // Execute the query and process the results
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
-                    // Assuming the Discount class has a constructor that takes all relevant columns from the SCONTI_EVENTO table
+                    String nomeEvento = eventModel.getEventName(rs.getInt("id_evento"));
                     Discount discount = new Discount(
                             rs.getInt("id_sconto"),
                             rs.getInt("id_evento"),
+                            nomeEvento,
                             rs.getString("data_scadenza"),
                             rs.getBigDecimal("sconto")
                     );
@@ -107,9 +119,11 @@ public class DiscountModel extends AbstractModel {
         String query = "SELECT * FROM SCONTI_EVENTO WHERE data_scadenza >= CURRENT_DATE";
         ResultSet rs = unsafeExecuteQuery(query);
         while (rs.next()) {
+            String nomeEvento = eventModel.getEventName(rs.getInt("id_evento"));
             Discount discount = new Discount(
                     rs.getInt("id_sconto"),
                     rs.getInt("id_evento"),
+                    nomeEvento,
                     rs.getString("data_scadenza"),
                     rs.getBigDecimal("sconto")
             );
