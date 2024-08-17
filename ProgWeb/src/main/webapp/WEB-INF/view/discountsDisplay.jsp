@@ -1,6 +1,6 @@
 <%@ page import="web.example.progweb.model.entity.Discount" %>
-<%@ page import="com.google.gson.Gson" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.google.gson.Gson" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <style>
@@ -23,22 +23,9 @@
 </style>
 
 <script>
-  async function fetchDiscounts() {
-    try {
-      const response = await fetch('<%= request.getContextPath() %>/user/getDiscounts');
-      if (!response.ok) {
-        throw new Error('Network response was not ok.');
-      }
-      return response.json();
-    } catch (error) {
-      console.error('Fetch error:', error);
-      return [];
-    }
-  }
+  const discounts = <%= new Gson().toJson((List<Discount>) request.getAttribute("discounts")) %>;
 
-  async function update() {
-    const discounts = await fetchDiscounts();
-
+  function update() {
     if (discounts.length > 0) {
       const randomIndex = Math.floor(Math.random() * discounts.length);
       const discount = discounts[randomIndex];
@@ -68,8 +55,11 @@
     }
   }
 
-  // Esegue la funzione update solo all'avvio della pagina
+  // Esegue la funzione update all'avvio della pagina
   window.onload = update;
+
+  // Imposta un intervallo per aggiornare lo sconto ogni 15 secondi
+  setInterval(update, 15000);
 </script>
 
 <div class="container text-center mt-5">

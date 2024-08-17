@@ -35,8 +35,10 @@ public class IndexServlet extends AbstractController {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         try {
             String path = request.getPathInfo();
-            if ("/getEvents".equals(path))
-            {
+            if (path == null || "/".equals(path)){
+                request.setAttribute("discounts", discountModel.getValidDiscounts());
+                request.getRequestDispatcher("/index.jsp").forward(request, response);
+            }else if ("/getEvents".equals(path)){
                 String categoryIdParam = request.getParameter("categoryId");
                 if (categoryIdParam != null){
                     try{
@@ -50,11 +52,8 @@ public class IndexServlet extends AbstractController {
                         sendErrorMessage(request, response, "Formato ID categoria non valido", HttpServletResponse.SC_BAD_REQUEST, "Invalid Category ID");
                     }
                 }else{
-                    request.getRequestDispatcher("/index.jsp").forward(request, response);
+                    sendJsonMessage(response, new Gson().toJson(eventModel.getEvents()));
                 }
-            }else if ("/getDiscounts".equals(path)){
-                System.out.println(new Gson().toJson(discountModel.getValidDiscounts()));
-                sendJsonMessage(response, new Gson().toJson(discountModel.getValidDiscounts()));
             }
         } catch (SQLException e) {
             System.err.println("Errore durante la connessione al database: " + e.getMessage());
