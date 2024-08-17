@@ -55,6 +55,8 @@ public class IndexServlet extends AbstractController {
                 }else{
                     sendJsonMessage(response, new Gson().toJson(eventModel.getEvents()));
                 }
+            }else {
+                sendErrorPage(request, response, "Path non trovato", HttpServletResponse.SC_NOT_FOUND, "Not Found");
             }
         } catch (SQLException e) {
             System.err.println("Errore durante la connessione al database: " + e.getMessage());

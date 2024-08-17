@@ -5,10 +5,16 @@
     Object isAdmin = session.getAttribute("isAdmin");
 %>
 
-<nav class="navbar navbar-light bg-light">
+<style>
+    .navbar{
+        background-color: #A1C7A6 !important;
+    }
+</style>
+
+<nav class="navbar navbar-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <img src="${pageContext.request.contextPath}/images/icon.jpg" alt="Icon" width="30" height="30">
+            <img src="${pageContext.request.contextPath}/images/icon.svg" alt="Icon" width="30" height="30">
             EntriEasy
         </a>
 

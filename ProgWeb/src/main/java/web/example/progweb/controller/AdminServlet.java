@@ -44,6 +44,7 @@ public class AdminServlet extends AbstractController {
             } else if ("/gestioneEventi".equals(path)) {
                 List<Event> events;
                 String sortByClicks = request.getParameter("sortByClicks");
+                String newEventCreated = request.getParameter("newEventCreated");
                 List<Category> categories = eventModel.getAllCategory();
                 List<AbstractMap.SimpleEntry<String, Integer>> nclicks = new ArrayList<>();;
                 for(Category category : categories){
@@ -53,6 +54,11 @@ public class AdminServlet extends AbstractController {
                     events = eventModel.getEventsOrderedByClick();
                 } else {
                     events = eventModel.getEvents();
+                }
+                if ("true".equals(newEventCreated)){
+                    request.setAttribute("newEventCreated", true);
+                }else{
+                    request.setAttribute("newEventCreated", false);
                 }
                 request.setAttribute("nclicks", nclicks);
                 request.setAttribute("events", events);
@@ -116,7 +122,7 @@ public class AdminServlet extends AbstractController {
                 );
 
                 if (newEvent != null) {
-                    response.sendRedirect(request.getContextPath() + "/admin/gestioneEventi");
+                    response.sendRedirect(request.getContextPath() + "/admin/gestioneEventi?newEventCreated=true");
                 } else {
                     sendErrorMessage(request, response, "Failed to insert event", HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Insertion Failure");
                 }

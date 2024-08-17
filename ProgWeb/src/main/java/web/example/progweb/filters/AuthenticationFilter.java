@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(filterName = "AuthenticationFilter", urlPatterns = {"/admin/*", "/LogoutServlet", "/event/*"})
+//@WebFilter(filterName = "AuthenticationFilter", urlPatterns = {"/admin/*", "/LogoutServlet", "/event/*"})
+@WebFilter(filterName = "AuthenticationFilter", urlPatterns = {"/LogoutServlet", "/event/*"})
 public class AuthenticationFilter implements Filter {
 
     @Override

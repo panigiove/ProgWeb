@@ -1,34 +1,59 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<style>
+  .navbar {
+    background-color: #A1C7A6;
+  }
 
-<!-- Titolo centrale -->
-<header class="bg-dark text-white text-center py-4">
+  .category-link {
+    color: #fff;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .category-link:hover,
+  .category-link.active {
+    background-color: #8ABF8C;
+    color: #fff;
+  }
+
+  .category-link.active {
+    background-color: #8ABF8C;
+  }
+
+  .header {
+    color: #000;
+    text-align: center;
+    padding: 20px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+  }
+</style>
+
+<header class="header">
   <h1>I Nostri Eventi</h1>
 </header>
 
-<!-- Navbar con le categorie -->
-<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+<nav class="navbar navbar-expand-lg navbar-light">
   <div class="container-fluid justify-content-center">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link text-white category-link" href="#" data-category-id="1">Concerti</a>
+        <a class="nav-link category-link" href="#" data-category-id="1">Concerti</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-white category-link" href="#" data-category-id="2">Spettacoli Teatrali</a>
+        <a class="nav-link category-link" href="#" data-category-id="2">Spettacoli Teatrali</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-white category-link" href="#" data-category-id="3">Eventi Sportivi</a>
+        <a class="nav-link category-link" href="#" data-category-id="3">Eventi Sportivi</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-white category-link" href="#" data-category-id="4">Visite Guidate a Mostre</a>
+        <a class="nav-link category-link" href="#" data-category-id="4">Visite Guidate a Mostre</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-white category-link" href="#" data-category-id="5">Visite Guidate a Musei</a>
+        <a class="nav-link category-link" href="#" data-category-id="5">Visite Guidate a Musei</a>
       </li>
     </ul>
   </div>
 </nav>
 
-<!-- Container for event cards -->
 <div id="eventContainer" class="row row-cols-1 row-cols-md-3 g-4 mt-3"></div>
 
 <script>
@@ -36,6 +61,13 @@
     document.querySelectorAll('.category-link').forEach(function (link) {
       link.addEventListener('click', function (e) {
         e.preventDefault();
+
+        document.querySelectorAll('.category-link').forEach(function (link) {
+          link.classList.remove('active');
+        });
+
+        this.classList.add('active');
+
         let categoryId = this.getAttribute('data-category-id');
 
         fetch('<%= request.getContextPath() %>/index/getEvents?categoryId=' + categoryId)
@@ -59,27 +91,26 @@
       container.innerHTML = '';
 
       events.forEach(function (event) {
-        // Determina le classi da applicare in base alla disponibilità
         let cardClass = '';
         if (event.availableSeats === 0 && event.availableStanding === 0) {
-          cardClass = 'card-grigia'; // Card grigia se entrambi i tipi di posti sono esauriti
+          cardClass = 'card-grigia';
         } else if (event.availableSeats === 0 || event.availableStanding === 0) {
-          cardClass = 'card-rosso'; // Card rossa se almeno un tipo di posto è esaurito
+          cardClass = 'card-rosso';
         }
 
         let card =
-                '<div class="col-lg-4 col-md-6 mb-4">' +  // Adjust column sizing and margin-bottom
+                '<div class="col-lg-4 col-md-6 mb-4 ml-2">' +
                 '<div class="card ' + cardClass + '" style="width: 100%;">' +
                 '<div class="card-body">' +
                 '<h5 class="card-title">' + event.name + '</h5>' +
                 '<p class="card-text">' + event.descrizione + '</p>' +
-                '<p><strong>Luogo:</strong> ' + event.nomeLocation + '</p>' +  // Display location
-                '<p><strong>Inizio:</strong> ' + formatDate(event.start) + '</p>' +  // Display start time
-                '<p><strong>Fine:</strong> ' + formatDate(event.end) + '</p>' +  // Display end time
-                '<p><strong>Prezzo (Poltrone):</strong> €' + event.seatPrice.toFixed(2) + '</p>' +  // Display seat price
-                '<p><strong>Prezzo (In Piedi):</strong> €' + event.standingPrice.toFixed(2) + '</p>' +  // Display standing price
-                '<p><strong>Disponibilità (Poltrone):</strong> ' + (event.availableSeats === 0 ? '<span class="text-danger">Esaurito</span>' : event.availableSeats) + '</p>' + // Seat availability
-                '<p><strong>Disponibilità (In Piedi):</strong> ' + (event.availableStanding === 0 ? '<span class="text-danger">Esaurito</span>' : event.availableStanding) + '</p>' + // Standing availability
+                '<p><strong>Luogo:</strong> ' + event.nomeLocation + '</p>' +
+                '<p><strong>Inizio:</strong> ' + formatDate(event.start) + '</p>' +
+                '<p><strong>Fine:</strong> ' + formatDate(event.end) + '</p>' +
+                '<p><strong>Prezzo (Poltrone):</strong> €' + event.seatPrice.toFixed(2) + '</p>' +
+                '<p><strong>Prezzo (In Piedi):</strong> €' + event.standingPrice.toFixed(2) + '</p>' +
+                '<p><strong>Disponibilità (Poltrone):</strong> ' + (event.availableSeats === 0 ? '<span class="text-danger">Esaurito</span>' : event.availableSeats) + '</p>' +
+                '<p><strong>Disponibilità (In Piedi):</strong> ' + (event.availableStanding === 0 ? '<span class="text-danger">Esaurito</span>' : event.availableStanding) + '</p>' +
                 '<a href="<%= request.getContextPath() %>/event?eventId=' + event.id + '" class="btn btn-primary">Dettagli</a>' +
                 '</div>' +
                 '</div>' +
@@ -94,6 +125,5 @@
       const date = new Date(dateString);
       return date.toLocaleDateString('it-IT', options);
     }
-
   });
 </script>

@@ -1,7 +1,3 @@
-<%@ page import="web.example.progweb.model.entity.Discount" %>
-<%@ page import="java.util.List" %>
-<%@ page import="com.google.gson.Gson" %>
-<%@ page import="web.example.progweb.model.entity.Category" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -21,7 +17,7 @@
 <jsp:include page="/WEB-INF/view/display3MostClickedEvent.jsp"/><br>
 <jsp:include page="/WEB-INF/view/displayEventsNavbar.jsp"/><br>
 <jsp:include page="/WEB-INF/view/footer.jsp"/>
-
+<jsp:include page="/WEB-INF/view/returnTopPage.jsp"/>
 <div style="height: 150px"></div>
 </body>
 </html>
