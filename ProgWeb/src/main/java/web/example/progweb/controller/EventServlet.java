@@ -71,7 +71,6 @@ public class EventServlet extends AbstractController {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo();
         try {
-            System.out.println("username " + req.getParameter("username"));
             Event event = eventModel.getEventById(Integer.parseInt(req.getParameter("event")));
             int idUser = userModel.getUserId(req.getParameter("username"));
             String username = req.getParameter("username");
@@ -84,7 +83,6 @@ public class EventServlet extends AbstractController {
                 req.setAttribute("discount", discountModel.getDiscountById(idDiscount));
             }else req.setAttribute("discount", null);
 
-
             if (nSeats == 0 && nStands ==0){
                 sendErrorPage(req, resp, "", HttpServletResponse.SC_BAD_REQUEST, "BAD REQUEST");
                 return;
@@ -92,15 +90,17 @@ public class EventServlet extends AbstractController {
 
             if ("/buyTicket".equals(path)) {
                 BigDecimal price = ticketModel.calculatePrice(event.getId(), idUser, idDiscount, nSeats, nStands);
+                BigDecimal priceNoFree = ticketModel.calculatePriceNoFreeTickets(event.getId(), idDiscount, nSeats, nStands);
+                int nOfferedTickets = ticketModel.calculateFreeTickets(userModel.getPurchases(idUser), nSeats+nStands);
                 req.setAttribute("events", event);
                 req.setAttribute("nSeats", nSeats);
                 req.setAttribute("nStands", nStands);
                 req.setAttribute("username", username);
                 req.setAttribute("price", new DecimalFormat("0.00").format(price));
-                req.setAttribute("isFree", (userModel.getPurchases(idUser)+1) % 5== 0);
+                req.setAttribute("priceNoFree", new DecimalFormat("0.00").format(priceNoFree));
+                req.setAttribute("nOfferedTickets", nOfferedTickets);
                 req.getRequestDispatcher("/WEB-INF/view/orderConfirm.jsp").forward(req, resp);
             } else if ("/buyTicketConferm".equals(path)){
-                System.out.println(event.getId() + " " + idUser + " " + idDiscount + " " + nSeats + " " + nStands);
                 if (ticketModel.buyTicket(event.getId(), idUser, idDiscount, nSeats, nStands) != null){
                     req.setAttribute("status", "success");
                     req.getRequestDispatcher("/WEB-INF/view/successPayment.jsp").forward(req, resp);

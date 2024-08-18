@@ -109,8 +109,6 @@ public class Event {
         return this.availableSeats;
     }
 
-
-
     public int getTotalStanding() {
         return this.totalStanding;
     }

@@ -18,7 +18,7 @@
     }
 </style>
 
-<main class="container mt-5">
+<main class="mt-5">
     <h2 class="text-center">Informazioni Aziendali</h2>
     <div class="border-line"></div>
     <div class="row info-container mt-4 mb-6">

@@ -50,7 +50,7 @@ public class UserModel extends AbstractModel {
         anonimizzareBigliettiPreparedStatement = connection.prepareStatement("UPDATE PRENOTAZIONE_BIGLIETTI SET id_utente = -1 WHERE id_utente = ?");
         getUserPreparedStatement = connection.prepareStatement("SELECT * FROM UTENTI WHERE id_utente = ?");
         getUserIdPreparedStatement = connection.prepareStatement("SELECT id_utente FROM UTENTI WHERE username = ?");
-        incrementPurchasesPreparedStatement = connection.prepareStatement("UPDATE UTENTI SET n_acquisti = n_acquisti + 1 WHERE id_utente = ?");
+        incrementPurchasesPreparedStatement = connection.prepareStatement("UPDATE UTENTI SET n_acquisti = n_acquisti + ? WHERE id_utente = ?");
         getPurchasePreparedStatement = connection.prepareStatement("SELECT n_acquisti FROM UTENTI WHERE id_utente = ?");
         checkIdPreparedStatement = connection.prepareStatement("SELECT * FROM UTENTI WHERE id_utente = ?");
     }
@@ -94,9 +94,7 @@ public class UserModel extends AbstractModel {
     public void deleteUser(String username) throws SQLException {
         int userId = getUserId(username);
         if (userId != -1) {
-//            anonimizzareBigliettiPreparedStatement.setInt(1, userId);
             deleteUserPreparedStatement.setInt(1, userId);
-//            anonimizzareBigliettiPreparedStatement.executeUpdate();
             deleteUserPreparedStatement.executeUpdate();
         }
     }
@@ -139,8 +137,9 @@ public class UserModel extends AbstractModel {
         return resultSet.next();
     }
 
-    public void incrementPurchases(int id) throws SQLException {
-        incrementPurchasesPreparedStatement.setInt(1, id);
+    public void incrementPurchases(int id, int nPurchases) throws SQLException {
+        incrementPurchasesPreparedStatement.setInt(1, nPurchases);
+        incrementPurchasesPreparedStatement.setInt(2, id);
         incrementPurchasesPreparedStatement.executeUpdate();
     }
 

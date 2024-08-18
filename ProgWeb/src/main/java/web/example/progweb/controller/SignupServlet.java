@@ -31,7 +31,6 @@ public class SignupServlet extends AbstractController {
         response.setContentType("text/plain");
         try{
             if(userModel.checkUsername(username)){
-                sendErrorMessage(request, response, "Il nome utente esiste già!", 409 , "Conflict");
                 request.setAttribute("errorMessage", "Il nome utente esiste già");
                 request.getRequestDispatcher("/WEB-INF/view/signUp.jsp").forward(request, response);
             }

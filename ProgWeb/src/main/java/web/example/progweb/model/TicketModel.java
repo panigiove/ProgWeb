@@ -4,6 +4,8 @@ import web.example.progweb.model.abstractClass.AbstractModel;
 import web.example.progweb.model.entity.*;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -85,7 +87,7 @@ public class TicketModel extends AbstractModel {
             int affectedRows = createTicketPreparedStatement.executeUpdate();
             if (affectedRows != 0) {
                 eventModel.decrementAvailability(id_event, n_seats, n_stands);
-                userModel.incrementPurchases(id_user);
+                userModel.incrementPurchases(id_user, n_seats+n_stands);
                 try (ResultSet generatedKeys = createTicketPreparedStatement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         return getTicket(generatedKeys.getInt(1));
@@ -107,21 +109,64 @@ public class TicketModel extends AbstractModel {
      * @throws SQLException
      */
     public BigDecimal calculatePrice(int id_event, int id_user, int id_discount, int n_seats, int n_stands) throws SQLException {
-        BigDecimal price = new BigDecimal(0);
-        if ((userModel.getPurchases(id_user) + 1) % 5 != 0) {
-            Event event = eventModel.getEventById(id_event);
+        // dettagli evento
+        Event event = eventModel.getEventById(id_event);
+        BigDecimal seatPrice = event.getSeatPrice();
+        BigDecimal standPrice = event.getStandingPrice();
 
-            BigDecimal discount = new BigDecimal(0);
-            if (id_discount > 0) {
-                discount = discountModel.getDiscountById(id_discount).getDiscount().divide(new BigDecimal(100));
+        // biglietti offerti dalla policy
+        int totalFreeTickets = calculateFreeTickets(userModel.getPurchases(id_user), n_seats + n_stands);
+
+        // togliere prima i biglietti più costosi
+        if (seatPrice.compareTo(standPrice) > 0) {
+            if (totalFreeTickets >= n_seats) {
+                totalFreeTickets -= n_seats;
+                n_seats = 0;
+            } else {
+                n_seats -= totalFreeTickets;
+                totalFreeTickets = 0;
             }
-
-            BigDecimal seatPrice = event.getSeatPrice().multiply(new BigDecimal(n_seats));
-            BigDecimal standPrice = event.getStandingPrice().multiply(new BigDecimal(n_stands));
-            price = seatPrice.add(standPrice);
-            price = price.subtract(price.multiply(discount));
+            n_stands = Math.max(n_stands - totalFreeTickets, 0);
+        } else {
+            if (totalFreeTickets >= n_stands) {
+                totalFreeTickets -= n_stands;
+                n_stands = 0;
+            } else {
+                n_stands -= totalFreeTickets;
+                totalFreeTickets = 0;
+            }
+            n_seats = Math.max(n_seats - totalFreeTickets, 0);
         }
-        return price;
+
+        BigDecimal seatTotalPrice = seatPrice.multiply(new BigDecimal(n_seats));
+        BigDecimal standTotalPrice = standPrice.multiply(new BigDecimal(n_stands));
+        BigDecimal price = seatTotalPrice.add(standTotalPrice);
+
+        BigDecimal discount = BigDecimal.ZERO;
+        if (id_discount > 0) {
+            discount = discountModel.getDiscountById(id_discount).getDiscount().divide(new BigDecimal(100), RoundingMode.HALF_UP);
+        }
+        return price.subtract(price.multiply(discount));
+    }
+
+    public BigDecimal calculatePriceNoFreeTickets(int id_event, int id_discount, int n_seats, int n_stands) throws SQLException{
+        Event event = eventModel.getEventById(id_event);
+        BigDecimal seatPrice = event.getSeatPrice();
+        BigDecimal standPrice = event.getStandingPrice();
+
+        BigDecimal seatTotalPrice = seatPrice.multiply(new BigDecimal(n_seats));
+        BigDecimal standTotalPrice = standPrice.multiply(new BigDecimal(n_stands));
+        BigDecimal price = seatTotalPrice.add(standTotalPrice);
+
+        BigDecimal discount = BigDecimal.ZERO;
+        if (id_discount > 0) {
+            discount = discountModel.getDiscountById(id_discount).getDiscount().divide(new BigDecimal(100), RoundingMode.HALF_UP);
+        }
+        return price.subtract(price.multiply(discount));
+    }
+
+    public int calculateFreeTickets(int nPurchases,int nTickets){
+        return ((nPurchases % 5) + nTickets )/5;
     }
 
     public List<Ticket> getAllUserTicket (int idUser) throws SQLException {

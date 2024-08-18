@@ -30,8 +30,6 @@
         <filter-name>AuthenticationFilter</filter-name>
         <url-pattern>/admin/*</url-pattern>
         <url-pattern>/LogoutServlet</url-pattern>
-        <url-pattern>/event/buyTicket</url-pattern>
-        <url-pattern>/event/buyTicketConferm</url-pattern>
         <url-pattern>/personalArea/*</url-pattern>
     </filter-mapping>
 
@@ -43,4 +41,15 @@
         <filter-name>AdminFilter</filter-name>
         <url-pattern>/admin/*</url-pattern>
     </filter-mapping>
+
+    <filter>
+        <filter-name>PurchaseFilter</filter-name>
+        <filter-class>web.example.progweb.filters.PurchaseFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>PurchaseFilter</filter-name>
+        <url-pattern>/event/buyTicket</url-pattern>
+        <url-pattern>/event/buyTicketConferm</url-pattern>
+    </filter-mapping>
+
 </web-app>

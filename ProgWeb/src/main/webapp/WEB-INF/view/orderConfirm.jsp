@@ -48,7 +48,8 @@
                     int nStands = (Integer) request.getAttribute("nStands");
                     String username = (String) request.getAttribute("username");
                     String price = (String) request.getAttribute("price");
-                    Boolean isFree = (Boolean) request.getAttribute("isFree");
+                    int nOfferedTickets = (Integer) request.getAttribute("nOfferedTickets");
+                    String priceNoFree = (String) request.getAttribute("priceNoFree");
                 %>
 
                 <div class="order-summary">
@@ -66,8 +67,8 @@
                     <p><strong>Nessuno Sconto Applicato</strong></p>
                     <% } %>
 
-                    <% if (isFree) { %>
-                    <p><strong>QUESTO BIGLIETTO E' OFFERTO DALLA OFFERTA OGNI 5 UNO GRATIS</strong></p>
+                    <% if (nOfferedTickets > 0) { %>
+                    <p><strong style="color: red">HAI IN OFFERTA <%= nOfferedTickets %> BIGLIETTI. PREZZO ORIGINALE: €<%= priceNoFree %> </strong></p>
                     <% } %>
 
                     <p><strong>Totale da Pagare:</strong> €<%= price %></p>
