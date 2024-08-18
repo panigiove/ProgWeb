@@ -2,9 +2,7 @@ tab browser con il nome e con il logo
 
 informazioni aziendali più serie e partita iva
 
-sistemare la pagina degli eventi e immagini per gli eventi
-
-finestra dei cookies, adottare strategie per chi non vuole usare i cookies o li ha disabilitati
+sistemare la pagina di conferma acquisto
 
 reindirizzare gli utenti a una pagina di "avviso di autenticarsi" se si vogliono acquistare uno o più biglietti
 
@@ -13,8 +11,6 @@ Quando si immette un nome utente che esiste nella pagina di signup già si balza
 Ho trovato un messaggio di errore con scritto "Statement già chiuso" quando ho provato ad accedere ad una pagina di un evento, indagare se ricapita.
 
 Fare il biglietto gratuito ogni 5 biglietti (4 li paghi e uno è gratis)
-
-Il pulsante della cancellazione degli utenti non funziona
 
 Potrebbe essere utile permettere di, quando si crea un evento, lasciare che l'amministratore possa immettere il simbolo "€", però questo va deciso tra di noi
 
