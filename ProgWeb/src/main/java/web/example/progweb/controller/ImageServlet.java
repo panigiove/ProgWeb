@@ -23,7 +23,6 @@ public class ImageServlet extends AbstractController {
             return;
         }
 
-        // Get the real path for the images directory
         String realPath = getServletContext().getRealPath("/images");
         File imageFile = new File(realPath + path);
 
@@ -32,7 +31,6 @@ public class ImageServlet extends AbstractController {
             return;
         }
 
-        // Set the content type based on the file type
         String mimeType = getServletContext().getMimeType(imageFile.getName());
         if (mimeType == null) {
             mimeType = "application/octet-stream";

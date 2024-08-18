@@ -4,13 +4,13 @@ import web.example.progweb.controller.abstractClass.AbstractController;
 import web.example.progweb.model.DiscountModel;
 import web.example.progweb.model.EventModel;
 import web.example.progweb.model.entity.Category;
-import web.example.progweb.model.entity.Discount;
 import web.example.progweb.model.entity.Event;
 
 import com.google.gson.Gson;
 
 import java.io.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -55,7 +55,9 @@ public class IndexServlet extends AbstractController {
                 }else{
                     sendJsonMessage(response, new Gson().toJson(eventModel.getEvents()));
                 }
-            }else {
+            } else if ("/cookiesPolicy".equals(path)) {
+                request.getRequestDispatcher("/WEB-INF/view/informationCookies.jsp").forward(request,response);
+            } else {
                 sendErrorPage(request, response, "Path non trovato", HttpServletResponse.SC_NOT_FOUND, "Not Found");
             }
         } catch (SQLException e) {
@@ -90,8 +92,12 @@ public class IndexServlet extends AbstractController {
                 System.err.println("Error during event deletion: " + e.getMessage());
                 sendErrorPage(request, response, "Error updating Cards", HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error");
             }
-        }
-        else{
+        } else if ("/setPermission".equals(path)) {
+            Boolean cookiesAccepted = Boolean.parseBoolean(request.getParameter("cookiesAccepted"));
+            HttpSession session = request.getSession(true);
+            session.setAttribute("cookiesAccepted", cookiesAccepted);
+            sendJsonMessage(response, "{\"status\":\"success\"}");
+        } else{
             sendErrorPage(request, response, "Path not found", HttpServletResponse.SC_NOT_FOUND, "Not Found");
         }
     }

@@ -23,7 +23,6 @@
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
@@ -101,8 +100,11 @@
             background-color: #c0392b;
         }
     </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
+<jsp:include page="topNavUser.jsp"/>
 <div class="container">
     <h1>Profilo Utente</h1>
 
@@ -123,37 +125,45 @@
         <p><strong>Numero di acquisti:</strong> <%= currentUser.getnPurchases() %> </p>
         <p><strong>Username:</strong> <%= currentUser.getUsername() %> </p>
     </div>
+    <!-- Link di cancellazione iscrizione -->
+    <form action="${pageContext.request.contextPath}/personalArea/deleteAccount" method="post">
+        <button class="delete-button" type="submit">Cancella Iscrizione</button>
+    </form>
+
 
     <!-- Sezione Acquisti -->
     <div class="data-section">
         <h2>Acquisti Effettuati</h2>
         <ul>
             <%
-                for(Ticket ticket : userTickets){
+                // Controlla se ci sono acquisti
+                if (userTickets.isEmpty()) {
+            %>
+            <p>Non sono stati effettuati acquisti.</p>
+            <%
+            } else {
+                // Se ci sono acquisti, mostra i dettagli
+                for (Ticket ticket : userTickets) {
                     Event event = eventModel.getEventById(ticket.idEvento());
             %>
             <li>
-                <h3><%= event.getName()%></h3>
-                <p><strong>Descrizione:</strong> <%= event.getDescrizione()%></p>
-                <p><strong>Data di Inizio:</strong> <%= event.getStart()%></p>
-                <p><strong>Data di Fine:</strong> <%= event.getEnd()%></p>
-                <p><strong>Data di Acquisto:</strong> <%= ticket.data_acquisto()%></p>
-                <p><strong>Posti in Poltrona acquistati:</strong> <%= ticket.quantita_poltrona()%></p>
-                <p><strong>Posti in Piedi acquistati:</strong> <%= ticket.quantita_in_piedi()%></p>
-                <p><strong>Prezzo Totale:</strong> <%= ticket.getPrice()%></p>
+                <h3><%= event.getName() %></h3>
+                <p><strong>Descrizione:</strong> <%= event.getDescrizione() %></p>
+                <p><strong>Data di Inizio:</strong> <%= event.getStart() %></p>
+                <p><strong>Data di Fine:</strong> <%= event.getEnd() %></p>
+                <p><strong>Data di Acquisto:</strong> <%= ticket.data_acquisto() %></p>
+                <p><strong>Posti in Poltrona acquistati:</strong> <%= ticket.quantita_poltrona() %></p>
+                <p><strong>Posti in Piedi acquistati:</strong> <%= ticket.quantita_in_piedi() %></p>
+                <p><strong>Prezzo Totale:</strong> <%= ticket.getPrice() %></p>
             </li>
             <%
+                    }
                 }
             %>
-            <!-- Altri acquisti -->
         </ul>
     </div>
-
-
-    <!-- Link di cancellazione iscrizione -->
-    <form action="${pageContext.request.contextPath}/personalArea/deleteAccount" method="post">
-        <button class="delete-button" type="submit">Cancella Iscrizione</button>
-    </form>
 </div>
+<jsp:include page="returnTopPage.jsp"/>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

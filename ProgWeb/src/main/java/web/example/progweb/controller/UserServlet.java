@@ -4,23 +4,20 @@ import web.example.progweb.controller.abstractClass.AbstractController;
 import web.example.progweb.model.EventModel;
 import web.example.progweb.model.TicketModel;
 import web.example.progweb.model.UserModel;
-import web.example.progweb.model.entity.Event;
 import web.example.progweb.model.entity.Ticket;
 import web.example.progweb.model.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name="UserPage", value="/personalArea/*")
-public class UserPage extends AbstractController {
+@WebServlet(name="UserServlet", value="/personalArea/*")
+public class UserServlet extends AbstractController {
     private UserModel userModel;
     private TicketModel ticketModel;
     private EventModel eventModel;
@@ -61,13 +58,17 @@ public class UserPage extends AbstractController {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo();
-        HttpSession session = req.getSession();
+        HttpSession session = req.getSession(false);
         String username = (String) session.getAttribute("username");
         if("/deleteAccount".equals(path)){
             try {
                 userModel.deleteUser(username);
-                session.invalidate();
-                req.getRequestDispatcher(req.getContextPath()+"/index").forward(req, resp);
+                if(session != null) {
+                    session.removeAttribute("username");
+                    session.removeAttribute("isAdmin");
+                    session.setAttribute("isLogged", false);
+                }
+                resp.sendRedirect(req.getContextPath()+"/");
             } catch (SQLException e) {
                 System.err.println("Errore durante la connessione al database" + e.getMessage());
                 throw new ServletException(e);

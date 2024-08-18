@@ -46,7 +46,7 @@ public class UserModel extends AbstractModel {
         checkUserPreparedStatement = connection.prepareStatement("SELECT * FROM UTENTI WHERE username = ? AND password = ?");
         checkUsernamePreparedStatement = connection.prepareStatement("SELECT * FROM UTENTI WHERE username = ?");
         insertUserPreparedStatement = connection.prepareStatement("INSERT INTO UTENTI (nome, cognome, data_nascita, email, telefono, username, password) VALUES (?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
-        deleteUserPreparedStatement = connection.prepareStatement("DELETE FROM UTENTI WHERE username = ?");
+        deleteUserPreparedStatement = connection.prepareStatement("DELETE FROM UTENTI WHERE id_utente = ?");
         anonimizzareBigliettiPreparedStatement = connection.prepareStatement("UPDATE PRENOTAZIONE_BIGLIETTI SET id_utente = -1 WHERE id_utente = ?");
         getUserPreparedStatement = connection.prepareStatement("SELECT * FROM UTENTI WHERE id_utente = ?");
         getUserIdPreparedStatement = connection.prepareStatement("SELECT id_utente FROM UTENTI WHERE username = ?");
@@ -92,10 +92,13 @@ public class UserModel extends AbstractModel {
      * @throws SQLException
      */
     public void deleteUser(String username) throws SQLException {
-        deleteUserPreparedStatement.setString(1, username);
-        anonimizzareBigliettiPreparedStatement.setInt(1, getUserId(username));
-        deleteUserPreparedStatement.executeQuery();
-        anonimizzareBigliettiPreparedStatement.executeQuery();
+        int userId = getUserId(username);
+        if (userId != -1) {
+//            anonimizzareBigliettiPreparedStatement.setInt(1, userId);
+            deleteUserPreparedStatement.setInt(1, userId);
+//            anonimizzareBigliettiPreparedStatement.executeUpdate();
+            deleteUserPreparedStatement.executeUpdate();
+        }
     }
 
     /**
@@ -148,11 +151,21 @@ public class UserModel extends AbstractModel {
         return new User(resultSet.getInt("id_utente"), resultSet.getString("nome"), resultSet.getString("cognome"), resultSet.getString("data_nascita"), resultSet.getString("email"), resultSet.getString("telefono"), resultSet.getInt("n_acquisti"), resultSet.getString("username"));
     }
 
+    /**
+     * Ottenere l'id dato un username
+     * @param username
+     * @return -1 se non esiste altrimenti l'id
+     * @throws SQLException
+     */
     public int getUserId(String username) throws SQLException {
         getUserIdPreparedStatement.setString(1, username);
-        ResultSet resultSet = getUserIdPreparedStatement.executeQuery();
-        resultSet.next();
-        return resultSet.getInt("id_utente");
+        try (ResultSet resultSet = getUserIdPreparedStatement.executeQuery()) {
+            if (resultSet.next()) {
+                return resultSet.getInt("id_utente");
+            } else {
+                return -1;
+            }
+        }
     }
 
     /**
@@ -210,5 +223,23 @@ public class UserModel extends AbstractModel {
         ResultSet resultSet = getPurchasePreparedStatement.executeQuery();
         resultSet.next();
         return resultSet.getInt("n_acquisti");
+    }
+
+    @Override
+    public void close() throws SQLException {
+        try {
+            checkUserPreparedStatement.close();
+            checkUsernamePreparedStatement.close();
+            insertUserPreparedStatement.close();
+            deleteUserPreparedStatement.close();
+            anonimizzareBigliettiPreparedStatement.close();
+            getUserPreparedStatement.close();
+            getUserIdPreparedStatement.close();
+            incrementPurchasesPreparedStatement.close();
+            getPurchasePreparedStatement.close();
+            checkIdPreparedStatement.close();
+        } finally {
+            super.close();
+        }
     }
 }

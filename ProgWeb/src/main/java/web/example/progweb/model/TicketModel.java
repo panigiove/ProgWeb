@@ -59,7 +59,7 @@ public class TicketModel extends AbstractModel {
      * viene aggiornato il numero di acquisti dell'utente e la disponibilità dell'evento
      * @param id_event
      * @param id_user
-     * @param id_discount
+     * @param id_discount -1 se non ci sono sconti
      * @param n_seats numero posti a sedere
      * @param n_stands numero posti in piedi
      * @return
@@ -67,12 +67,15 @@ public class TicketModel extends AbstractModel {
      */
     public Ticket buyTicket(int id_event, int id_user, int id_discount, int n_seats, int n_stands) throws SQLException {
         if (userModel.checkId(id_user) && eventModel.checkIdEvent(id_event) &&
-                (id_discount == 0 || discountModel.checkId(id_discount)) &&
+                (id_discount == -1 || discountModel.checkId(id_discount)) &&
                 eventModel.checkAvailability(id_event, n_seats, n_stands)) {
-
             createTicketPreparedStatement.setInt(1, id_event);
             createTicketPreparedStatement.setInt(2, id_user);
-            createTicketPreparedStatement.setInt(3, id_discount);
+            if (id_discount == -1){
+                createTicketPreparedStatement.setNull(3,  java.sql.Types.INTEGER);
+            }else{
+                createTicketPreparedStatement.setInt(3, id_discount);
+            }
             createTicketPreparedStatement.setInt(4, n_seats);
             createTicketPreparedStatement.setInt(5, n_stands);
 
@@ -80,7 +83,7 @@ public class TicketModel extends AbstractModel {
             createTicketPreparedStatement.setBigDecimal(6, price);
 
             int affectedRows = createTicketPreparedStatement.executeUpdate();
-            if (affectedRows == 0) {
+            if (affectedRows != 0) {
                 eventModel.decrementAvailability(id_event, n_seats, n_stands);
                 userModel.incrementPurchases(id_user);
                 try (ResultSet generatedKeys = createTicketPreparedStatement.getGeneratedKeys()) {
@@ -97,7 +100,7 @@ public class TicketModel extends AbstractModel {
      * Calcola il prezzo tenendo conto della offerta ogni 5 biglietto il quinto è gratis
      * @param id_event
      * @param id_user
-     * @param id_discount
+     * @param id_discount -1 se non ci sono sconti
      * @param n_seats
      * @param n_stands
      * @return

@@ -33,44 +33,49 @@ public class LoginServlet extends AbstractController {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(true);
         request.getRequestDispatcher("/WEB-INF/view/logIn.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // recupero sessione e parametri
-        HttpSession session = request.getSession(false); // se non esiste ritorna a null
+        HttpSession session = request.getSession(false);
+        Boolean isAdmin = (session != null) ? (Boolean) session.getAttribute("isAdmin") : null;
+        Boolean isLogged = (session != null) ? (Boolean) session.getAttribute("isLogged") : null;
+
         try {
-            if (session == null || (session.getAttribute("username") == null &&  session.getAttribute("admin") == null) ) { // non autenticato precedentemente
+            if (session != null && Boolean.TRUE.equals(isLogged)) {
+                if (Boolean.TRUE.equals(isAdmin)) {
+                    response.sendRedirect(request.getContextPath() + "/admin");
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/");
+                }
+            } else {
+                session = request.getSession(true);
+
                 String username = request.getParameter("username");
                 String password = request.getParameter("password");
+
                 if (username != null && password != null) {
-                    session = request.getSession(true); // creazione sessione
-                    if (adminModel.checkAdmin(username, password)) { // verifico se è un admin
-                        session.setAttribute("username", username);
+                    if (adminModel.checkAdmin(username, password)) {
+                        session.setAttribute("isLogged", true);
                         session.setAttribute("isAdmin", true);
                         response.sendRedirect(request.getContextPath() + "/admin");
-                    } else if (userModel.checkUser(username, password)) { // verifico se è un utente
+                    } else if (userModel.checkUser(username, password)) {
+                        session.setAttribute("isLogged", true);
                         session.setAttribute("username", username);
                         session.setAttribute("isAdmin", false);
                         response.sendRedirect(request.getContextPath() + "/");
-                    } else { // credenziali sbagliate
-                        session.invalidate();
+                    } else {
+                        session.setAttribute("isLogged", false);
                         request.setAttribute("error", true);
-                        request.getRequestDispatcher("/WEB-INF/view/logIn.jsp").forward(request,response);
+                        request.getRequestDispatcher("/WEB-INF/view/logIn.jsp").forward(request, response);
                     }
-                } else { // formato request errato
-                    sendErrorMessage(request, response, "username e password non presenti", 400, "Bad request");
-                }
-            }else { // precedentemente autenticato
-                Boolean isAdmin = (Boolean)session.getAttribute("isAdmin");
-                if (isAdmin != null && isAdmin) {
-                    response.sendRedirect(request.getContextPath() + "/admin");
-                }else {
-                    response.sendRedirect(request.getContextPath()+"/index.jsp");
+                } else {
+                    sendErrorMessage(request, response, "Username e password non presenti", 400, "Bad Request");
                 }
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             System.err.println("Errore durante la connessione al database: " + e.getMessage());
             throw new ServletException("Impossibile stabilire la connessione al database", e);
         }

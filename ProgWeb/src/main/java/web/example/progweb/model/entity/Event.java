@@ -27,6 +27,7 @@ public class Event {
     private final int idCategory;
     private final int idLocation;
     private final String nomeLocation;
+    private final String nomeCategory;
     private final String name;
     private final String descrizione;
     private final String start;
@@ -38,12 +39,14 @@ public class Event {
     private final BigDecimal seatPrice;
     private final BigDecimal standingPrice;
     private final int nClick;
+    private final String imageName;
 
-    public Event (int id, int idCategory, int idLocation, String nomeLocation, String name, String descrizione,String start, String end, int totalSeats, int availableSeats, int totalStanding, int availableStanding, BigDecimal seatPrice, BigDecimal standingPrice, int nClick) {
+    public Event (int id, int idCategory, int idLocation, String nomeLocation, String nomeCategory, String name, String descrizione,String start, String end, int totalSeats, int availableSeats, int totalStanding, int availableStanding, BigDecimal seatPrice, BigDecimal standingPrice, int nClick, String imageName) {
        this.id = id;
         this.idCategory = idCategory;
         this.idLocation = idLocation;
         this.nomeLocation = nomeLocation;
+        this.nomeCategory = nomeCategory;
         this.name = name;
         this.descrizione = descrizione;
         this.start = start;
@@ -55,6 +58,7 @@ public class Event {
         this.seatPrice = seatPrice;
         this.standingPrice = standingPrice;
         this.nClick = nClick;
+        this.imageName = imageName;
     }
 
     public int getId() {
@@ -71,6 +75,10 @@ public class Event {
 
     public String getNomeLocation() {
         return nomeLocation;
+    }
+
+    public String getNomeCategory(){
+        return nomeCategory;
     }
 
     public int getIdLocation() {
@@ -101,6 +109,8 @@ public class Event {
         return this.availableSeats;
     }
 
+
+
     public int getTotalStanding() {
         return this.totalStanding;
     }
@@ -115,6 +125,10 @@ public class Event {
 
     public BigDecimal getStandingPrice() {
         return this.standingPrice;
+    }
+
+    public String getImageName(){
+        return this.imageName;
     }
 
     public static String formatData (String data) {
@@ -147,6 +161,7 @@ public class Event {
                 ", seatPrice='" + seatPrice + '\'' +
                 ", standingPrice='" + standingPrice + '\'' +
                 ", nClick=" + nClick +
+                ", imageName=" + imageName +
                 '}';
     }
 }

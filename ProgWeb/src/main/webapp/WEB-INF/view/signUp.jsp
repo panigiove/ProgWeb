@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Giovanni
-  Date: 08/08/2024
-  Time: 10:18
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="it">
 <head>
@@ -54,6 +47,16 @@
         .form-group input[type="reset"]:hover {
             opacity: 0.9;
         }
+
+        .form-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+
+        .form-group label[for="showPassword"] {
+            display: inline;
+        }
     </style>
 </head>
 <body>
@@ -96,13 +99,19 @@
             <input type="text" id="username" name="username" required>
         </div>
         <div class="form-group">
-            <label for="password">Password (almeno 9 caratteri, di cui uno speciale e due cifre):</label>
+            <label for="password">Password (almeno 9 caratteri, di cui uno speciale ([!@#$%^&*]) e due cifre):</label>
             <input type="password" id="password" name="password" required>
         </div>
+
         <div class="form-group">
             <label for="confirm_password">Conferma Password:</label>
             <input type="password" id="confirm_password" name="confirm_password" required>
         </div>
+
+        <div class="form-group">
+            <input type="checkbox" id="showPassword"> <label for="showPassword" style="user-select: none">Mostra Password</label>
+        </div>
+
         <div class="form-group">
             <button type="submit">Invia</button>
             <button type="reset" value="Reset">Reset</button>
@@ -111,6 +120,15 @@
 </div>
 
 <script>
+    document.getElementById('showPassword').addEventListener('change', function() {
+        const passwordField = document.getElementById('password');
+        const confirmPasswordField = document.getElementById('confirm_password');
+        const isChecked = this.checked;
+
+        passwordField.type = isChecked ? 'text' : 'password';
+        confirmPasswordField.type = isChecked ? 'text' : 'password';
+    });
+
     document.getElementById('signupForm').addEventListener('submit', function(event) {
         const phoneInput = document.getElementById('telefono').value;
         const emailInput = document.getElementById('email').value;

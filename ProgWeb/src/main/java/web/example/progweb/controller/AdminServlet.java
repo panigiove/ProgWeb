@@ -1,5 +1,5 @@
 package web.example.progweb.controller;
-
+import javax.servlet.annotation.MultipartConfig;
 
 import web.example.progweb.controller.abstractClass.AbstractController;
 import web.example.progweb.model.EventModel;
@@ -19,8 +19,10 @@ import javax.servlet.annotation.*;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-@WebServlet(name = "adminSevlet", value = "/admin/*")
+@MultipartConfig
+@WebServlet(name = "AdminServlet", urlPatterns = {"/admin/*"})
 public class AdminServlet extends AbstractController {
     private EventModel eventModel;
     private UserModel userModel;
@@ -105,6 +107,26 @@ public class AdminServlet extends AbstractController {
             int totalePostiSeduti = Integer.parseInt(request.getParameter("totalePostiSeduti"));
             int totalePostiInPiedi = Integer.parseInt(request.getParameter("totalePostiInPiedi"));
 
+
+            Part filePart = request.getPart("immagineEvento"); // Recupera l'immagine dal form
+            String imageName = generateRandomFileName(filePart.getSubmittedFileName());
+
+
+            File imagesDir = new File(getServletContext().getRealPath("/images/"));
+            System.out.println(imagesDir);
+            if (!imagesDir.exists()) {
+                imagesDir.mkdirs();
+            }
+            File file = new File(imagesDir, imageName);
+            try (InputStream fileContent = filePart.getInputStream();
+                 OutputStream out = new FileOutputStream(file)) {
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = fileContent.read(buffer)) != -1) {
+                    out.write(buffer, 0, bytesRead);
+                }
+            }
+
             try {
                 Event newEvent = eventModel.insertEvent(
                         categoriaEvento,
@@ -114,11 +136,12 @@ public class AdminServlet extends AbstractController {
                         dataInizioEvento,
                         dataFineEvento,
                         totalePostiSeduti,
-                        totalePostiSeduti,  // availableSeats, set as appropriate
+                        totalePostiSeduti,
                         totalePostiInPiedi,
-                        totalePostiInPiedi,  // availableStanding, set as appropriate
+                        totalePostiInPiedi,
                         prezzoPostoSeduto,
-                        prezzoPostoInPiedi
+                        prezzoPostoInPiedi,
+                        imageName
                 );
 
                 if (newEvent != null) {
@@ -133,10 +156,8 @@ public class AdminServlet extends AbstractController {
         } else if ("/deleteEvent".equals(request.getPathInfo())) {
             int eventId;
             try {
-                // Parse the eventId parameter from the request
                 eventId = Integer.parseInt(request.getParameter("eventId"));
             } catch (NumberFormatException e) {
-                // Handle invalid eventId format
                 sendErrorMessage(request, response, "Invalid Event ID format", HttpServletResponse.SC_BAD_REQUEST, "Invalid Event ID");
                 return;
             }
@@ -144,20 +165,22 @@ public class AdminServlet extends AbstractController {
                 if (!eventModel.checkIdEvent(eventId)) {
                     sendJsonMessage(response, "{\"success\": \"fail\"}");
                 } else {
-                    // Attempt to delete the event
                     eventModel.deleteEvent(eventId);
                     sendJsonMessage(response, "{\"success\": \"success\"}");
                 }
             } catch (SQLException e) {
-                // Log the error and send a server error response
                 System.err.println("Error during event deletion: " + e.getMessage());
                 sendErrorPage(request, response, "Error deleting event", HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error");
             }
         } else {
-            // Handle other paths
             sendErrorPage(request, response, "Path not found", HttpServletResponse.SC_NOT_FOUND, "Not Found");
         }
     }
 
+    private String generateRandomFileName(String originalFileName) {
+        String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+        String randomFileName = UUID.randomUUID().toString();
+        return randomFileName + extension;
+    }
 
 }

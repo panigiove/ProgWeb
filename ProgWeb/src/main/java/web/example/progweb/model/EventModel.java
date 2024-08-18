@@ -42,6 +42,7 @@ public class EventModel extends AbstractModel {
     private PreparedStatement checkIdCategoryPreparedStatement;
     private PreparedStatement getLocationNamePreparedStatement;
     private PreparedStatement getCategoryTotalNclickPreparedStatement;
+    private PreparedStatement getCategoryNamePreparedStatement;
 
     public EventModel() throws SQLException, ClassNotFoundException {
         super();
@@ -54,7 +55,7 @@ public class EventModel extends AbstractModel {
     protected void prepareStatements ()  throws SQLException {
         getEventByCategoryPreparedStatement = connection.prepareStatement("SELECT * FROM EVENTI WHERE id_categoria = ?");
         getEventByIdPreparedStatement = connection.prepareStatement("SELECT * FROM EVENTI WHERE id_evento = ?");
-        insertEventPreparedStatement = connection.prepareStatement("INSERT INTO EVENTI (id_categoria, id_localita, nome, descrizione, inizio, fine, totale_poltrona, disponibilita_poltrona, totale_in_piedi, disponibilita_in_piedi, prezzi_poltrona, prezzi_in_piedi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        insertEventPreparedStatement = connection.prepareStatement("INSERT INTO EVENTI (id_categoria, id_localita, nome, descrizione, inizio, fine, totale_poltrona, disponibilita_poltrona, totale_in_piedi, disponibilita_in_piedi, prezzi_poltrona, prezzi_in_piedi, image_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
         deleteEventPreparedStatement = connection.prepareStatement("DELETE FROM EVENTI WHERE id_evento = ?");
         checkIdPreparedStatement = connection.prepareStatement("SELECT * FROM EVENTI WHERE id_evento = ?");
         checkIdCategoryPreparedStatement = connection.prepareStatement("SELECT * FROM CATEGORIA WHERE id_categoria = ?");
@@ -65,6 +66,7 @@ public class EventModel extends AbstractModel {
         getLocationNamePreparedStatement = connection.prepareStatement("SELECT localita FROM LOCALITA WHERE id_localita = ?");
         checkAvailabilityPreparedStatement = connection.prepareStatement("SELECT disponibilita_in_piedi, disponibilita_poltrona FROM EVENTI WHERE id_evento = ?");
         updateAvailabilityPreparedStatement = connection.prepareStatement("UPDATE EVENTI SET disponibilita_poltrona = disponibilita_poltrona + ?, disponibilita_in_piedi = disponibilita_in_piedi + ? WHERE id_evento = ?");
+        getCategoryNamePreparedStatement = connection.prepareStatement("SELECT categoria FROM CATEGORIA WHERE id_categoria = ?");
     }
 
     /**
@@ -84,7 +86,7 @@ public class EventModel extends AbstractModel {
      * @return Event appena creato, null se ci sono stati problemi
      * @throws SQLException
      */
-    public Event insertEvent(int idCategoria, int idLocalita, String name, String descrizione, String start, String end, int totalSeats, int availableSeats, int totalStanding, int availableStanding, BigDecimal seatPrice, BigDecimal standingPrice) throws SQLException {
+    public Event insertEvent(int idCategoria, int idLocalita, String name, String descrizione, String start, String end, int totalSeats, int availableSeats, int totalStanding, int availableStanding, BigDecimal seatPrice, BigDecimal standingPrice, String image_name) throws SQLException {
         insertEventPreparedStatement.setInt(1, idCategoria);
         insertEventPreparedStatement.setInt(2, idLocalita);
         insertEventPreparedStatement.setString(3, name);
@@ -97,6 +99,7 @@ public class EventModel extends AbstractModel {
         insertEventPreparedStatement.setInt(10, availableStanding);
         insertEventPreparedStatement.setBigDecimal(11, seatPrice);
         insertEventPreparedStatement.setBigDecimal(12, standingPrice);
+        insertEventPreparedStatement.setString(13, image_name);
         int affectedRows = insertEventPreparedStatement.executeUpdate();
         if (affectedRows > 0){
             try (ResultSet generatedKeys = insertEventPreparedStatement.getGeneratedKeys()) {
@@ -172,11 +175,13 @@ public class EventModel extends AbstractModel {
         try (ResultSet resultSet = unsafeExecuteQuery(query)) {
             while (resultSet.next()) {
                 String nomeLocation = getLocationName(resultSet.getInt("id_localita")); // Ricerca nome della località perchè verrà mostrato insieme nell'anteprima dell'evento
+                String nomeCategory = getCategoryName(resultSet.getInt("id_categoria"));
                 Event event = new Event(
                         resultSet.getInt("id_evento"),
                         resultSet.getInt("id_categoria"),
                         resultSet.getInt("id_localita"),
                         nomeLocation,
+                        nomeCategory,
                         resultSet.getString("nome"),
                         resultSet.getString("descrizione"),
                         resultSet.getString("inizio"),
@@ -187,7 +192,8 @@ public class EventModel extends AbstractModel {
                         resultSet.getInt("disponibilita_in_piedi"),
                         resultSet.getBigDecimal("prezzi_poltrona"),
                         resultSet.getBigDecimal("prezzi_in_piedi"),
-                        resultSet.getInt("n_click")
+                        resultSet.getInt("n_click"),
+                        resultSet.getString("image_name")
                 );
                 events.add(event);
             }
@@ -207,11 +213,13 @@ public class EventModel extends AbstractModel {
         try (ResultSet resultSet = getEventByCategoryPreparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 String nomeLocation = getLocationName(resultSet.getInt("id_localita"));
+                String nomeCategory = getCategoryName(resultSet.getInt("id_categoria"));
                 Event event = new Event(
                         resultSet.getInt("id_evento"),
                         resultSet.getInt("id_categoria"),
                         resultSet.getInt("id_localita"),
                         nomeLocation,
+                        nomeCategory,
                         resultSet.getString("nome"),
                         resultSet.getString("descrizione"),
                         resultSet.getString("inizio"),
@@ -222,7 +230,8 @@ public class EventModel extends AbstractModel {
                         resultSet.getInt("disponibilita_in_piedi"),
                         resultSet.getBigDecimal("prezzi_poltrona"),
                         resultSet.getBigDecimal("prezzi_in_piedi"),
-                        resultSet.getInt("n_click")
+                        resultSet.getInt("n_click"),
+                        resultSet.getString("image_name")
                 );
                 events.add(event);
             }
@@ -241,11 +250,13 @@ public class EventModel extends AbstractModel {
         try (ResultSet resultSet = getEventByIdPreparedStatement.executeQuery()) {
             if (resultSet.next()) {
                 String nomeLocation = getLocationName(resultSet.getInt("id_localita"));
+                String nomeCategory = getCategoryName(resultSet.getInt("id_categoria"));
                 return new Event(
                         resultSet.getInt("id_evento"),
                         resultSet.getInt("id_categoria"),
                         resultSet.getInt("id_localita"),
                         nomeLocation,
+                        nomeCategory,
                         resultSet.getString("nome"),
                         resultSet.getString("descrizione"),
                         resultSet.getString("inizio"),
@@ -256,7 +267,8 @@ public class EventModel extends AbstractModel {
                         resultSet.getInt("disponibilita_in_piedi"),
                         resultSet.getBigDecimal("prezzi_poltrona"),
                         resultSet.getBigDecimal("prezzi_in_piedi"),
-                        resultSet.getInt("n_click")
+                        resultSet.getInt("n_click"),
+                        resultSet.getString("image_name")
                 );
             }
         }
@@ -278,11 +290,13 @@ public class EventModel extends AbstractModel {
         try (ResultSet resultSet = unsafeExecuteQuery(query)) {
             while (resultSet.next()) {
                 String nomeLocation = getLocationName(resultSet.getInt("id_localita"));
+                String nomeCategory = getCategoryName(resultSet.getInt("id_categoria"));
                 Event event = new Event(
                         resultSet.getInt("id_evento"),
                         resultSet.getInt("id_categoria"),
                         resultSet.getInt("id_localita"),
                         nomeLocation,
+                        nomeCategory,
                         resultSet.getString("nome"),
                         resultSet.getString("descrizione"),
                         resultSet.getString("inizio"),
@@ -293,7 +307,8 @@ public class EventModel extends AbstractModel {
                         resultSet.getInt("disponibilita_in_piedi"),
                         resultSet.getBigDecimal("prezzi_poltrona"),
                         resultSet.getBigDecimal("prezzi_in_piedi"),
-                        resultSet.getInt("n_click")
+                        resultSet.getInt("n_click"),
+                        resultSet.getString("image_name")
                 );
                 events.add(event);
             }
@@ -312,11 +327,13 @@ public class EventModel extends AbstractModel {
         try (ResultSet resultSet = unsafeExecuteQuery(query)) {
             while (resultSet.next()) {
                 String nomeLocation = getLocationName(resultSet.getInt("id_localita"));
+                String nomeCategory = getCategoryName(resultSet.getInt("id_categoria"));
                 Event event = new Event(
                         resultSet.getInt("id_evento"),
                         resultSet.getInt("id_categoria"),
                         resultSet.getInt("id_localita"),
                         nomeLocation,
+                        nomeCategory,
                         resultSet.getString("nome"),
                         resultSet.getString("descrizione"),
                         resultSet.getString("inizio"),
@@ -327,7 +344,8 @@ public class EventModel extends AbstractModel {
                         resultSet.getInt("disponibilita_in_piedi"),
                         resultSet.getBigDecimal("prezzi_poltrona"),
                         resultSet.getBigDecimal("prezzi_in_piedi"),
-                        resultSet.getInt("n_click")
+                        resultSet.getInt("n_click"),
+                        resultSet.getString("image_name")
                 );
                 events.add(event);
             }
@@ -369,6 +387,17 @@ public class EventModel extends AbstractModel {
         try (ResultSet rs = getLocationNamePreparedStatement.executeQuery()) {
             if (rs.next()) {
                 return rs.getString("localita");
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public String getCategoryName(int idCategory) throws SQLException {
+        getCategoryNamePreparedStatement.setInt(1, idCategory);
+        try (ResultSet rs = getCategoryNamePreparedStatement.executeQuery()) {
+            if (rs.next()) {
+                return rs.getString("categoria");
             } else {
                 return null;
             }

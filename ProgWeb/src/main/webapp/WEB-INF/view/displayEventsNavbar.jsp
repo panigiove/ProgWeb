@@ -22,14 +22,23 @@
   .header {
     color: #000;
     text-align: center;
-    padding: 20px 0;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #ddd;
+  }
+
+  .header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+
+  .header h2 {
+    font-size: 1rem;
+    color: #555;
+    margin-top: 0;
   }
 </style>
 
 <header class="header">
   <h1>I Nostri Eventi</h1>
+  <h2>Seleziona una categoria</h2>
 </header>
 
 <nav class="navbar navbar-expand-lg navbar-light">

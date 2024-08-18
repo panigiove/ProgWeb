@@ -26,7 +26,6 @@
 </button>
 
 <script>
-
     document.addEventListener('scroll', function() {
         var backToTopButton = document.getElementById('backToTop');
         if (window.scrollY > 170) {

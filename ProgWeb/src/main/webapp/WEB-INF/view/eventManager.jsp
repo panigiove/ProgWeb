@@ -91,9 +91,12 @@
             <th class="text-center">Seat Price</th>
             <th class="text-center">Standing Price</th>
             <th class="text-center">Clicks</th>
+            <th class="text-center">Location</th>
+            <th class="text-center">Category</th>
             <th class="text-center">Actions</th>
         </tr>
         </thead>
+
         <tbody>
         <c:forEach var="event" items="${events}">
             <tr id="event-row-${event.id}">
@@ -108,6 +111,8 @@
                 <td class="text-center">${event.seatPrice}</td>
                 <td class="text-center">${event.standingPrice}</td>
                 <td class="text-center">${event.nClick}</td>
+                <td class="text-center">${event.nomeLocation}</td> <!-- New Column -->
+                <td class="text-center">${event.nomeCategory}</td> <!-- New Column -->
                 <td class="text-center">
                     <button type="button" class="btn btn-danger btn-sm" onclick="deleteEvent(${event.id})">Delete</button>
                 </td>

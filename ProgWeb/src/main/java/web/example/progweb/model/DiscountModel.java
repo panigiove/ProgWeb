@@ -70,22 +70,19 @@ public class DiscountModel extends AbstractModel {
     public List<Discount> getValidDiscountsOfEvent(int idEvent) throws SQLException {
         List<Discount> discounts = new ArrayList<>();
 
-        try (PreparedStatement statement = getValidDiscountsOfEventPreparedStatement) {
-            statement.setInt(1, idEvent);
-
-            // Execute the query and process the results
-            try (ResultSet rs = statement.executeQuery()) {
-                while (rs.next()) {
-                    String nomeEvento = eventModel.getEventName(rs.getInt("id_evento"));
-                    Discount discount = new Discount(
-                            rs.getInt("id_sconto"),
-                            rs.getInt("id_evento"),
-                            nomeEvento,
-                            rs.getString("data_scadenza"),
-                            rs.getBigDecimal("sconto")
-                    );
-                    discounts.add(discount);
-                }
+        getValidDiscountsOfEventPreparedStatement.setInt(1, idEvent);
+        // Execute the query and process the results
+        try (ResultSet rs = getValidDiscountsOfEventPreparedStatement.executeQuery()) {
+            while (rs.next()) {
+                String nomeEvento = eventModel.getEventName(rs.getInt("id_evento"));
+                Discount discount = new Discount(
+                        rs.getInt("id_sconto"),
+                        rs.getInt("id_evento"),
+                        nomeEvento,
+                        rs.getString("data_scadenza"),
+                        rs.getBigDecimal("sconto")
+                );
+                discounts.add(discount);
             }
         }
         return discounts;

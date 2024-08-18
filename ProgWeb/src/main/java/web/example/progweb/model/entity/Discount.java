@@ -1,6 +1,9 @@
 package web.example.progweb.model.entity;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Discount {
     private int id_discount;
@@ -27,6 +30,25 @@ public class Discount {
 
     public String getExpiration_date() {
         return expiration_date;
+    }
+
+    public String getFormattedExpirationDate() {
+        // Definisce il formato di data originale e quello desiderato
+        SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat targetFormat = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            // Parso la data nel formato originale
+            Date date = originalFormat.parse(expiration_date);
+            // Ritorno la data nel formato desiderato
+            return targetFormat.format(date);
+        } catch (ParseException e) {
+            // Gestisci l'errore di parsing, se la data non è nel formato atteso
+            return null;
+        }
+    }
+
+    public String getNomeEvent(){
+        return nomeEvent;
     }
 
     public BigDecimal getDiscount() {

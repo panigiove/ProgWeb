@@ -33,7 +33,7 @@
                 <h2>Inserisci Nuovo Evento</h2>
                 <button type="button" class="btn btn-secondary btn-genera" onclick="generaDati()">Genera</button>
             </div>
-            <form id="eventoForm" action="inserisciEvento" method="post">
+            <form id="eventoForm" action="inserisciEvento" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="nomeEvento" class="form-label">Nome Evento:</label>
                     <input type="text" id="nomeEvento" name="nomeEvento" class="form-control" required>
@@ -96,6 +96,11 @@
                 <div class="mb-3">
                     <label for="totalePostiInPiedi" class="form-label">Totale Posti in Piedi:</label>
                     <input type="number" id="totalePostiInPiedi" name="totalePostiInPiedi" class="form-control" min="0" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="immagineEvento" class="form-label">Immagine Evento:</label>
+                    <input type="file" id="immagineEvento" name="immagineEvento" accept="image/*" required>
                 </div>
 
                 <div class="text-center">

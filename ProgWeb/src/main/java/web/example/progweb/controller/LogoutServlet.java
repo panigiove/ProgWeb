@@ -24,9 +24,11 @@ public class LogoutServlet extends AbstractController {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
+        HttpSession session = req.getSession(false);
         if(session != null) {
-            session.invalidate();
+            session.removeAttribute("username");
+            session.removeAttribute("isAdmin");
+            session.setAttribute("isLogged", false);
         }
         resp.sendRedirect(req.getContextPath() + "/");
     }
