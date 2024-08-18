@@ -1,26 +1,26 @@
-home page)
-	nome e logo
-	lista di eventi, navbar interattiva
-	barra dei cookies più la loro implementazione, con alternativa se vengono rifiutati
-	in caso di log di utente normale)
-		link alla pagina profilo in cui sono riportati di dati personali, inclusi il 		numero di acquisti e un bottone per la cancellazione del servizio di 			ticketing
+tab browser con il nome e con il logo
 
-l'intera pagina di eventi
+informazioni aziendali più serie e partita iva
 
-pagina di acquisto dei biglietti
+sistemare la pagina degli eventi e immagini per gli eventi
 
-pagina visualizza utenti)
-	visualizzare tutti gli utenti
-	checkbox per ordinare gli utenti in ordine decrescente in base al numero di 	acquisti effettuati
+finestra dei cookies, adottare strategie per chi non vuole usare i cookies o li ha disabilitati
 
-pagina gestione eventi)
-	accanto agli eventi c'è un pulsante Elimina che elimina gli eventi
+reindirizzare gli utenti a una pagina di "avviso di autenticarsi" se si vogliono acquistare uno o più biglietti
 
-pagina di creazione eventi)
-	permette di creare eventi
-	ha un diagramma a torta che mostra la percentuale di click per categoria di eventi
+Quando si immette un nome utente che esiste nella pagina di signup già si balza a una pagina con il messaggio "conflict: bla bla bla". Non va bene, deve essere rimandato alla pagina di signup con un messaggio addizionale
 	
+Ho trovato un messaggio di errore con scritto "Statement già chiuso" quando ho provato ad accedere ad una pagina di un evento, indagare se ricapita.
 
+Fare il biglietto gratuito ogni 5 biglietti (4 li paghi e uno è gratis)
+
+Il pulsante della cancellazione degli utenti non funziona
+
+Potrebbe essere utile permettere di, quando si crea un evento, lasciare che l'amministratore possa immettere il simbolo "€", però questo va deciso tra di noi
+
+Una volta risolti alcuni problemi potrebbero sorgerne altri, quindi questa lista potrà variare decisamente nel tempo
+
+Prima di consegnare, ricontrollare che vada tutto
 
 
 
