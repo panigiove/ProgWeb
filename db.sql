@@ -558,7 +558,7 @@ INSERT INTO UTENTI (
     '3456789012',
     5,
     'mrossi',
-    'password123'
+    'password123!'
 );
 
 INSERT INTO UTENTI (
@@ -578,7 +578,7 @@ INSERT INTO UTENTI (
     '3216549870',
     9,
     'gbianchi',
-    'securepass456'
+    'securepass456!'
 );
 
 INSERT INTO PRENOTAZIONE_BIGLIETTI (

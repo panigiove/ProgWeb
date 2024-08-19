@@ -8,7 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Error <%= request.getAttribute("errorCode") %>  <%= request.getAttribute("errorString") %></title>
+    <title>EntriEasy</title>
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/images/icon.svg">
 </head>
 <body>
 <div class="error-container">
