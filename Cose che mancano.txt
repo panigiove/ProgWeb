@@ -1,6 +1,4 @@
-Una volta risolti alcuni problemi potrebbero sorgerne altri, quindi questa lista potrà variare decisamente nel tempo
-
-Prima di consegnare, ricontrollare che vada tutto
+modificare eventManager, non va usato jstl
 
 
 

@@ -1,5 +1,6 @@
+<%@ page import="web.example.progweb.model.entity.User" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>EntriEasy</title>
@@ -51,18 +52,22 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="user" items="${users}">
+        <% List<User> users = (List<User>) request.getAttribute("users");
+            for(User user : users){
+        %>
             <tr>
-                <td class="text-center">${user.id}</td>
-                <td class="text-center">${user.name}</td>
-                <td class="text-center">${user.surname}</td>
-                <td class="text-center">${user.birthDate}</td>
-                <td class="text-center">${user.email}</td>
-                <td class="text-center">${user.phone}</td>
-                <td class="text-center">${user.nPurchases}</td>
-                <td class="text-center">${user.username}</td>
+                <td class="text-center"><%= user.getId()%></td>
+                <td class="text-center"><%= user.getName()%></td>
+                <td class="text-center"><%= user.getSurname()%></td>
+                <td class="text-center"><%= user.getBirthDate()%></td>
+                <td class="text-center"><%= user.getEmail()%></td>
+                <td class="text-center"><%= user.getPhone()%></td>
+                <td class="text-center"><%= user.getnPurchases()%></td>
+                <td class="text-center"><%= user.getUsername()%></td>
             </tr>
-        </c:forEach>
+        <%
+            }
+        %>
         </tbody>
     </table>
 </div>

@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="web.example.progweb.model.entity.Event" %>
 <%@ page import="web.example.progweb.model.entity.Discount" %>
 <%@ page import="java.math.BigDecimal" %>

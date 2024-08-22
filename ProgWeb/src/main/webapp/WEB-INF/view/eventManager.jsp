@@ -1,4 +1,5 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="web.example.progweb.model.entity.Event" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -64,7 +65,7 @@
             <div class="col-md-6">
                 <form method="get" action="gestioneEventi" class="mb-0">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="sortByClicks" name="sortByClicks" <c:if test="${param.sortByClicks != null}">checked</c:if>
+                        <input class="form-check-input" type="checkbox" id="sortByClicks" name="sortByClicks" <%= request.getParameter("sortByClicks") != null ? "checked" : "" %>
                                onchange="this.form.submit()" />
                         <label class="form-check-label" for="sortByClicks" style="user-select: none;">
                             Sort by Clicks
@@ -99,33 +100,38 @@
         </thead>
 
         <tbody>
-        <c:forEach var="event" items="${events}">
-            <tr id="event-row-${event.id}">
-                <td class="text-center">${event.id}</td>
-                <td class="text-center">${event.name}</td>
-                <td class="text-center">${event.start}</td>
-                <td class="text-center">${event.end}</td>
-                <td class="text-center">${event.totalSeats}</td>
-                <td class="text-center">${event.availableSeats}</td>
-                <td class="text-center">${event.totalStanding}</td>
-                <td class="text-center">${event.availableStanding}</td>
-                <td class="text-center">${event.seatPrice}</td>
-                <td class="text-center">${event.standingPrice}</td>
-                <td class="text-center">${event.nClick}</td>
-                <td class="text-center">${event.nomeLocation}</td> <!-- New Column -->
-                <td class="text-center">${event.nomeCategory}</td> <!-- New Column -->
+        <%
+            List<Event> events = (List<Event>) request.getAttribute("events");
+            for(Event event : events) {
+        %>
+            <tr id="event-row-<%= event.getId()%>">
+                <td class="text-center"><%= event.getId()%></td>
+                <td class="text-center"><%= event.getName()%></td>
+                <td class="text-center"><%= event.getStart()%></td>
+                <td class="text-center"><%= event.getEnd()%></td>
+                <td class="text-center"><%= event.getTotalSeats()%></td>
+                <td class="text-center"><%= event.getAvailableSeats()%></td>
+                <td class="text-center"><%= event.getTotalStanding()%></td>
+                <td class="text-center"><%= event.getAvailableStanding()%></td>
+                <td class="text-center"><%= event.getSeatPrice()%></td>
+                <td class="text-center"><%= event.getStandingPrice()%></td>
+                <td class="text-center"><%= event.getnClick()%></td>
+                <td class="text-center"><%= event.getNomeLocation()%></td> <!-- New Column -->
+                <td class="text-center"><%= event.getNomeCategory()%></td> <!-- New Column -->
                 <td class="text-center">
                     <button type="button" class="btn btn-danger btn-sm" onclick="deleteEvent(${event.id})">Delete</button>
                 </td>
             </tr>
-        </c:forEach>
+        <%
+            }
+        %>
         </tbody>
     </table>
 </div>
 
+<% if (Boolean.TRUE.equals(request.getAttribute("newEventCreated"))) { %>
 <script>
     // Check if the notification should be shown
-    <c:if test="${requestScope.newEventCreated == true}">
     document.addEventListener('DOMContentLoaded', function() {
         var notification = document.getElementById('notification');
         notification.style.display = 'block';
@@ -136,8 +142,10 @@
             }, 500); // Match the fade-out time
         }, 5000); // Show for 5 seconds
     });
-    </c:if>
 </script>
+<%
+    }
+%>
 
 
 
