@@ -2,7 +2,6 @@ package web.example.progweb.model;
 
 import web.example.progweb.model.abstractClass.AbstractModel;
 import web.example.progweb.model.entity.Discount;
-import web.example.progweb.model.entity.Event;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

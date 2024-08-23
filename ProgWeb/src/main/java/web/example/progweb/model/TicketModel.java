@@ -4,7 +4,6 @@ import web.example.progweb.model.abstractClass.AbstractModel;
 import web.example.progweb.model.entity.*;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
