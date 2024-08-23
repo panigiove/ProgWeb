@@ -121,7 +121,7 @@
                 <td class="text-center"><%= event.getNomeLocation()%></td> <!-- New Column -->
                 <td class="text-center"><%= event.getNomeCategory()%></td> <!-- New Column -->
                 <td class="text-center">
-                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteEvent(${event.id})">Delete</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteEvent(<%= event.getId()%>)">Delete</button>
                 </td>
             </tr>
         <%
