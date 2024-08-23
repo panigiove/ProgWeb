@@ -1,5 +1,6 @@
 <%@ page import="web.example.progweb.model.entity.Event" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.AbstractMap" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -152,14 +153,23 @@
 
 
 <script>
-    const categoriesData = [
-        <c:forEach var="entry" items="${nclicks}" varStatus="status">
-        {
-            name: '${entry.key}',
-            y: ${entry.value}
-        }<c:if test="${!status.last}">,</c:if>
-        </c:forEach>
-    ];
+
+    <%
+    List<AbstractMap.SimpleEntry<String, Integer>> nclicks = (List<AbstractMap.SimpleEntry<String, Integer>>) request.getAttribute("nclicks");
+    StringBuilder json = new StringBuilder("[");
+    for (int i = 0; i < nclicks.size(); i++) {
+        AbstractMap.SimpleEntry<String, Integer> entry = nclicks.get(i);
+        json.append("{")
+            .append("\"name\": \"").append(entry.getKey()).append("\", ")
+            .append("\"y\": ").append(entry.getValue())
+            .append("}");
+        if (i < nclicks.size() - 1) {
+            json.append(",");
+        }
+    }
+    json.append("]");
+%>
+    const categoriesData = <%= json.toString() %>;
 
     Highcharts.chart('category-chart', {
         chart: {

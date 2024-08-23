@@ -71,7 +71,6 @@ public class DiscountModel extends AbstractModel {
         List<Discount> discounts = new ArrayList<>();
 
         getValidDiscountsOfEventPreparedStatement.setInt(1, idEvent);
-        // Execute the query and process the results
         try (ResultSet rs = getValidDiscountsOfEventPreparedStatement.executeQuery()) {
             while (rs.next()) {
                 String nomeEvento = eventModel.getEventName(rs.getInt("id_evento"));

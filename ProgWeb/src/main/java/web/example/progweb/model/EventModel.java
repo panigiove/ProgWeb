@@ -132,7 +132,7 @@ public class EventModel extends AbstractModel {
         return resultSet.next();
     }
 
-    public boolean checkCategoryId(int id) throws SQLException{ // da rivedere se funziona
+    public boolean checkCategoryId(int id) throws SQLException{
         checkIdCategoryPreparedStatement.setInt(1, id);
         ResultSet resultSet = checkIdCategoryPreparedStatement.executeQuery();
         return resultSet.next();

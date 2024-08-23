@@ -37,7 +37,6 @@ public class ImageServlet extends AbstractController {
         }
         response.setContentType(mimeType);
 
-        // Write the file to the response
         try (FileInputStream fis = new FileInputStream(imageFile);
              OutputStream os = response.getOutputStream()) {
             byte[] buffer = new byte[1024];

@@ -2,13 +2,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="web.example.progweb.model.entity.User" %>
 <%@ page import="web.example.progweb.model.entity.Event" %>
-<%@ page import="web.example.progweb.model.EventModel" %><%--
-  Created by IntelliJ IDEA.
-  User: Giovanni
-  Date: 10/08/2024
-  Time: 15:56
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="web.example.progweb.model.EventModel" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="it">

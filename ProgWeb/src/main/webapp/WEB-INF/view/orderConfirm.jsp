@@ -1,6 +1,5 @@
 <%@ page import="web.example.progweb.model.entity.Event" %>
 <%@ page import="web.example.progweb.model.entity.Discount" %>
-<%@ page import="java.math.BigDecimal" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
