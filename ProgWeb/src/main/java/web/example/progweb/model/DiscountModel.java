@@ -3,6 +3,7 @@ package web.example.progweb.model;
 import web.example.progweb.model.abstractClass.AbstractModel;
 import web.example.progweb.model.entity.Discount;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -94,10 +95,10 @@ public class DiscountModel extends AbstractModel {
         }
     }
 
-    public Discount createDiscount(int id_event, String expiration_date, double discount) throws SQLException {
+    public Discount createDiscount(int id_event, String expiration_date, BigDecimal discount) throws SQLException {
         createDiscountPreparedStatement.setInt(1, id_event);
         createDiscountPreparedStatement.setString(2, expiration_date);
-        createDiscountPreparedStatement.setDouble(3, discount);
+        createDiscountPreparedStatement.setBigDecimal(3, discount);
         int affectedRows = createDiscountPreparedStatement.executeUpdate();
         if (affectedRows > 0) {
             try (ResultSet generatedKeys = createDiscountPreparedStatement.getGeneratedKeys()) {

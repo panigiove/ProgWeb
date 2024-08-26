@@ -105,6 +105,27 @@
                     <input type="file" id="immagineEvento" name="immagineEvento" accept="image/*" required>
                 </div>
 
+                <div class="mb-3">
+                    <button type="button" class="btn btn-info" id="btnAggiungiSconto">Aggiungi Sconto</button>
+                </div>
+
+                <div id="scontoSection" style="display: none;">
+                    <div class="mb-3">
+                        <label for="sconto" class="form-label">Sconto (%):</label>
+                        <input type="number" id="sconto" name="sconto" class="form-control" step="0.01" min="0">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="dataScadenzaSconto" class="form-label">Data Scadenza Sconto:</label>
+                        <input type="datetime-local" id="dataScadenzaSconto" name="dataScadenzaSconto" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-info" id="btnRimuoviSconto">Rimuovi Sconto</button>
+                    </div>
+                </div>
+
+
                 <div class="text-center">
                     <input type="submit" value="Inserisci Evento" class="btn btn-primary">
                 </div>
@@ -114,12 +135,24 @@
 </div>
 
 <script>
+    document.getElementById('btnAggiungiSconto').addEventListener('click', function() {
+        const scontoSection = document.getElementById('scontoSection');
+        scontoSection.style.display = 'block';  // Mostra la sezione sconto
+    });
+
+    document.getElementById('btnRimuoviSconto').addEventListener('click', function() {
+        document.getElementById('sconto').value = '';
+        document.getElementById('dataScadenzaSconto').value = '';
+        document.getElementById('scontoSection').style.display = 'none';
+    });
+
     document.getElementById('eventoForm').addEventListener('submit', function(event) {
+        const sconto = document.getElementById('sconto').value;
+        const dataScadenzaSconto = document.getElementById('dataScadenzaSconto').value;
         const dataInizio = new Date(document.getElementById('dataInizioEvento').value);
         const dataFine = new Date(document.getElementById('dataFineEvento').value);
         const oraAttuale = new Date();
 
-        // Save label
         const labelDataInizio = document.querySelector('label[for="dataInizioEvento"]');
         const labelDataFine = document.querySelector('label[for="dataFineEvento"]');
 
@@ -139,6 +172,13 @@
             labelDataInizio.classList.add('error-label');
             alert("La data di inizio evento non può essere nel passato.");
             errore = true;
+        }
+
+        if (sconto || dataScadenzaSconto) {
+            if (!sconto || !dataScadenzaSconto) {
+                alert("Se inserisci uno sconto, devi riempire entrambi i campi: Sconto e Data di Scadenza.");
+                errore = true;
+            }
         }
 
         if (errore) {

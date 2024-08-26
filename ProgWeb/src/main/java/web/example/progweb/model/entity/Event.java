@@ -65,10 +65,6 @@ public class Event {
         return this.id;
     }
 
-    public int getIdCategory() {
-        return this.idCategory;
-    }
-
     public int getnClick() {
         return this.nClick;
     }
@@ -79,10 +75,6 @@ public class Event {
 
     public String getNomeCategory(){
         return nomeCategory;
-    }
-
-    public int getIdLocation() {
-        return this.idLocation;
     }
 
     public String getName() {

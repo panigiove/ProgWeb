@@ -2,12 +2,10 @@ package web.example.progweb.controller;
 import javax.servlet.annotation.MultipartConfig;
 
 import web.example.progweb.controller.abstractClass.AbstractController;
+import web.example.progweb.model.DiscountModel;
 import web.example.progweb.model.EventModel;
 import web.example.progweb.model.UserModel;
-import web.example.progweb.model.entity.Category;
-import web.example.progweb.model.entity.Event;
-import web.example.progweb.model.entity.Location;
-import web.example.progweb.model.entity.User;
+import web.example.progweb.model.entity.*;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -26,12 +24,15 @@ import java.util.UUID;
 public class AdminServlet extends AbstractController {
     private EventModel eventModel;
     private UserModel userModel;
+    private DiscountModel discountModel;
+
     @Override
     public void init() throws ServletException {
         super.init();
         try {
             this.eventModel = new EventModel(connection);
             this.userModel = new UserModel(connection);
+            this.discountModel = new DiscountModel(connection);
         } catch (SQLException e) {
             System.err.println("Errore durante la connessione al database" + e.getMessage());
             throw new ServletException(e);
@@ -106,6 +107,8 @@ public class AdminServlet extends AbstractController {
             BigDecimal prezzoPostoInPiedi = new BigDecimal(request.getParameter("prezzoPostoInPiedi"));
             int totalePostiSeduti = Integer.parseInt(request.getParameter("totalePostiSeduti"));
             int totalePostiInPiedi = Integer.parseInt(request.getParameter("totalePostiInPiedi"));
+            BigDecimal sconto = new BigDecimal(request.getParameter("sconto"));
+            String dataScadenzaSconto = request.getParameter("dataScadenzaSconto");
 
 
             Part filePart = request.getPart("immagineEvento"); // Recupera l'immagine dal form
@@ -143,6 +146,16 @@ public class AdminServlet extends AbstractController {
                         prezzoPostoInPiedi,
                         imageName
                 );
+
+                int eventId = newEvent.getId();
+
+                if(sconto != null && dataScadenzaSconto!= null){
+                    Discount newDiscount = discountModel.createDiscount(
+                            newEvent.getId(),
+                            dataScadenzaSconto,
+                            sconto
+                    );
+                }
 
                 if (newEvent != null) {
                     response.sendRedirect(request.getContextPath() + "/admin/gestioneEventi?newEventCreated=true");

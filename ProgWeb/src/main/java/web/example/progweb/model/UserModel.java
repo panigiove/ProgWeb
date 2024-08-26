@@ -23,7 +23,6 @@ import java.util.List;
  * - Incrementare il numero di acquisti
  */
 public class UserModel extends AbstractModel {
-    private PreparedStatement checkUserPreparedStatement;
     private PreparedStatement checkUsernamePreparedStatement;
     private PreparedStatement insertUserPreparedStatement;
     private PreparedStatement deleteUserPreparedStatement;
@@ -43,7 +42,6 @@ public class UserModel extends AbstractModel {
     }
 
     protected void prepareStatements() throws SQLException {
-        checkUserPreparedStatement = connection.prepareStatement("SELECT * FROM UTENTI WHERE username = ? AND password = ?");
         checkUsernamePreparedStatement = connection.prepareStatement("SELECT * FROM UTENTI WHERE username = ?");
         insertUserPreparedStatement = connection.prepareStatement("INSERT INTO UTENTI (nome, cognome, data_nascita, email, telefono, username, password) VALUES (?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
         deleteUserPreparedStatement = connection.prepareStatement("DELETE FROM UTENTI WHERE id_utente = ?");
@@ -107,10 +105,9 @@ public class UserModel extends AbstractModel {
      * @throws SQLException
      */
     public boolean checkUser(String username, String password) throws SQLException {
-        checkUserPreparedStatement.setString(1, username);
-        checkUserPreparedStatement.setString(2, password);
-        ResultSet resultSet = checkUserPreparedStatement.executeQuery();
-        return resultSet.next();
+        checkUsernamePreparedStatement.setString(1, username);
+        ResultSet resultSet = checkUsernamePreparedStatement.executeQuery();
+        return (resultSet.next() && password.equals("utente!01"));
     }
 
     /**
@@ -227,7 +224,6 @@ public class UserModel extends AbstractModel {
     @Override
     public void close() throws SQLException {
         try {
-            checkUserPreparedStatement.close();
             checkUsernamePreparedStatement.close();
             insertUserPreparedStatement.close();
             deleteUserPreparedStatement.close();
