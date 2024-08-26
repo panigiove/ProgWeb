@@ -131,6 +131,8 @@ public class AdminServlet extends AbstractController {
             }
 
             try {
+                boolean hasDiscount = (sconto!=null && dataScadenzaSconto!= null);
+                Discount newDiscount;
                 Event newEvent = eventModel.insertEvent(
                         categoriaEvento,
                         localitaEvento,
@@ -149,9 +151,9 @@ public class AdminServlet extends AbstractController {
 
                 int eventId = newEvent.getId();
 
-                if(sconto != null && dataScadenzaSconto!= null){
-                    Discount newDiscount = discountModel.createDiscount(
-                            newEvent.getId(),
+                if(hasDiscount){
+                    newDiscount = discountModel.createDiscount(
+                            eventId,
                             dataScadenzaSconto,
                             sconto
                     );

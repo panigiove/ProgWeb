@@ -97,7 +97,7 @@ public class DiscountModel extends AbstractModel {
 
     public Discount createDiscount(int id_event, String expiration_date, BigDecimal discount) throws SQLException {
         createDiscountPreparedStatement.setInt(1, id_event);
-        createDiscountPreparedStatement.setString(2, expiration_date);
+        createDiscountPreparedStatement.setString(2, formatDateTime(expiration_date));
         createDiscountPreparedStatement.setBigDecimal(3, discount);
         int affectedRows = createDiscountPreparedStatement.executeUpdate();
         if (affectedRows > 0) {
