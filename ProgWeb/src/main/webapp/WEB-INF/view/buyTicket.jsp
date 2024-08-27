@@ -3,6 +3,12 @@
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+
+<%
+    Event event = (Event) request.getAttribute("event");
+    List<Discount> discounts = (List<Discount>) request.getAttribute("discounts");
+%>
+
 <head>
     <title>EntriEasy</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,14 +80,20 @@
             user-select: none; /* Disable text selection */
         }
     </style>
-</head>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const discountCount = <%= (discounts != null) ? discounts.size() : 0 %>;
+
+            if (discountCount === 1) {
+                const discountValue = <%= discounts.get(0).getDiscount() %>;
+                alert("È stato applicato automaticamente uno sconto del " + discountValue + "%.");
+            }
+        });
+    </script>
+</head>
 <body>
 
-<%
-    Event event = (Event) request.getAttribute("event");
-    List<Discount> discounts = (List<Discount>) request.getAttribute("discounts");
-%>
 
 <jsp:include page="topNavUser.jsp"/>
 
@@ -142,7 +154,7 @@
             <input type="hidden" name="event" value="<%= event.getId() %>">
             <input type="hidden" name="nSeats" id="hidden-seat-count" value="0">
             <input type="hidden" name="nStands" id="hidden-standing-count" value="0">
-            <input type="hidden" name="idDiscount" id="hidden-discount" value="">
+            <input type="hidden" name="idDiscount" id="hidden-discount" value="<%= (discounts != null && discounts.size() == 1) ? discounts.get(0).getId_discount() : "" %>">
             <button type="submit" class="btn btn-success w-100 mt-3">Procedi con il pagamento</button>
         </form>
 
@@ -153,8 +165,8 @@
 
 <script>
     let totalPrice = 0;
-    let discount = 0;
-    let idDiscount = -1;
+    let discount = <%= (discounts != null && discounts.size() == 1) ? discounts.get(0).getDiscount() : 0 %>;;
+    let idDiscount = <%= (discounts != null && discounts.size() == 1) ? discounts.get(0).getId_discount() : -1 %>;
     let nSeats = 0;
     let nStands = 0
     let seatsPrice = <%= event.getSeatPrice() %>;
