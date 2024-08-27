@@ -1,0 +1,14 @@
+# File di build
+target/
+build/
+
+# File temporanei
+*.log
+*.tmp
+
+# Cartelle di configurazione dell'IDE
+.idea/
+*.iml
+
+# Compiled class files
+*.class

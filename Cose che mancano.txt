@@ -1,4 +1,0 @@
-modificare eventManager, non va usato jstl
-
-
-
