@@ -136,9 +136,9 @@
         const phoneInput = document.getElementById('telefono').value;
         const emailInput = document.getElementById('email').value;
         const passwordInput = document.getElementById('password').value;
+        const passwordConfirmInput = document.getElementById('confirm_password').value;
         const dateOfBirth = document.getElementById('data_nascita').value;
 
-        // Validazione del numero di telefono
         const phoneRegex = /^\d{10}$/;
         if (!phoneRegex.test(phoneInput)) {
             alert("Il numero di telefono deve contenere esattamente 10 cifre.");
@@ -146,7 +146,6 @@
             return;
         }
 
-        // Validazione dell'email
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(emailInput)) {
             alert("Inserisci un indirizzo email valido.");
@@ -154,7 +153,6 @@
             return;
         }
 
-        // Validazione della password
         const passwordRegex = /^(?=.*[!@#$%^&*])(?=.*\d{2,}).{9,}$/;
         if (!passwordRegex.test(passwordInput)) {
             alert("La password deve avere almeno 9 caratteri, inclusi almeno un carattere speciale e due cifre.");
@@ -162,8 +160,13 @@
             return;
         }
 
-        // Validazione della data di nascita
         if (!validateDate(dateOfBirth)) {
+            event.preventDefault();
+            return;
+        }
+
+        if(passwordInput!==passwordConfirmInput){
+            alert("Le password non coincidono!");
             event.preventDefault();
             return;
         }

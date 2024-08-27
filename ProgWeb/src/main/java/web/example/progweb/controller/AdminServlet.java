@@ -46,6 +46,7 @@ public class AdminServlet extends AbstractController {
                 request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
             } else if ("/gestioneEventi".equals(path)) {
                 List<Event> events;
+                List<Discount> discounts = discountModel.getValidDiscounts();
                 String sortByClicks = request.getParameter("sortByClicks");
                 String newEventCreated = request.getParameter("newEventCreated");
                 List<Category> categories = eventModel.getAllCategory();
@@ -65,6 +66,7 @@ public class AdminServlet extends AbstractController {
                 }
                 request.setAttribute("nclicks", nclicks);
                 request.setAttribute("events", events);
+                request.setAttribute("discounts", discounts);
                 request.getRequestDispatcher("/WEB-INF/view/eventManager.jsp").forward(request, response);
             } else if("/gestioneUtenti".equals(path)){
                 List<User> users;
@@ -107,11 +109,15 @@ public class AdminServlet extends AbstractController {
             BigDecimal prezzoPostoInPiedi = new BigDecimal(request.getParameter("prezzoPostoInPiedi"));
             int totalePostiSeduti = Integer.parseInt(request.getParameter("totalePostiSeduti"));
             int totalePostiInPiedi = Integer.parseInt(request.getParameter("totalePostiInPiedi"));
-            BigDecimal sconto = new BigDecimal(request.getParameter("sconto"));
+
+            BigDecimal sconto = null;
+            String scontoParam = request.getParameter("sconto");
+            if (scontoParam != null && !scontoParam.trim().isEmpty()) {
+                sconto = new BigDecimal(scontoParam);
+            }
             String dataScadenzaSconto = request.getParameter("dataScadenzaSconto");
 
-
-            Part filePart = request.getPart("immagineEvento"); // Recupera l'immagine dal form
+            Part filePart = request.getPart("immagineEvento");
             String imageName = generateRandomFileName(filePart.getSubmittedFileName());
 
 

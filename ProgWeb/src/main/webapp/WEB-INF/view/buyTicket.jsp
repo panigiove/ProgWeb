@@ -83,12 +83,10 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const discountCount = <%= (discounts != null) ? discounts.size() : 0 %>;
-
-            if (discountCount === 1) {
-                const discountValue = <%= discounts.get(0).getDiscount() %>;
-                alert("È stato applicato automaticamente uno sconto del " + discountValue + "%.");
-            }
+            <% if (discounts != null && discounts.size() == 1) { %>
+            const discountValue = <%= discounts.get(0).getDiscount() %>;
+            alert("È stato applicato automaticamente uno sconto del " + discountValue + "%.");
+            <% } %>
         });
     </script>
 </head>

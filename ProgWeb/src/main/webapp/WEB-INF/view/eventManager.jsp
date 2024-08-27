@@ -1,6 +1,7 @@
 <%@ page import="web.example.progweb.model.entity.Event" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.AbstractMap" %>
+<%@ page import="web.example.progweb.model.entity.Discount" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -81,7 +82,7 @@
         </div>
     </div>
 
-    <table class="table table-striped">
+    <table class="table table-striped mx-auto text-center">
         <thead>
         <tr>
             <th class="text-center">ID</th>
@@ -97,6 +98,8 @@
             <th class="text-center">Clicks</th>
             <th class="text-center">Location</th>
             <th class="text-center">Category</th>
+            <th class="text-center">Discount</th>
+            <th class="text-center">Discount's End</th>
             <th class="text-center">Actions</th>
         </tr>
         </thead>
@@ -104,7 +107,9 @@
         <tbody>
         <%
             List<Event> events = (List<Event>) request.getAttribute("events");
+            List<Discount> discounts = (List<Discount>) request.getAttribute("discounts");
             for(Event event : events) {
+                int counter = 0;
         %>
             <tr id="event-row-<%= event.getId()%>">
                 <td class="text-center"><%= event.getId()%></td>
@@ -118,8 +123,25 @@
                 <td class="text-center"><%= event.getSeatPrice()%></td>
                 <td class="text-center"><%= event.getStandingPrice()%></td>
                 <td class="text-center"><%= event.getnClick()%></td>
-                <td class="text-center"><%= event.getNomeLocation()%></td> <!-- New Column -->
-                <td class="text-center"><%= event.getNomeCategory()%></td> <!-- New Column -->
+                <td class="text-center"><%= event.getNomeLocation()%></td>
+                <td class="text-center"><%= event.getNomeCategory()%></td>
+                <% for(Discount discount : discounts){
+                    if(discount.getId_event()==event.getId()){
+                        counter ++;
+                %>
+                <td class="text-center"><%= discount.getDiscount()%></td>
+                <td class="text-center"><%= discount.getExpiration_date()%></td>
+                <%
+                    }
+                }
+                %>
+                <% if(counter < 1){
+                %>
+                <td class="text-center"> None </td>
+                <td class="text-center"> None </td>
+                <%
+                }
+                %>
                 <td class="text-center">
                     <button type="button" class="btn btn-danger btn-sm" onclick="deleteEvent(<%= event.getId()%>)">Delete</button>
                 </td>
