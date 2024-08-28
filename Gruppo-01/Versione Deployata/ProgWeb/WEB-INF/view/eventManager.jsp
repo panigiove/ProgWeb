@@ -105,11 +105,11 @@
         </thead>
 
         <tbody>
+
         <%
             List<Event> events = (List<Event>) request.getAttribute("events");
             List<Discount> discounts = (List<Discount>) request.getAttribute("discounts");
             for(Event event : events) {
-                int counter = 0;
         %>
             <tr id="event-row-<%= event.getId()%>">
                 <td class="text-center"><%= event.getId()%></td>
@@ -125,25 +125,34 @@
                 <td class="text-center"><%= event.getnClick()%></td>
                 <td class="text-center"><%= event.getNomeLocation()%></td>
                 <td class="text-center"><%= event.getNomeCategory()%></td>
-                <% for(Discount discount : discounts){
-                    if(discount.getId_event()==event.getId()){
-                        counter ++;
+
+
+
+                <%
+                    boolean hasDiscount = false;
+
+                    if (discounts != null && !discounts.isEmpty()) {
+                        for (Discount discount : discounts) {
+                            if (discount.getId_event() == event.getId()) {
+                                hasDiscount = true;
                 %>
-                <td class="text-center"><%= discount.getDiscount()%></td>
-                <td class="text-center"><%= discount.getExpiration_date()%></td>
+                <td class="text-center"><%= discount.getDiscount() %></td>
+                <td class="text-center"><%= discount.getExpiration_date() %></td>
+                <%
+                            }
+                        }
+                    }
+
+
+                    if (!hasDiscount) {
+                %>
+                <td class="text-center"> None </td>
+                <td class="text-center"> None </td>
                 <%
                     }
-                }
-                %>
-                <% if(counter < 1){
-                %>
-                <td class="text-center"> None </td>
-                <td class="text-center"> None </td>
-                <%
-                }
                 %>
                 <td class="text-center">
-                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteEvent(<%= event.getId()%>)">Delete</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteEvent(<%= event.getId() %>)">Delete</button>
                 </td>
             </tr>
         <%
